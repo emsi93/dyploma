@@ -24,4 +24,13 @@ public class AdministrationController {
 		modelAndView.addObject("list", list);
 		return modelAndView;
 	}
+	
+	@RequestMapping("/test")
+	public ModelAndView test()
+	{
+		ModelAndView modelAndView = new ModelAndView("test");
+		List<TypeOfBody> list = dao.getTypeOfBodies();
+		modelAndView.addObject("list", list);
+		return modelAndView;
+	}
 }

@@ -13,5 +13,6 @@
 </head>
 <body>
 ${message }
+<a href="/auction-system/shipper/register" class="btn btn-primary " type="submit">Lista CA</a>
 </body>
 </html>
