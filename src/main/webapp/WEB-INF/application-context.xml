@@ -31,7 +31,7 @@
 		class="dyploma.auction.system.carriage.goods.modules.Configuration"
 		scope="singleton">
 		<constructor-arg index="0">
-			<value>${com.comarch.apus.co110025.opki_manager.rootContext}</value>
+			<value>${auction.system.rootContext}</value>
 		</constructor-arg>
 	</bean>
  

@@ -13,5 +13,6 @@
 </head>
 <body>
 ${list }
+<a href="/auction-system/administration/test" class="btn btn-primary " type="submit">Lista CA</a>
 </body>
 </html>
