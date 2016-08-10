@@ -27,13 +27,13 @@
 		</property>
 	</bean>
 
-	<bean id="configuration"
+	<!-- <bean id="configuration"
 		class="dyploma.auction.system.carriage.goods.modules.Configuration"
 		scope="singleton">
 		<constructor-arg index="0">
 			<value>${auction.system.rootContext}</value>
 		</constructor-arg>
-	</bean>
+	</bean> -->
  
 	<bean
 		class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />

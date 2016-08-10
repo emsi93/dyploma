@@ -13,20 +13,25 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="/auction-system/static/bootstrap/js/bootstrap.min.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Rejestracja</title>
+<title>Tworzenie użytkownika</title>
 </head>
 <body>
 	<div class="container">
 		<div class="row"></div>
 		<div class="col-lg-12">
-			<form:form method="post" modelAttribute="shipperForm"
-				action="/auction-system/shipper/register" role="form">
+			<form:form method="post" modelAttribute="userForm"
+				action="/auction-system/shipper/registerUser" role="form">
 				<label>${wiadomosc }</label>
 
 				<div class="form-group">
-					<label>Nazwa firmy</label> <br />
-					<form:input path="companyName" type="text" class="form-control" />
-					<form:errors path="companyName" element="div" />
+					<label>Imie</label> <br />
+					<form:input path="name" type="text" class="form-control"  />
+					<form:errors path="name" element="div" />
+				</div>
+				<div class="form-group">
+					<label>Telefon</label> <br />
+					<form:input path="phoneNumber" type="text" class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' />
+					<form:errors path="phoneNumber" element="div" />
 				</div>
 				<div>
 					<form:input class="submit btn btn-primary" path="" type="submit"
