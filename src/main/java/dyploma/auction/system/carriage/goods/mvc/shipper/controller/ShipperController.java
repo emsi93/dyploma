@@ -7,20 +7,26 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import dyploma.auction.system.carriage.goods.mvc.shipper.model.ShipperFormModel;
-import dyploma.auction.system.carriage.goods.mvc.shipper.model.UserFormModel;
-import dyploma.auction.system.carriage.goods.mvc.shipper.validator.ShipperFormValidator;
-import dyploma.auction.system.carriage.goods.mvc.shipper.validator.UserFormValidator;
+import dyploma.auction.system.carriage.goods.mvc.shipper.dao.ShipperDAOInterface;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.ShipperCompanyModel;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.ShipperCompanyFormModel;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.ShipperUserFormModel;
+import dyploma.auction.system.carriage.goods.mvc.shipper.validator.ShipperCompanyFormValidator;
+import dyploma.auction.system.carriage.goods.mvc.shipper.validator.ShipperUserFormValidator;
 
 @Controller
 public class ShipperController {
 
 	@Autowired
-	private ShipperFormValidator shipperFormValidator;
+	private ShipperDAOInterface dao;
+
+	@Autowired
+	private ShipperCompanyFormValidator shipperFormValidator;
 
 	@InitBinder("shipperForm")
 	protected void initShipperFormValidator(WebDataBinder binder) {
@@ -28,7 +34,7 @@ public class ShipperController {
 	}
 
 	@Autowired
-	private UserFormValidator userFormValidator;
+	private ShipperUserFormValidator userFormValidator;
 
 	@InitBinder("userForm")
 	protected void initUserFormValidator(WebDataBinder binder) {
@@ -44,13 +50,13 @@ public class ShipperController {
 
 	@RequestMapping(value = "/registerCompany", method = RequestMethod.GET)
 	public ModelAndView registerCompanyGET(
-			ShipperFormModel shipperFormModelorNull, Integer messageCodeOrNull) {
+			ShipperCompanyFormModel shipperFormModelorNull, Integer messageCodeOrNull) {
 		ModelAndView modelAndView = new ModelAndView("registerCompany");
 
 		if (shipperFormModelorNull == null) {
 
-			shipperFormModelorNull = new ShipperFormModel(null, null, null,
-					null, null, null, null, null, null);
+			shipperFormModelorNull = new ShipperCompanyFormModel(null, null, null,
+					null, null, null, null, null, null, null, null, null);
 		}
 		if (messageCodeOrNull != null) {
 			switch (messageCodeOrNull) {
@@ -70,7 +76,7 @@ public class ShipperController {
 
 	@RequestMapping(value = "/registerCompany", method = RequestMethod.POST)
 	public ModelAndView registerCompanyPost(
-			@ModelAttribute("shipperForm") @Validated ShipperFormModel shipperFormModel,
+			@ModelAttribute("shipperForm") @Validated ShipperCompanyFormModel shipperFormModel,
 			BindingResult result) {
 
 		if (result.hasErrors()) {
@@ -79,17 +85,22 @@ public class ShipperController {
 		}
 
 		else {
-			return registerUserGET(null, 2);
+			return registerUserGET(
+					new ShipperCompanyModel(shipperFormModel, 1).toString(),
+					null, 2);
 		}
 	}
 
-	@RequestMapping(value = "/registerUser", method = RequestMethod.GET)
-	public ModelAndView registerUserGET(UserFormModel userFormModelorNull,
-			Integer messageCodeOrNull) {
+	@RequestMapping(value = "/registerUser/{company}", method = RequestMethod.GET)
+	public ModelAndView registerUserGET(@PathVariable String company,
+			ShipperUserFormModel userFormModelorNull, Integer messageCodeOrNull) {
 		ModelAndView modelAndView = new ModelAndView("registerUser");
+		modelAndView.addObject("firm", company);
+		String [] parts = company.split(",");
 		if (userFormModelorNull == null) {
 
-			userFormModelorNull = new UserFormModel(null, null);
+			userFormModelorNull = new ShipperUserFormModel(null, null, null, null,
+					null, null, null, null, null, null, null, null, null);
 		}
 		if (messageCodeOrNull != null) {
 			switch (messageCodeOrNull) {
@@ -105,22 +116,24 @@ public class ShipperController {
 				break;
 			}
 		}
+
 		modelAndView.addObject("userForm", userFormModelorNull);
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/registerUser", method = RequestMethod.POST)
-	public ModelAndView registerUserPost(
-			@ModelAttribute("userForm") @Validated UserFormModel userFormModel,
+	@RequestMapping(value = "/registerUser/{company}", method = RequestMethod.POST)
+	public ModelAndView registerUserPost(@PathVariable String company,
+			@ModelAttribute("userForm") @Validated ShipperUserFormModel userFormModel,
 			BindingResult result) {
 
 		if (result.hasErrors()) {
 
-			return registerUserGET(userFormModel, 1);
+			return registerUserGET(company, userFormModel, 1);
 		}
 
 		else {
-			return registerUserGET(userFormModel, 3);
+			dao.insert(company, userFormModel);
+			return registerUserGET(company, userFormModel, 3);
 		}
 	}
 }
