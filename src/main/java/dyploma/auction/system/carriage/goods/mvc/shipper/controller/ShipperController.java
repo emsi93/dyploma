@@ -1,5 +1,6 @@
 package dyploma.auction.system.carriage.goods.mvc.shipper.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import dyploma.auction.system.carriage.goods.modules.EuropeCountryList;
 import dyploma.auction.system.carriage.goods.mvc.shipper.dao.ShipperDAOInterface;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.ShipperCompanyModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.ShipperCompanyFormModel;
@@ -52,7 +54,7 @@ public class ShipperController {
 	public ModelAndView registerCompanyGET(
 			ShipperCompanyFormModel shipperFormModelorNull, Integer messageCodeOrNull) {
 		ModelAndView modelAndView = new ModelAndView("registerCompany");
-
+		modelAndView.addObject("country",EuropeCountryList.getEuropeCountryList());
 		if (shipperFormModelorNull == null) {
 
 			shipperFormModelorNull = new ShipperCompanyFormModel(null, null, null,
@@ -70,6 +72,7 @@ public class ShipperController {
 				break;
 			}
 		}
+		
 		modelAndView.addObject("shipperForm", shipperFormModelorNull);
 		return modelAndView;
 	}
@@ -96,7 +99,7 @@ public class ShipperController {
 			ShipperUserFormModel userFormModelorNull, Integer messageCodeOrNull) {
 		ModelAndView modelAndView = new ModelAndView("registerUser");
 		modelAndView.addObject("firm", company);
-		String [] parts = company.split(",");
+		modelAndView.addObject("country",EuropeCountryList.getEuropeCountryList());
 		if (userFormModelorNull == null) {
 
 			userFormModelorNull = new ShipperUserFormModel(null, null, null, null,

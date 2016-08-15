@@ -73,4 +73,103 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 						parameters2);
 	}
 
+	
+	public int checkCompanyNipNumberUniqueValues(String nipNumber)
+			throws DataAccessException {
+		Object[] parameter = {nipNumber};
+		return jdbcTemplate.queryForObject(
+				"SELECT COUNT(*) FROM companies WHERE nip_number=?",
+				parameter, new RowMapper<Integer>() {
+
+					public Integer mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new Integer(rs.getInt(1));
+					}
+				});
+	}
+
+	public int checkCompanyEmailUniqueValues(String email)
+			throws DataAccessException {
+		Object[] parameter = {email};
+		return jdbcTemplate.queryForObject(
+				"SELECT COUNT(*) FROM companies WHERE email=?",
+				parameter, new RowMapper<Integer>() {
+
+					public Integer mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new Integer(rs.getInt(1));
+					}
+				});
+	}
+
+	public int checkCompanyPhoneNumberUniqueValues(String phoneNumber)
+			throws DataAccessException {
+		Object[] parameter = {phoneNumber};
+		return jdbcTemplate.queryForObject(
+				"SELECT COUNT(*) FROM companies WHERE phone_number=?",
+				parameter, new RowMapper<Integer>() {
+
+					public Integer mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new Integer(rs.getInt(1));
+					}
+				});
+	}
+
+	public int checkUserLoginUniqueValues(String login)
+			throws DataAccessException {
+		Object[] parameter = {login};
+		return jdbcTemplate.queryForObject(
+				"SELECT COUNT(*) FROM users WHERE login=?",
+				parameter, new RowMapper<Integer>() {
+
+					public Integer mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new Integer(rs.getInt(1));
+					}
+				});
+	}
+
+	public int checkUserPeselUniqueValues(String pesel)
+			throws DataAccessException {
+		Object[] parameter = {pesel};
+		return jdbcTemplate.queryForObject(
+				"SELECT COUNT(*) FROM users WHERE pesel_number=?",
+				parameter, new RowMapper<Integer>() {
+
+					public Integer mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new Integer(rs.getInt(1));
+					}
+				});
+	}
+
+	public int checkUserEmailUniqueValues(String email)
+			throws DataAccessException {
+		Object[] parameter = {email};
+		return jdbcTemplate.queryForObject(
+				"SELECT COUNT(*) FROM users WHERE email=?",
+				parameter, new RowMapper<Integer>() {
+
+					public Integer mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new Integer(rs.getInt(1));
+					}
+				});
+	}
+
+	public int checkUserPhoneNumberUniqueValues(String phoneNumber)
+			throws DataAccessException {
+		Object[] parameter = {phoneNumber};
+		return jdbcTemplate.queryForObject(
+				"SELECT COUNT(*) FROM users WHERE phone_number=?",
+				parameter, new RowMapper<Integer>() {
+
+					public Integer mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new Integer(rs.getInt(1));
+					}
+				});
+	}
+
 }
