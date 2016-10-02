@@ -10,6 +10,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Index</title>
+ <link href="/auction-system/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="/auction-system/static/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
 ${message }

@@ -16,8 +16,7 @@ import org.springframework.stereotype.Service;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 import dyploma.auction.system.carriage.goods.mvc.shipper.dao.ShipperDAOInterface;
-import dyploma.auction.system.carriage.goods.mvc.shipper.model.ShipperUserModel;
-import dyploma.auction.system.carriage.goods.mvc.shipper.model.ShipperUserFormModel;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.RegisterModel;
 
 @Service("ShipperDAO")
 @Scope("singleton")
@@ -40,46 +39,35 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 		}
 	}
 
-	public void insert(String company, ShipperUserFormModel userFormModel)
+	public void registerCompany(RegisterModel registerModel, int typeOfCompany)
 			throws DataAccessException {
-		Object[] parts = company.split(",");
-		for (int i = 0; i < parts.length; i++) {
-			if (parts[i].equals(""))
-				parts[i] = null;
-		}
 		jdbcTemplate
-				.update("INSERT INTO companies (company_name,country, postcode, city, street, house_number, suice_number, nip_number, phone_number, website, email, description, type_of_company) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
-						parts);
-		Object[] parameters = { parts[0], parts[7] };
-		int idCompany = jdbcTemplate.queryForObject(
-				"SELECT id FROM companies WHERE company_name=? AND nip_number=?",
-				parameters, new RowMapper<Integer>() {
-
-					public Integer mapRow(ResultSet rs, int rowNumber)
-							throws SQLException {
-						return new Integer(rs.getInt(1));
-					}
-				});
-
-		String shipperUserModel = new ShipperUserModel(userFormModel, 2,
-				idCompany, "true").toString();
-		Object[] parameters2 = shipperUserModel.split(",");
-		for (int i = 0; i < parameters2.length; i++) {
-			if (parameters2[i].equals(""))
-				parameters2[i] = null;
-		}
+				.update("INSERT INTO companies (company_name,country,postcode,city,street,flat_number,nip_number,phone_number,email,type_of_company) VALUES (?,?,?,?,?,?,?,?,?,?)",
+						registerModel.getCompanyName(),
+						registerModel.getCountry(),
+						registerModel.getPostcode(), registerModel.getCity(),
+						registerModel.getStreet(),
+						registerModel.getFlatNumber(),
+						registerModel.getNipNumber(),
+						registerModel.getPhoneNumber(),
+						registerModel.getEmail(), typeOfCompany);
+		int companyID = getCompanyID(registerModel.getEmail());
 		jdbcTemplate
-				.update("INSERT INTO users (name,surname,login,password,id_permission,country, postcode, city, street, house_number, flat_number, phone_number, email, pesel_number, id_company, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-						parameters2);
+				.update("INSERT INTO users (name,surname, phone_number,email, id_company) VALUES (?,?,?,?,?)",
+						registerModel.getName(), registerModel.getSurname(),
+						registerModel.getPhoneNumberUser(),
+						registerModel.getEmailUser(), companyID);
+		int userID = getUserID(registerModel.getEmailUser());
+		jdbcTemplate.update(
+				"INSERT INTO logins(login,password,id_user) VALUES (?,?,?)",
+				registerModel.getLogin(), registerModel.getPassword(), userID);
 	}
 
-	
-	public int checkCompanyNipNumberUniqueValues(String nipNumber)
-			throws DataAccessException {
-		Object[] parameter = {nipNumber};
+	public int checkUniqueEmailUser(String emailUser) {
+		Object[] parameter = { emailUser };
 		return jdbcTemplate.queryForObject(
-				"SELECT COUNT(*) FROM companies WHERE nip_number=?",
-				parameter, new RowMapper<Integer>() {
+				"SELECT COUNT(*) FROM users WHERE email=?", parameter,
+				new RowMapper<Integer>() {
 
 					public Integer mapRow(ResultSet rs, int rowNumber)
 							throws SQLException {
@@ -88,12 +76,11 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 				});
 	}
 
-	public int checkCompanyEmailUniqueValues(String email)
-			throws DataAccessException {
-		Object[] parameter = {email};
+	public int checkUniqueLogin(String login) throws DataAccessException {
+		Object[] parameter = { login };
 		return jdbcTemplate.queryForObject(
-				"SELECT COUNT(*) FROM companies WHERE email=?",
-				parameter, new RowMapper<Integer>() {
+				"SELECT COUNT(*) FROM logins WHERE login=?", parameter,
+				new RowMapper<Integer>() {
 
 					public Integer mapRow(ResultSet rs, int rowNumber)
 							throws SQLException {
@@ -102,12 +89,12 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 				});
 	}
 
-	public int checkCompanyPhoneNumberUniqueValues(String phoneNumber)
+	public int checkUniqueEmailCompany(String emailCompany)
 			throws DataAccessException {
-		Object[] parameter = {phoneNumber};
+		Object[] parameter = { emailCompany };
 		return jdbcTemplate.queryForObject(
-				"SELECT COUNT(*) FROM companies WHERE phone_number=?",
-				parameter, new RowMapper<Integer>() {
+				"SELECT COUNT(*) FROM companies WHERE email=?", parameter,
+				new RowMapper<Integer>() {
 
 					public Integer mapRow(ResultSet rs, int rowNumber)
 							throws SQLException {
@@ -116,12 +103,11 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 				});
 	}
 
-	public int checkUserLoginUniqueValues(String login)
-			throws DataAccessException {
-		Object[] parameter = {login};
+	public int checkUniqueNip(String nip) throws DataAccessException {
+		Object[] parameter = { nip };
 		return jdbcTemplate.queryForObject(
-				"SELECT COUNT(*) FROM users WHERE login=?",
-				parameter, new RowMapper<Integer>() {
+				"SELECT COUNT(*) FROM companies WHERE nip_number=?", parameter,
+				new RowMapper<Integer>() {
 
 					public Integer mapRow(ResultSet rs, int rowNumber)
 							throws SQLException {
@@ -130,12 +116,11 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 				});
 	}
 
-	public int checkUserPeselUniqueValues(String pesel)
-			throws DataAccessException {
-		Object[] parameter = {pesel};
+	public int getCompanyID(String email) throws DataAccessException {
+		Object[] parameter = { email };
 		return jdbcTemplate.queryForObject(
-				"SELECT COUNT(*) FROM users WHERE pesel_number=?",
-				parameter, new RowMapper<Integer>() {
+				"SELECT id FROM companies WHERE email=?", parameter,
+				new RowMapper<Integer>() {
 
 					public Integer mapRow(ResultSet rs, int rowNumber)
 							throws SQLException {
@@ -144,26 +129,11 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 				});
 	}
 
-	public int checkUserEmailUniqueValues(String email)
-			throws DataAccessException {
-		Object[] parameter = {email};
+	public int getUserID(String email) throws DataAccessException {
+		Object[] parameter = { email };
 		return jdbcTemplate.queryForObject(
-				"SELECT COUNT(*) FROM users WHERE email=?",
-				parameter, new RowMapper<Integer>() {
-
-					public Integer mapRow(ResultSet rs, int rowNumber)
-							throws SQLException {
-						return new Integer(rs.getInt(1));
-					}
-				});
-	}
-
-	public int checkUserPhoneNumberUniqueValues(String phoneNumber)
-			throws DataAccessException {
-		Object[] parameter = {phoneNumber};
-		return jdbcTemplate.queryForObject(
-				"SELECT COUNT(*) FROM users WHERE phone_number=?",
-				parameter, new RowMapper<Integer>() {
+				"SELECT id FROM users WHERE email=?", parameter,
+				new RowMapper<Integer>() {
 
 					public Integer mapRow(ResultSet rs, int rowNumber)
 							throws SQLException {
