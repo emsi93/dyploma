@@ -2,6 +2,7 @@ package dyploma.auction.system.carriage.goods.mvc.shipper.dao.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -16,7 +17,10 @@ import org.springframework.stereotype.Service;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 import dyploma.auction.system.carriage.goods.mvc.shipper.dao.ShipperDAOInterface;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.EmployeeModel;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.ProfileModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.RegisterModel;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.UserModel;
 
 @Service("ShipperDAO")
 @Scope("singleton")
@@ -140,6 +144,61 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 						return new Integer(rs.getInt(1));
 					}
 				});
+	}
+
+	public void registerUser(UserModel userModel, int companyID)
+			throws DataAccessException {
+		jdbcTemplate
+				.update("INSERT INTO users (name,surname, phone_number,email, id_company) VALUES (?,?,?,?,?)",
+						userModel.getName(), userModel.getSurname(),
+						userModel.getPhoneNumberUser(),
+						userModel.getEmailUser(), companyID);
+		int userID = getUserID(userModel.getEmailUser());
+		jdbcTemplate.update(
+				"INSERT INTO logins(login,password,id_user) VALUES (?,?,?)",
+				userModel.getLogin(), userModel.getPassword(), userID);
+	}
+
+	public List<EmployeeModel> getEmployeesList(int companyID)
+			throws DataAccessException {
+		return jdbcTemplate
+				.query("SELECT name,surname,phone_number,email FROM users WHERE id_company=?",
+						new RowMapper<EmployeeModel>() {
+
+							public EmployeeModel mapRow(ResultSet rs,
+									int rowNumber) throws SQLException {
+								return new EmployeeModel(rs.getString(1), rs
+										.getString(2), rs.getString(3), rs
+										.getString(4));
+							}
+						}, new Object[] { companyID });
+	}
+
+	public ProfileModel getProfileUser(int userID) throws DataAccessException {
+		return jdbcTemplate
+				.queryForObject(
+						"select u.name,u.surname,u.phone_number,u.email, l.login, l.password  FROM users u INNER JOIN logins l on u.id = l.id_user where u.id = ?",
+						new RowMapper<ProfileModel>() {
+							public ProfileModel mapRow(ResultSet rs,
+									int rowNumber) throws SQLException {
+								return new ProfileModel(rs.getString(1), rs
+										.getString(2), rs.getString(3), rs
+										.getString(4), rs.getString(5), rs
+										.getString(6), "S");
+							}
+						}, new Object[] { userID });
+	}
+
+	public void editProfile(ProfileModel profileForm, int userID)
+			throws DataAccessException {
+		jdbcTemplate
+				.update("UPDATE users SET name=?,surname=?,phone_number=?,email=? WHERE id = ?",
+						profileForm.getName(), profileForm.getSurname(),
+						profileForm.getPhoneNumber(), profileForm.getEmail(),
+						userID);
+		jdbcTemplate.update(
+				"UPDATE logins SET login=?,password=? WHERE id_user = ?",
+				profileForm.getLogin(), profileForm.getPassword(), userID);
 	}
 
 }
