@@ -10,8 +10,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Serwis aukcyjny - menu</title>
-<link
-	href="/auction-system/static/menu/css/bootstrap.min.css"
+<link href="/auction-system/static/menu/css/bootstrap.min.css"
 	rel="stylesheet">
 
 <!-- Custom CSS -->
@@ -19,16 +18,14 @@
 	rel="stylesheet">
 
 <!-- Morris Charts CSS -->
-<link
-	href="/auction-system/static/menu/css/plugins/morris.css"
+<link href="/auction-system/static/menu/css/plugins/morris.css"
 	rel="stylesheet">
 
 <!-- Custom Fonts -->
 <link
 	href="/auction-system/static/menu/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
-<link href="/auction-system/static/css/errors.css"
-	rel="stylesheet">
+<link href="/auction-system/static/css/errors.css" rel="stylesheet">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -40,8 +37,7 @@
 <script src="/auction-system/static/menu/js/jquery.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
-<script
-	src="/auction-system/static/menu/js/bootstrap.min.js"></script>
+<script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
 
 <!-- Morris Charts JavaScript -->
 <script
@@ -91,17 +87,19 @@
 			<ul class="nav navbar-nav side-nav">
 				<li><a href="javascript:;" class="submit" id="szukajTowaru"><i
 						class="fa fa-search"></i>Szukaj towaru</a></li>
-				<li><a href="javascript:;" class="submit" id="listaUżytkowników"><i
-						class="fa fa-list-alt"></i>Lista użytkowników</a></li>
+				<li><a href="javascript:;" class="submit"
+					id="listaUżytkowników"><i class="fa fa-list-alt"></i>Lista
+						użytkowników</a></li>
 				<li><a href="javascript:;" class="submit" id="dodajPracownika"><i
 						class="fa fa-plus-circle"></i>Nowy pracownik</a></li>
 				<li><a href="javascript:;" class="submit" id="twojaFirma"><i
 						class="fa fa-pencil-square-o"></i>Twoja firma</a></li>
 				<li><a href="javascript:;" type="submit" id="twojProfil"><i
 						class="glyphicon glyphicon-user"></i> Twój profil</a></li>
-				<li><a href="javascript:;" class="submit" id="historiaTransakcji"><i
-						class="fa fa-fw fa-history"></i>Historia transakcji</a></li>
-				
+				<li><a href="javascript:;" class="submit"
+					id="historiaTransakcji"><i class="fa fa-fw fa-history"></i>Historia
+						transakcji</a></li>
+
 			</ul>
 		</div>
 		<!-- /.navbar-collapse --> </nav>
@@ -112,17 +110,46 @@
 				<div class="row">
 					<div class="col-lg-6">
 						<center>
-							<div style="display: block" id="firstView">${wiadomosc}</div>
 							<div style="display: none" id="viewSzukajTowaru">siema1</div>
-							<div style="display: none" id="viewListaUżytkowników">siema2</div>
-							<div style="display: none" id="viewDodajPracownika">siema3</div>
+							<div style="display: none" id="viewListaUżytkowników">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>LP.</th>
+											<th>Imię</th>
+											<th>Nazwisko</th>
+											<th>Numer telefonu</th>
+											<th>Email</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach items="${employeesList}" var="employee"
+											varStatus="loop">
+											<tr>
+												<td>${loop.count}</td>
+												<td>${employee.name }</td>
+												<td>${employee.surname }</td>
+												<td>${employee.phoneNumber }</td>
+												<td>${employee.email }</td>
+											</tr>
+
+										</c:forEach>
+									</tbody>
+								</table>
+
+							</div>
+							<div style="display: none" id="viewDodajPracownika">
+								<iframe src="newUser.jsp" name="targetframe"
+								allowTransparency="true" scrolling="no" frameborder="0" width="300" height="650">
+							</iframe>
+							</div>
 						</center>
-						<div style="display: none" id="viewTwojaFirma">
-							siema4
-						</div>
+						<div style="display: none" id="viewTwojaFirma">siema4</div>
 
 						<div style="display: none" id="viewTwojProfil">
-							siema5
+							<iframe src="editProfile.jsp" name="targetframe"
+								allowTransparency="true" scrolling="no" frameborder="0" width="300" height="650">
+							</iframe>
 						</div>
 						<div style="display: none" id="viewHistoriaTransakcji">siema6</div>
 
@@ -149,60 +176,66 @@ div.content2 {
 }
 </style>
 <script>
-	$("#szukajTowaru").click(function() {
-		document.getElementById("viewSzukajTowaru").style.display = "block";
-		document.getElementById("viewListaUżytkowników").style.display = "none";
-		document.getElementById("viewDodajPracownika").style.display = "none";
-		document.getElementById("viewTwojaFirma").style.display = "none";
-		document.getElementById("viewTwojProfil").style.display = "none";
-		document.getElementById("viewHistoriaTransakcji").style.display = "none";
-
-	});
-	$("#listaUżytkowników").click(function() {
-		document.getElementById("viewSzukajTowaru").style.display = "none";
-		document.getElementById("viewListaUżytkowników").style.display = "block";
-		document.getElementById("viewDodajPracownika").style.display = "none";
-		document.getElementById("viewTwojaFirma").style.display = "none";
-		document.getElementById("viewTwojProfil").style.display = "none";
-		document.getElementById("viewHistoriaTransakcji").style.display = "none";
-
-	});
-	$("#dodajPracownika").click(function() {
-		document.getElementById("viewSzukajTowaru").style.display = "none";
-		document.getElementById("viewListaUżytkowników").style.display = "none";
-		document.getElementById("viewDodajPracownika").style.display = "block";
-		document.getElementById("viewTwojaFirma").style.display = "none";
-		document.getElementById("viewTwojProfil").style.display = "none";
-		document.getElementById("viewHistoriaTransakcji").style.display = "none";
-
-	});
-	$("#twojaFirma").click(function() {
-		document.getElementById("viewSzukajTowaru").style.display = "none";
-		document.getElementById("viewListaUżytkowników").style.display = "none";
-		document.getElementById("viewDodajPracownika").style.display = "none";
-		document.getElementById("viewTwojaFirma").style.display = "block";
-		document.getElementById("viewTwojProfil").style.display = "none";
-		document.getElementById("viewHistoriaTransakcji").style.display = "none";
-
-	});
-	$("#twojProfil").click(function() {
-		document.getElementById("viewSzukajTowaru").style.display = "none";
-		document.getElementById("viewListaUżytkowników").style.display = "none";
-		document.getElementById("viewDodajPracownika").style.display = "none";
-		document.getElementById("viewTwojaFirma").style.display = "none";
-		document.getElementById("viewTwojProfil").style.display = "block";
-		document.getElementById("viewHistoriaTransakcji").style.display = "none";
-
-	});
-	$("#historiaTransakcji").click(function() {
-		document.getElementById("viewSzukajTowaru").style.display = "none";
-		document.getElementById("viewListaUżytkowników").style.display = "none";
-		document.getElementById("viewDodajPracownika").style.display = "none";
-		document.getElementById("viewTwojaFirma").style.display = "none";
-		document.getElementById("viewTwojProfil").style.display = "none";
-		document.getElementById("viewHistoriaTransakcji").style.display = "block";
-
-	});
+	$("#szukajTowaru")
+			.click(
+					function() {
+						document.getElementById("viewSzukajTowaru").style.display = "block";
+						document.getElementById("viewListaUżytkowników").style.display = "none";
+						document.getElementById("viewDodajPracownika").style.display = "none";
+						document.getElementById("viewTwojaFirma").style.display = "none";
+						document.getElementById("viewTwojProfil").style.display = "none";
+						document.getElementById("viewHistoriaTransakcji").style.display = "none";
+					});
+	$("#listaUżytkowników")
+			.click(
+					function() {
+						document.getElementById("viewSzukajTowaru").style.display = "none";
+						document.getElementById("viewListaUżytkowników").style.display = "block";
+						document.getElementById("viewDodajPracownika").style.display = "none";
+						document.getElementById("viewTwojaFirma").style.display = "none";
+						document.getElementById("viewTwojProfil").style.display = "none";
+						document.getElementById("viewHistoriaTransakcji").style.display = "none";
+					});
+	$("#dodajPracownika")
+			.click(
+					function() {
+						document.getElementById("viewSzukajTowaru").style.display = "none";
+						document.getElementById("viewListaUżytkowników").style.display = "none";
+						document.getElementById("viewDodajPracownika").style.display = "block";
+						document.getElementById("viewTwojaFirma").style.display = "none";
+						document.getElementById("viewTwojProfil").style.display = "none";
+						document.getElementById("viewHistoriaTransakcji").style.display = "none";
+					});
+	$("#twojaFirma")
+			.click(
+					function() {
+						document.getElementById("viewSzukajTowaru").style.display = "none";
+						document.getElementById("viewListaUżytkowników").style.display = "none";
+						document.getElementById("viewDodajPracownika").style.display = "none";
+						document.getElementById("viewTwojaFirma").style.display = "block";
+						document.getElementById("viewTwojProfil").style.display = "none";
+						document.getElementById("viewHistoriaTransakcji").style.display = "none";
+					});
+	$("#twojProfil")
+			.click(
+					function() {
+						document.getElementById("viewSzukajTowaru").style.display = "none";
+						document.getElementById("viewListaUżytkowników").style.display = "none";
+						document.getElementById("viewDodajPracownika").style.display = "none";
+						document.getElementById("viewTwojaFirma").style.display = "none";
+						document.getElementById("viewTwojProfil").style.display = "block";
+						document.getElementById("viewHistoriaTransakcji").style.display = "none";
+					});
+	$("#historiaTransakcji")
+			.click(
+					function() {
+						document.getElementById("viewSzukajTowaru").style.display = "none";
+						document.getElementById("viewListaUżytkowników").style.display = "none";
+						document.getElementById("viewDodajPracownika").style.display = "none";
+						document.getElementById("viewTwojaFirma").style.display = "none";
+						document.getElementById("viewTwojProfil").style.display = "none";
+						document.getElementById("viewHistoriaTransakcji").style.display = "block";
+					});
 </script>
 
 </html>
