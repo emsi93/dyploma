@@ -15,10 +15,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import dyploma.auction.system.carriage.goods.modules.EuropeCountryList;
 import dyploma.auction.system.carriage.goods.mvc.shipper.dao.ShipperDAOInterface;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.CompanyModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.EmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.ProfileModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.RegisterModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.UserModel;
+import dyploma.auction.system.carriage.goods.mvc.shipper.validator.EditCompanyFormValidator;
 import dyploma.auction.system.carriage.goods.mvc.shipper.validator.EditProfileFormValidator;
 import dyploma.auction.system.carriage.goods.mvc.shipper.validator.RegisterFormValidator;
 import dyploma.auction.system.carriage.goods.mvc.shipper.validator.UserFormValidator;
@@ -28,7 +30,12 @@ public class ShipperController {
 
 	private static final String LOGIN_IS_USED = "Login jest ju¿ u¿yty.";
 	private static final String EMAIL_IS_USED = "Adres email jest ju¿ u¿yty.";
+	private static final String NIP_IS_USED = "Ten NIP jest ju¿ u¿yty.";
+	private static final String NIP_WRONG_SIZE = "NIP jest za d³ugi.";
+	private static final String EMAIL_TOO_LONG = "Adres email jest za d³ugi.";
+	private static final String LOGIN_TOO_LONG = "Login jest za d³ugi.";
 
+	
 	private static int TYPE_OF_COMPANY = 1;
 
 	@Autowired
@@ -58,6 +65,13 @@ public class ShipperController {
 		binder.setValidator(editProfileFormValidator);
 	}
 	
+	@Autowired
+	private EditCompanyFormValidator editCompanyFormValidator;
+	
+	@InitBinder("companyForm")
+	protected void initEditCompanyFormValidator(WebDataBinder binder) {
+		binder.setValidator(editCompanyFormValidator);
+	}
 	
 	@RequestMapping("/register")
 	public ModelAndView register() {
@@ -115,11 +129,17 @@ public class ShipperController {
 	@RequestMapping("/menuAdmin")
 	public ModelAndView menuAdmin() {
 		ModelAndView modelAndView = new ModelAndView("menuAdmin");
+		return modelAndView;
+	}
+	
+	@RequestMapping("/employeesList")
+	public ModelAndView employeesList()
+	{
+		ModelAndView modelAndView = new ModelAndView("employeesList");
 		List<EmployeeModel> employeeList = dao.getEmployeesList(1);
 		modelAndView.addObject("employeesList", employeeList);
 		return modelAndView;
 	}
-	
 	@RequestMapping(value = "/newUser", method = RequestMethod.GET)
 	public ModelAndView newUserGet(UserModel userModelOrNull,
 			Integer messageCodeOrNull) {
@@ -183,7 +203,7 @@ public class ShipperController {
 		return modelAndView;
 	}
 	
-	@RequestMapping(value = "editProfile", method = RequestMethod.POST)
+	@RequestMapping(value = "/editProfile", method = RequestMethod.POST)
 	public ModelAndView editProfileUserPost(
 			@ModelAttribute("profileForm") @Validated ProfileModel profileForm,
 			BindingResult result) {
@@ -192,12 +212,16 @@ public class ShipperController {
 		
 		if(!emailOLD.equals(profileForm.getEmail()))
 		{
+			if(profileForm.getEmail().length()>50)
+				result.reject("email", EMAIL_TOO_LONG);
 			int param1 = dao.checkUniqueEmailUser(profileForm.getEmail());
 			if(param1==1)
 				result.reject("email", EMAIL_IS_USED);
 		}
 		if(!loginOLD.equals(profileForm.getLogin()))
 		{
+			if(profileForm.getLogin().length()>20)
+				result.reject("login",LOGIN_TOO_LONG);
 			int param2 = dao.checkUniqueLogin(profileForm.getLogin());
 			if(param2==1)
 				result.reject("login", LOGIN_IS_USED);
@@ -210,6 +234,64 @@ public class ShipperController {
 		else {
 			dao.editProfile(profileForm,1);
 			return editProfileUserGet(profileForm, 2);
+		}
+	}
+	
+	@RequestMapping(value = "/editCompany", method = RequestMethod.GET)
+	public ModelAndView editCompanyGet(CompanyModel companyModel,
+			Integer messageCodeOrNull) {
+		ModelAndView modelAndView = new ModelAndView("editCompany");
+		companyModel = dao.getCompanyModel(1);
+		
+		if (messageCodeOrNull != null) {
+			switch (messageCodeOrNull) {
+			case 1:
+				modelAndView.addObject("wiadomosc", "le wype³ni³eœ pola");
+				break;
+			case 2:
+				modelAndView.addObject("wiadomosc",
+						"Edycja firmy przebieg³a pomyœlnie");
+				break;
+			default:
+				break;
+			}
+		}
+		modelAndView.addObject("countryList",
+				EuropeCountryList.getEuropeCountryList());
+		modelAndView.addObject("companyForm", companyModel);
+		return modelAndView;
+	}
+	@RequestMapping(value = "/editCompany", method = RequestMethod.POST)
+	public ModelAndView editCompanyPost(
+			@ModelAttribute("companyForm") @Validated CompanyModel companyModel,
+			BindingResult result) {
+		String emailOLD = dao.getCompanyModel(1).getEmail();
+		String nipOLD = dao.getCompanyModel(1).getNipNumber();
+		
+		if(!emailOLD.equals(companyModel.getEmail()))
+		{
+			if(companyModel.getEmail().length()>50)
+				result.reject("email", EMAIL_TOO_LONG);
+			int param1 = dao.checkUniqueEmailUser(companyModel.getEmail());
+			if(param1==1)
+				result.reject("email", EMAIL_IS_USED);
+		}
+		if(!nipOLD.equals(companyModel.getNipNumber()))
+		{
+			if(companyModel.getNipNumber().length()!=10)
+				result.reject("nipNumber", NIP_WRONG_SIZE);
+			int param2 = dao.checkUniqueNip(companyModel.getNipNumber());
+			if(param2==1)
+				result.reject("nipNumber", NIP_IS_USED);
+		}
+		if (result.hasErrors())
+		{
+			return editCompanyGet(companyModel, 1);
+		}
+			
+		else {
+			dao.editCompany(companyModel,1);
+			return editCompanyGet(companyModel, 2);
 		}
 	}
 }

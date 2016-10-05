@@ -107,7 +107,7 @@ public class RegisterFormValidator implements Validator{
 				OBLIGATORY_FIELD_ERROR_MSG);
 		
 		ValidationUtils.rejectIfTooLong(errors, "companyName",
-				registerModel.getName(), 50, COMPANY_NAME_TOO_LONG);
+				registerModel.getCompanyName(), 50, COMPANY_NAME_TOO_LONG);
 		ValidationUtils.rejectIfTooLong(errors, "postcode",
 				registerModel.getPostcode(), 10, POSTCODE_TOO_LONG);
 		ValidationUtils.rejectIfTooLong(errors, "city",
@@ -120,8 +120,8 @@ public class RegisterFormValidator implements Validator{
 				registerModel.getEmail(), 50, EMAIL_TOO_LONG);
 		
 		if (!registerModel.getPhoneNumber().matches("[0-9]+")
-				&& registerModel.getPhoneNumberUser().length() > 0)
-			ValidationUtils.reject(errors, "phoneNumberUser", ERROR_PHONE_NUMBER);
+				&& registerModel.getPhoneNumber().length() > 0)
+			ValidationUtils.reject(errors, "phoneNumber", ERROR_PHONE_NUMBER);
 		if (!registerModel.getNipNumber().matches("[0-9]+")
 				&& registerModel.getNipNumber().length() > 0)
 			ValidationUtils.reject(errors, "nipNumber", ERROR_NIP);
