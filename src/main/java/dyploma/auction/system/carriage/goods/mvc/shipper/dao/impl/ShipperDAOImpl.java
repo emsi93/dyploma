@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 import dyploma.auction.system.carriage.goods.mvc.shipper.dao.ShipperDAOInterface;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.CompanyModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.EmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.ProfileModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.RegisterModel;
@@ -177,7 +178,7 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 	public ProfileModel getProfileUser(int userID) throws DataAccessException {
 		return jdbcTemplate
 				.queryForObject(
-						"select u.name,u.surname,u.phone_number,u.email, l.login, l.password  FROM users u INNER JOIN logins l on u.id = l.id_user where u.id = ?",
+						"SELECT u.name,u.surname,u.phone_number,u.email, l.login, l.password  FROM users u INNER JOIN logins l on u.id = l.id_user WHERE u.id = ?",
 						new RowMapper<ProfileModel>() {
 							public ProfileModel mapRow(ResultSet rs,
 									int rowNumber) throws SQLException {
@@ -199,6 +200,39 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 		jdbcTemplate.update(
 				"UPDATE logins SET login=?,password=? WHERE id_user = ?",
 				profileForm.getLogin(), profileForm.getPassword(), userID);
+	}
+
+	public CompanyModel getCompanyModel(int userID) throws DataAccessException {
+		return jdbcTemplate
+				.queryForObject(
+						"SELECT c.id, c.company_name, c.country, c.postcode, c.city, c.street, c.flat_number, c.nip_number, c.phone_number, c.website, c.email, c.description FROM companies c INNER JOIN users u on c.id = u.id_company WHERE u.id = ?",
+						new RowMapper<CompanyModel>() {
+							public CompanyModel mapRow(ResultSet rs,
+									int rowNumber) throws SQLException {
+								return new CompanyModel(rs.getInt(1), rs
+										.getString(2), rs.getString(3), rs
+										.getString(4), rs.getString(5), rs
+										.getString(6), rs.getString(7), rs
+										.getString(8), rs.getString(9), rs
+										.getString(10), rs.getString(11), rs
+										.getString(12));
+							}
+						}, new Object[] { userID });
+	}
+
+	public void editCompany(CompanyModel companyModel, int userID)
+			throws DataAccessException {
+		jdbcTemplate
+				.update("UPDATE  companies SET company_name=?, country=?, postcode=?, city=?, street=?, flat_number=?, nip_number=?, phone_number=?, website=?, email=?, description=? WHERE id = ?",
+						companyModel.getCompanyName(),
+						companyModel.getCountry(), companyModel.getPostcode(),
+						companyModel.getCity(), companyModel.getStreet(),
+						companyModel.getFlatNumber(),
+						companyModel.getNipNumber(),
+						companyModel.getPhoneNumber(),
+						companyModel.getWebsite(), companyModel.getEmail(),
+						companyModel.getDescription(), companyModel.getId());
+
 	}
 
 }

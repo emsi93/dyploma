@@ -1,13 +1,11 @@
 package dyploma.auction.system.carriage.goods.mvc.shipper.validator;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import dyploma.auction.system.carriage.goods.modules.ValidationUtils;
-import dyploma.auction.system.carriage.goods.mvc.shipper.dao.ShipperDAOInterface;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.ProfileModel;
 @Component("editProfileFormValidator")
 @Scope("singleton")
@@ -24,8 +22,6 @@ public class EditProfileFormValidator implements Validator{
 	private static final String ERROR_PHONE_NUMBER = "Numer telefonu mo¿e zawieraæ jedynie cyfry.";
 	private static final String PHONE_NUMBER_TOO_LONG = "Numer telefonu jest za d³ugi.";
 	
-	@Autowired
-	private ShipperDAOInterface dao;
 	
 	public boolean supports(Class<?> clazz) {
 		// TODO Auto-generated method stub

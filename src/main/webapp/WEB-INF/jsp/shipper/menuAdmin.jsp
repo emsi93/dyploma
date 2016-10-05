@@ -112,31 +112,9 @@
 						<center>
 							<div style="display: none" id="viewSzukajTowaru">siema1</div>
 							<div style="display: none" id="viewListaUżytkowników">
-								<table class="table table-striped">
-									<thead>
-										<tr>
-											<th>LP.</th>
-											<th>Imię</th>
-											<th>Nazwisko</th>
-											<th>Numer telefonu</th>
-											<th>Email</th>
-										</tr>
-									</thead>
-									<tbody>
-										<c:forEach items="${employeesList}" var="employee"
-											varStatus="loop">
-											<tr>
-												<td>${loop.count}</td>
-												<td>${employee.name }</td>
-												<td>${employee.surname }</td>
-												<td>${employee.phoneNumber }</td>
-												<td>${employee.email }</td>
-											</tr>
-
-										</c:forEach>
-									</tbody>
-								</table>
-
+								<iframe src="employeesList.jsp" name="targetframe"
+								allowTransparency="true" scrolling="no" frameborder="0" width="800" height="680">
+							</iframe>
 							</div>
 							<div style="display: none" id="viewDodajPracownika">
 								<iframe src="newUser.jsp" name="targetframe"
@@ -144,7 +122,12 @@
 							</iframe>
 							</div>
 						</center>
-						<div style="display: none" id="viewTwojaFirma">siema4</div>
+						<div style="display: none" id="viewTwojaFirma">
+							<iframe src="editCompany.jsp" name="targetframe"
+								allowTransparency="true" scrolling="no" frameborder="0" width="300" height="680">
+							</iframe>
+						
+						</div>
 
 						<div style="display: none" id="viewTwojProfil">
 							<iframe src="editProfile.jsp" name="targetframe"
