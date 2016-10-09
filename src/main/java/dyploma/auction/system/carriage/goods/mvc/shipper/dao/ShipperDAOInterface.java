@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.CompanyModel;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.DetailsEmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.EmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.ProfileModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.RegisterModel;
@@ -40,4 +41,6 @@ public interface ShipperDAOInterface {
 	public CompanyModel getCompanyModel(int userID) throws DataAccessException;
 
 	public void editCompany(CompanyModel companyModel, int userID)throws DataAccessException;
+
+	public DetailsEmployeeModel getDetailEmployee(int id)throws DataAccessException;
 }

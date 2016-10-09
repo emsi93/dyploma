@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Serwis aukcyjny - lista pracowników</title>
+<title>Serwis aukcyjny - szczegóły pracownika</title>
 <link href="/auction-system/static/menu/css/bootstrap.min.css"
 	rel="stylesheet">
 
@@ -34,37 +34,20 @@
 <script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<div class="container">
-		<div class="row">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>LP.</th>
-						<th>Imię</th>
-						<th>Nazwisko</th>
-						<th>Numer telefonu</th>
-						<th>Email</th>
-						<th>Edycja</th>
-						<th>Szczegóły</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach items="${employeesList}" var="employee" varStatus="loop">
-						<tr>
-							<td>${loop.count}</td>
-							<td>${employee.name }</td>
-							<td>${employee.surname }</td>
-							<td>${employee.phoneNumber }</td>
-							<td>${employee.email }</td>
-							<td><a class="btn btn-primary" >Edytuj</a></td>
-							<td><a class="btn btn-primary" href="/auction-system/shipper/detailsEmployee/${employee.id }">Szczegóły</a></td>
-						</tr>
-
-					</c:forEach>
-				</tbody>
-			</table>
-			
-		</div>
+<div class="container">
+	<div class="row">
+	
+	<h4>ID:${detailsEmployeeModel.id }</h4>
+	<h4>Imię:${detailsEmployeeModel.name }</h4>
+	<h4>Nazwisko:${detailsEmployeeModel.surname }</h4>
+	<h4>Telefon:${detailsEmployeeModel.phoneNumber }</h4>
+	<h4>Email:${detailsEmployeeModel.email }</h4>
+	<h4>Login:${detailsEmployeeModel.login }</h4>
+	<h4>Aktywność:${detailsEmployeeModel.activity }</h4>
+	<h4>Rola:${detailsEmployeeModel.role }</h4>
+	<a class="btn btn-primary" href="/auction-system/shipper/employeesList">Edycja</a>
+	<a class="btn btn-primary" href="/auction-system/shipper/employeesList">Wstecz</a>
 	</div>
+</div>
 </body>
 </html>
