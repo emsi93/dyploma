@@ -18,6 +18,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 import dyploma.auction.system.carriage.goods.mvc.shipper.dao.ShipperDAOInterface;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.CompanyModel;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.DetailsEmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.EmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.ProfileModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.RegisterModel;
@@ -63,9 +64,10 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 						registerModel.getPhoneNumberUser(),
 						registerModel.getEmailUser(), companyID);
 		int userID = getUserID(registerModel.getEmailUser());
-		jdbcTemplate.update(
-				"INSERT INTO logins(login,password,id_user) VALUES (?,?,?)",
-				registerModel.getLogin(), registerModel.getPassword(), userID);
+		jdbcTemplate
+				.update("INSERT INTO logins(login,password,id_user, role) VALUES (?,?,?,?)",
+						registerModel.getLogin(), registerModel.getPassword(),
+						userID, "ROLE_ADMIN_COMPANY");
 	}
 
 	public int checkUniqueEmailUser(String emailUser) {
@@ -155,22 +157,23 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 						userModel.getPhoneNumberUser(),
 						userModel.getEmailUser(), companyID);
 		int userID = getUserID(userModel.getEmailUser());
-		jdbcTemplate.update(
-				"INSERT INTO logins(login,password,id_user) VALUES (?,?,?)",
-				userModel.getLogin(), userModel.getPassword(), userID);
+		jdbcTemplate
+				.update("INSERT INTO logins(login,password,id_user,role) VALUES (?,?,?,?)",
+						userModel.getLogin(), userModel.getPassword(), userID,
+						"ROLE_USER");
 	}
 
 	public List<EmployeeModel> getEmployeesList(int companyID)
 			throws DataAccessException {
 		return jdbcTemplate
-				.query("SELECT name,surname,phone_number,email FROM users WHERE id_company=?",
+				.query("SELECT id,name,surname,phone_number,email FROM users WHERE id_company=?",
 						new RowMapper<EmployeeModel>() {
 
 							public EmployeeModel mapRow(ResultSet rs,
 									int rowNumber) throws SQLException {
-								return new EmployeeModel(rs.getString(1), rs
+								return new EmployeeModel(rs.getInt(1), rs
 										.getString(2), rs.getString(3), rs
-										.getString(4));
+										.getString(4), rs.getString(5));
 							}
 						}, new Object[] { companyID });
 	}
@@ -233,6 +236,23 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 						companyModel.getWebsite(), companyModel.getEmail(),
 						companyModel.getDescription(), companyModel.getId());
 
+	}
+
+	public DetailsEmployeeModel getDetailEmployee(int id)
+			throws DataAccessException {
+		return jdbcTemplate
+				.queryForObject(
+						"SELECT u.id, u.name,u.surname,u.phone_number,u.email, l.login, l.activity, l.role  FROM users u INNER JOIN logins l on u.id = l.id_user WHERE u.id = ?",
+						new RowMapper<DetailsEmployeeModel>() {
+							public DetailsEmployeeModel mapRow(ResultSet rs,
+									int rowNumber) throws SQLException {
+								return new DetailsEmployeeModel(rs.getInt(1),
+										rs.getString(2), rs.getString(3), rs
+												.getString(4), rs.getString(5),
+										rs.getString(6), rs.getInt(7), rs
+												.getString(8));
+							}
+						}, new Object[] { id });
 	}
 
 }

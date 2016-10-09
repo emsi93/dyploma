@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import dyploma.auction.system.carriage.goods.modules.EuropeCountryList;
 import dyploma.auction.system.carriage.goods.mvc.shipper.dao.ShipperDAOInterface;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.CompanyModel;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.DetailsEmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.EmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.ProfileModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.RegisterModel;
@@ -76,6 +78,15 @@ public class ShipperController {
 	@RequestMapping("/register")
 	public ModelAndView register() {
 		ModelAndView modelAndView = new ModelAndView("register");
+		return modelAndView;
+	}
+	
+	@RequestMapping("/detailsEmployee/{id}")
+	public ModelAndView detailsEmployee(@PathVariable int id)
+	{
+		ModelAndView modelAndView = new ModelAndView("detailsEmployee");
+		DetailsEmployeeModel detailsEmployeeModel = dao.getDetailEmployee(id);
+		modelAndView.addObject("detailsEmployeeModel", detailsEmployeeModel);
 		return modelAndView;
 	}
 

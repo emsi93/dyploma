@@ -2,13 +2,15 @@ package dyploma.auction.system.carriage.goods.mvc.shipper.model;
 
 public class EmployeeModel {
 
+	private int id;
 	private String name;
 	private String surname;
 	private String phoneNumber;
 	private String email;
-	public EmployeeModel(String name, String surname, String phoneNumber,
+	public EmployeeModel(int id, String name, String surname, String phoneNumber,
 			String email) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.phoneNumber = phoneNumber;
@@ -39,5 +41,11 @@ public class EmployeeModel {
 		this.email = email;
 	}
 	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	
 }
