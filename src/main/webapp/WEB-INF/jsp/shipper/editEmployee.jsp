@@ -32,14 +32,81 @@
 
 <!-- Bootstrap Core JavaScript -->
 <script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
+
 </head>
 <body>
-<div class="container">
-	<div class="row">
-	
-	
-	
+	<div class="container">
+		<div class="row">
+			${wiadomosc }
+			<h2>Edycja profilu</h2>
+			<form:form method="post" modelAttribute="employeeForm"
+				action="/auction-system/shipper/editEmployee/${employeeForm.id }"
+				role="form">
+				<div class="form-group">
+					<label class="sr-only">Imie</label>
+					<form:input path="name" type="text" class="form-control"
+						placeholder="*Imię..." value="${employeeForm.name }" />
+					<div class="errors">
+						<form:errors path="name" element="div" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="sr-only">Nazwisko</label>
+					<form:input path="surname" type="text" class="form-control"
+						placeholder="*Nazwisko..." value="${employeeForm.surname }" />
+					<div class="errors">
+						<form:errors path="surname" element="div" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="sr-only">Login</label>
+					<form:input path="login" type="text" class="form-control"
+						placeholder="*Login..." value="${employeeForm.login }" />
+					<div class="errors">
+						<form:errors path="login" element="div" />
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="sr-only">Aktywność</label>
+					<form:select items="${activityList }" path="activity" type="text" class="form-control"
+						placeholder="*Aktywność..." value="${employeeForm.activity }" />
+					<div class="errors">
+						<form:errors path="activity" element="div" />
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="sr-only">Rola</label>
+					<form:select path="role" type="text" class="form-control"
+						placeholder="*Role..." items="${rolesList }" value="${employeeForm.role }" />
+					<div class="errors">
+						<form:errors path="role" element="div" />
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="sr-only">Numer telefonu</label>
+					<form:input path="phoneNumber" type="text" class="form-control"
+						placeholder="*Numer telefonu..."
+						value="${employeeForm.phoneNumber }" />
+					<div class="errors">
+						<form:errors path="phoneNumber" element="div" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="sr-only">Email</label>
+					<form:input path="email" type="email" class="form-control"
+						placeholder="*Email..." value="${employeeForm.email }" />
+					<div class="errors">
+						<form:errors path="email" element="div" />
+					</div>
+				</div>
+				<form:input class="submit btn btn-primary" path="" type="submit"
+					value="Edytuj profil"></form:input>
+			</form:form>
+
+		</div>
 	</div>
-</div>
 </body>
 </html>

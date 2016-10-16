@@ -56,7 +56,7 @@
 							<td>${employee.surname }</td>
 							<td>${employee.phoneNumber }</td>
 							<td>${employee.email }</td>
-							<td><a class="btn btn-primary" >Edytuj</a></td>
+							<td><a class="btn btn-primary" href="/auction-system/shipper/editEmployee/${employee.id }">Edytuj</a></td>
 							<td><a class="btn btn-primary" href="/auction-system/shipper/detailsEmployee/${employee.id }">Szczegóły</a></td>
 						</tr>
 

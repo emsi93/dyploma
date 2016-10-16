@@ -53,7 +53,7 @@
 </head>
 
 <body>
-
+	<c:set var="role" value="${role}" />
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -79,7 +79,8 @@
 				<ul class="dropdown-menu">
 					<li><a href="javascript:;" class="submit" id="twojProfil1"><i
 							class="fa fa-fw fa-user"></i>Edytuj profil</a></li>
-					<li><a href="<c:url value="/j_spring_security_logout" />"><i class="fa fa-fw fa-gear"></i> Wyloguj</a></li>
+					<li><a href="<c:url value="/j_spring_security_logout" />"><i
+							class="fa fa-fw fa-gear"></i> Wyloguj</a></li>
 				</ul></li>
 		</ul>
 		<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
@@ -92,14 +93,18 @@
 						użytkowników</a></li>
 				<li><a href="javascript:;" class="submit" id="dodajPracownika"><i
 						class="fa fa-plus-circle"></i>Nowy pracownik</a></li>
-				<li><a href="javascript:;" class="submit" id="twojaFirma"><i
-						class="fa fa-pencil-square-o"></i>Twoja firma</a></li>
+				<c:choose>
+					<c:when test="${role=='ROLE_ADMIN' }">
+						<li><a href="javascript:;" class="submit" id="twojaFirma"><i
+								class="fa fa-pencil-square-o"></i>Twoja firma</a></li>
+					</c:when>
+				</c:choose>
 				<li><a href="javascript:;" type="submit" id="twojProfil"><i
 						class="glyphicon glyphicon-user"></i> Twój profil</a></li>
 				<li><a href="javascript:;" class="submit"
 					id="historiaTransakcji"><i class="fa fa-fw fa-history"></i>Historia
 						transakcji</a></li>
-				
+
 
 			</ul>
 		</div>
@@ -114,26 +119,26 @@
 							<div style="display: none" id="viewSzukajTowaru">siema1</div>
 							<div style="display: none" id="viewListaUżytkowników">
 								<iframe src="employeesList.jsp" name="targetframe"
-								allowTransparency="true" scrolling="no" frameborder="0" width="800" height="680">
-							</iframe>
+									allowTransparency="true" scrolling="no" frameborder="0"
+									width="800" height="680"> </iframe>
 							</div>
 							<div style="display: none" id="viewDodajPracownika">
 								<iframe src="newUser.jsp" name="targetframe"
-								allowTransparency="true" scrolling="no" frameborder="0" width="300" height="650">
-							</iframe>
+									allowTransparency="true" scrolling="no" frameborder="0"
+									width="300" height="650"> </iframe>
 							</div>
 						</center>
 						<div style="display: none" id="viewTwojaFirma">
 							<iframe src="editCompany.jsp" name="targetframe"
-								allowTransparency="true" scrolling="no" frameborder="0" width="300" height="680">
-							</iframe>
-						
+								allowTransparency="true" scrolling="no" frameborder="0"
+								width="300" height="680"> </iframe>
+
 						</div>
 
 						<div style="display: none" id="viewTwojProfil">
 							<iframe src="editProfile.jsp" name="targetframe"
-								allowTransparency="true" scrolling="no" frameborder="0" width="300" height="650">
-							</iframe>
+								allowTransparency="true" scrolling="no" frameborder="0"
+								width="300" height="650"> </iframe>
 						</div>
 						<div style="display: none" id="viewHistoriaTransakcji">siema6</div>
 
@@ -211,15 +216,15 @@ div.content2 {
 						document.getElementById("viewHistoriaTransakcji").style.display = "none";
 					});
 	$("#twojProfil1")
-	.click(
-			function() {
-				document.getElementById("viewSzukajTowaru").style.display = "none";
-				document.getElementById("viewListaUżytkowników").style.display = "none";
-				document.getElementById("viewDodajPracownika").style.display = "none";
-				document.getElementById("viewTwojaFirma").style.display = "none";
-				document.getElementById("viewTwojProfil").style.display = "block";
-				document.getElementById("viewHistoriaTransakcji").style.display = "none";
-			});
+			.click(
+					function() {
+						document.getElementById("viewSzukajTowaru").style.display = "none";
+						document.getElementById("viewListaUżytkowników").style.display = "none";
+						document.getElementById("viewDodajPracownika").style.display = "none";
+						document.getElementById("viewTwojaFirma").style.display = "none";
+						document.getElementById("viewTwojProfil").style.display = "block";
+						document.getElementById("viewHistoriaTransakcji").style.display = "none";
+					});
 	$("#historiaTransakcji")
 			.click(
 					function() {

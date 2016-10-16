@@ -108,6 +108,14 @@ public class CompanyModel {
 		this.description = description;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "CompanyModel [id=" + id + ", companyName=" + companyName
+				+ ", country=" + country + ", postcode=" + postcode + ", city="
+				+ city + ", street=" + street + ", flatNumber=" + flatNumber
+				+ ", nipNumber=" + nipNumber + ", phoneNumber=" + phoneNumber
+				+ ", website=" + website + ", email=" + email
+				+ ", description=" + description + "]";
+	}
 	
 }
