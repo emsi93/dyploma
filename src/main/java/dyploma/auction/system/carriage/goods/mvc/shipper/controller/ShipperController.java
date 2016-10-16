@@ -3,6 +3,8 @@ package dyploma.auction.system.carriage.goods.mvc.shipper.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -131,15 +133,36 @@ public class ShipperController {
 
 	}
 	
-	@RequestMapping("/login")
+	@RequestMapping(value="/login", method = RequestMethod.GET)
 	public ModelAndView login() {
 		ModelAndView modelAndView = new ModelAndView("login");
 		return modelAndView;
 	}
+	@RequestMapping(value="/logout")
+	public ModelAndView logout() {
+		ModelAndView modelAndView = new ModelAndView("logout");
+		return modelAndView;
+	}
 
+	
 	@RequestMapping("/menuAdmin")
 	public ModelAndView menuAdmin() {
 		ModelAndView modelAndView = new ModelAndView("menuAdmin");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println(auth.getAuthorities());
+	    modelAndView.addObject("username", auth.getName());
+		return modelAndView;
+	}
+	
+	@RequestMapping("/menuUser")
+	public ModelAndView menuUser() {
+		ModelAndView modelAndView = new ModelAndView("menuUser");
+		return modelAndView;
+	}
+	
+	@RequestMapping("/errorLogin")
+	public ModelAndView errorLogin() {
+		ModelAndView modelAndView = new ModelAndView("errorLogin");
 		return modelAndView;
 	}
 	
@@ -185,7 +208,9 @@ public class ShipperController {
 		if (result.hasErrors())
 			return newUserGet(userModel, 1);
 		else {
-			dao.registerUser(userModel, 1); //1 - companyID
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			int companyID = dao.getCompanyIDByLogin(auth.getName());
+			dao.registerUser(userModel, companyID); //1 - companyID
 			return newUserGet(userModel, 2);
 		}
 	}
@@ -194,7 +219,9 @@ public class ShipperController {
 	public ModelAndView editProfileUserGet(ProfileModel profileModelOrNull,
 			Integer messageCodeOrNull) {
 		ModelAndView modelAndView = new ModelAndView("editProfile");
-		profileModelOrNull = dao.getProfileUser(1);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		int userID = dao.getUserIDByLogin(auth.getName());
+		profileModelOrNull = dao.getProfileUser(userID);
 		
 		if (messageCodeOrNull != null) {
 			switch (messageCodeOrNull) {
@@ -218,8 +245,10 @@ public class ShipperController {
 	public ModelAndView editProfileUserPost(
 			@ModelAttribute("profileForm") @Validated ProfileModel profileForm,
 			BindingResult result) {
-		String emailOLD = dao.getProfileUser(1).getEmail();
-		String loginOLD = dao.getProfileUser(1).getLogin();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		int userID = dao.getUserIDByLogin(auth.getName());
+		String emailOLD = dao.getProfileUser(userID).getEmail();
+		String loginOLD = dao.getProfileUser(userID).getLogin();
 		
 		if(!emailOLD.equals(profileForm.getEmail()))
 		{
@@ -243,7 +272,7 @@ public class ShipperController {
 		}
 			
 		else {
-			dao.editProfile(profileForm,1);
+			dao.editProfile(profileForm,userID);
 			return editProfileUserGet(profileForm, 2);
 		}
 	}
@@ -252,7 +281,9 @@ public class ShipperController {
 	public ModelAndView editCompanyGet(CompanyModel companyModel,
 			Integer messageCodeOrNull) {
 		ModelAndView modelAndView = new ModelAndView("editCompany");
-		companyModel = dao.getCompanyModel(1);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		int userID = dao.getUserIDByLogin(auth.getName());
+		companyModel = dao.getCompanyModel(userID);
 		
 		if (messageCodeOrNull != null) {
 			switch (messageCodeOrNull) {
@@ -276,8 +307,10 @@ public class ShipperController {
 	public ModelAndView editCompanyPost(
 			@ModelAttribute("companyForm") @Validated CompanyModel companyModel,
 			BindingResult result) {
-		String emailOLD = dao.getCompanyModel(1).getEmail();
-		String nipOLD = dao.getCompanyModel(1).getNipNumber();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		int userID = dao.getUserIDByLogin(auth.getName());
+		String emailOLD = dao.getCompanyModel(userID).getEmail();
+		String nipOLD = dao.getCompanyModel(userID).getNipNumber();
 		
 		if(!emailOLD.equals(companyModel.getEmail()))
 		{
@@ -301,7 +334,7 @@ public class ShipperController {
 		}
 			
 		else {
-			dao.editCompany(companyModel,1);
+			dao.editCompany(companyModel,userID);
 			return editCompanyGet(companyModel, 2);
 		}
 	}

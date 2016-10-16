@@ -74,12 +74,12 @@
 
 
 			<li class="dropdown"><a href="#" class="dropdown-toggle"
-				data-toggle="dropdown"><i class="fa fa-user"></i> User<b
+				data-toggle="dropdown"><i class="fa fa-user"></i> ${username }<b
 					class="caret"></b></a>
 				<ul class="dropdown-menu">
-					<li><a class="submit" id="twojProfil1"><i
+					<li><a href="javascript:;" class="submit" id="twojProfil1"><i
 							class="fa fa-fw fa-user"></i>Edytuj profil</a></li>
-					<li><a href="#"><i class="fa fa-fw fa-gear"></i> Wyloguj</a></li>
+					<li><a href="<c:url value="/j_spring_security_logout" />"><i class="fa fa-fw fa-gear"></i> Wyloguj</a></li>
 				</ul></li>
 		</ul>
 		<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
@@ -99,6 +99,7 @@
 				<li><a href="javascript:;" class="submit"
 					id="historiaTransakcji"><i class="fa fa-fw fa-history"></i>Historia
 						transakcji</a></li>
+				
 
 			</ul>
 		</div>
@@ -209,6 +210,16 @@ div.content2 {
 						document.getElementById("viewTwojProfil").style.display = "block";
 						document.getElementById("viewHistoriaTransakcji").style.display = "none";
 					});
+	$("#twojProfil1")
+	.click(
+			function() {
+				document.getElementById("viewSzukajTowaru").style.display = "none";
+				document.getElementById("viewListaUżytkowników").style.display = "none";
+				document.getElementById("viewDodajPracownika").style.display = "none";
+				document.getElementById("viewTwojaFirma").style.display = "none";
+				document.getElementById("viewTwojProfil").style.display = "block";
+				document.getElementById("viewHistoriaTransakcji").style.display = "none";
+			});
 	$("#historiaTransakcji")
 			.click(
 					function() {

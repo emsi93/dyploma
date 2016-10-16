@@ -242,7 +242,7 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 			throws DataAccessException {
 		return jdbcTemplate
 				.queryForObject(
-						"SELECT u.id, u.name,u.surname,u.phone_number,u.email, l.login, l.activity, l.role  FROM users u INNER JOIN logins l on u.id = l.id_user WHERE u.id = ?",
+						"SELECT u.id, u.name,u.surname,u.phone_number,u.email, l.login, l.enabled, l.role  FROM users u INNER JOIN logins l on u.id = l.id_user WHERE u.id = ?",
 						new RowMapper<DetailsEmployeeModel>() {
 							public DetailsEmployeeModel mapRow(ResultSet rs,
 									int rowNumber) throws SQLException {
@@ -253,6 +253,32 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 												.getString(8));
 							}
 						}, new Object[] { id });
+	}
+
+	public int getUserIDByLogin(String login) throws DataAccessException {
+		Object[] parameter = { login };
+		return jdbcTemplate.queryForObject(
+				"SELECT u.id FROM users u INNER JOIN logins l ON l.id_user = u.id WHERE l.login = ?", parameter,
+				new RowMapper<Integer>() {
+
+					public Integer mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new Integer(rs.getInt(1));
+					}
+				});
+	}
+
+	public int getCompanyIDByLogin(String login) throws DataAccessException {
+		Object[] parameter = { login };
+		return jdbcTemplate.queryForObject(
+				"SELECT u.id_company FROM users u INNER JOIN logins l ON l.id_user = u.id WHERE l.login=", parameter,
+				new RowMapper<Integer>() {
+
+					public Integer mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new Integer(rs.getInt(1));
+					}
+				});
 	}
 
 }
