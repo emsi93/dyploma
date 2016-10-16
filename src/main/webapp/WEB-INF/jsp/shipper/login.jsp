@@ -1,11 +1,7 @@
+<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ page session="false" isELIgnored="false"
-	contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -17,27 +13,49 @@
 <script src="/auction-system/static/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<div class="controller">
-		<div class="row">
-			<div class="col-lg-4"></div>
-			<div class="col-lg-4">
-		
-				 <div class="form-group">
-						<label class="sr-only">Login</label>
-						<input  type="text" class="form-control"
-							placeholder="*Login..." />
-						
-					</div>
-					 <div class="form-group">
-						<label class="sr-only">Hasło</label>
-					<input  type="password" class="form-control"
-							placeholder="*Hasło..." />
-					</div>
-					<input class="submit btn btn-primary"  type="submit"
-					value="Zaloguj">
-		
+	<section>
+		<div class="jumbotron">
+			<div class="container">
+				<h1>Produkty</h1>
+				<p>Dodaj produkty</p>
 			</div>
-			<div class="col-lg-4"></div>
+		</div>
+	</section>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4 col-md-offset-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Zaloguj się</h3>
+					</div>
+					<div class="panel-body">
+						<c:if test="${not empty error}">
+							<div class="alert alert-danger">
+								<spring:message
+									code="AbstractUserDetailsAuthenticationProvider.badCredentials" />
+								<br />
+							</div>
+						</c:if>
+						<form action="<c:url value="/j_spring_security_check"></c:url>"
+							method="post">
+							<fieldset>
+								<div class="form-group">
+									<input class="form-control" placeholder="Nazwa użytkownika"
+										name='j_username' type="text">
+								</div>
+								<div class="form-group">
+									<input class="form-control" placeholder="Hasło"
+										name='j_password' type="password" value="">
+								</div>
+								<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" /> <input
+									class="btn btn-lg btn-success btn-block" type="submit"
+									value="Zaloguj się">
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </body>

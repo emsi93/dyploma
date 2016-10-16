@@ -28,9 +28,13 @@ public interface ShipperDAOInterface {
 
 	public int getCompanyID(String email) throws DataAccessException;
 
+	public int getCompanyIDByLogin(String login) throws DataAccessException;
+	
 	public int getUserID(String email) throws DataAccessException;
+	
+	public int getUserIDByLogin(String login) throws DataAccessException;
 
-	public void registerUser(UserModel userModel, int tYPE_OF_COMPANY) throws DataAccessException;
+	public void registerUser(UserModel userModel, int companyID) throws DataAccessException;
 
 	public List<EmployeeModel> getEmployeesList(int companyID)throws DataAccessException;
 	
