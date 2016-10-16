@@ -152,7 +152,7 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 	public void registerUser(UserModel userModel, int companyID)
 			throws DataAccessException {
 		jdbcTemplate
-				.update("INSERT INTO users (name,surname, phone_number,email, id_company) VALUES (?,?,?,?,?)",
+				.update("INSERT INTO users (name,surname,phone_number,email,id_company) VALUES (?,?,?,?,?)",
 						userModel.getName(), userModel.getSurname(),
 						userModel.getPhoneNumberUser(),
 						userModel.getEmailUser(), companyID);
@@ -223,7 +223,7 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 						}, new Object[] { userID });
 	}
 
-	public void editCompany(CompanyModel companyModel, int userID)
+	public void editCompany(CompanyModel companyModel, int companyID)
 			throws DataAccessException {
 		jdbcTemplate
 				.update("UPDATE  companies SET company_name=?, country=?, postcode=?, city=?, street=?, flat_number=?, nip_number=?, phone_number=?, website=?, email=?, description=? WHERE id = ?",
@@ -234,7 +234,7 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 						companyModel.getNipNumber(),
 						companyModel.getPhoneNumber(),
 						companyModel.getWebsite(), companyModel.getEmail(),
-						companyModel.getDescription(), companyModel.getId());
+						companyModel.getDescription(), companyID);
 
 	}
 
@@ -257,8 +257,22 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 
 	public int getUserIDByLogin(String login) throws DataAccessException {
 		Object[] parameter = { login };
+		return jdbcTemplate
+				.queryForObject(
+						"SELECT u.id FROM users u INNER JOIN logins l ON l.id_user = u.id WHERE l.login = ?",
+						parameter, new RowMapper<Integer>() {
+
+							public Integer mapRow(ResultSet rs, int rowNumber)
+									throws SQLException {
+								return new Integer(rs.getInt(1));
+							}
+						});
+	}
+
+	public int getCompanyID(int userID) throws DataAccessException {
+		Object[] parameter = { userID };
 		return jdbcTemplate.queryForObject(
-				"SELECT u.id FROM users u INNER JOIN logins l ON l.id_user = u.id WHERE l.login = ?", parameter,
+				"SELECT id_company FROM users WHERE id=?", parameter,
 				new RowMapper<Integer>() {
 
 					public Integer mapRow(ResultSet rs, int rowNumber)
@@ -268,17 +282,23 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 				});
 	}
 
-	public int getCompanyIDByLogin(String login) throws DataAccessException {
-		Object[] parameter = { login };
-		return jdbcTemplate.queryForObject(
-				"SELECT u.id_company FROM users u INNER JOIN logins l ON l.id_user = u.id WHERE l.login=", parameter,
-				new RowMapper<Integer>() {
-
-					public Integer mapRow(ResultSet rs, int rowNumber)
-							throws SQLException {
-						return new Integer(rs.getInt(1));
-					}
-				});
+	public void editEmployee(DetailsEmployeeModel detailsEmployeeModel, int id)
+			throws DataAccessException {
+		jdbcTemplate
+		.update("UPDATE users SET name=?,surname=?,phone_number=?,email=? WHERE id = ?",
+				detailsEmployeeModel.getName(), detailsEmployeeModel.getSurname(),
+				detailsEmployeeModel.getPhoneNumber(), detailsEmployeeModel.getEmail(),
+				id);
+		int enabled;
+		if(detailsEmployeeModel.getActivity().equals("Tak"))
+			enabled=1;
+		else
+			enabled=0;
+		jdbcTemplate.update(
+				"UPDATE logins SET login=?,enabled=?,role=? WHERE id_user = ?",
+				detailsEmployeeModel.getLogin(), enabled, detailsEmployeeModel.getRole(), id);
 	}
+
+	
 
 }

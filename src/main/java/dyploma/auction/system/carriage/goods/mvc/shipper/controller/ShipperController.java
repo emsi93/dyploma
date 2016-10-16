@@ -1,5 +1,6 @@
 package dyploma.auction.system.carriage.goods.mvc.shipper.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import dyploma.auction.system.carriage.goods.mvc.shipper.model.ProfileModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.RegisterModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.UserModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.validator.EditCompanyFormValidator;
+import dyploma.auction.system.carriage.goods.mvc.shipper.validator.EditEmployeeFormValidator;
 import dyploma.auction.system.carriage.goods.mvc.shipper.validator.EditProfileFormValidator;
 import dyploma.auction.system.carriage.goods.mvc.shipper.validator.RegisterFormValidator;
 import dyploma.auction.system.carriage.goods.mvc.shipper.validator.UserFormValidator;
@@ -77,6 +79,15 @@ public class ShipperController {
 		binder.setValidator(editCompanyFormValidator);
 	}
 	
+	@Autowired
+	private EditEmployeeFormValidator editEmployeeFromValidator;
+	
+	@InitBinder("employeeForm")
+	protected void initEditEmployeeFormValidator(WebDataBinder binder) {
+		binder.setValidator(editEmployeeFromValidator);
+	}
+	
+	
 	@RequestMapping("/register")
 	public ModelAndView register() {
 		ModelAndView modelAndView = new ModelAndView("register");
@@ -92,6 +103,70 @@ public class ShipperController {
 		return modelAndView;
 	}
 
+	@RequestMapping(value = "/editEmployee/{id}", method = RequestMethod.GET)
+	public ModelAndView editEmployeeGet(@PathVariable int id, DetailsEmployeeModel detailsEmployeeModelOrNull, Integer messageCodeOrNull)
+	{
+		ModelAndView modelAndView = new ModelAndView("editEmployee");
+		detailsEmployeeModelOrNull = dao.getDetailEmployee(id);
+		if (messageCodeOrNull != null) {
+			switch (messageCodeOrNull) {
+			case 1:
+				modelAndView.addObject("wiadomosc", "èle wype≥ni≥eú pola");
+				break;
+			case 2:
+				modelAndView.addObject("wiadomosc",
+						"Edycja przebieg≥a pomyúlnie");
+				break;
+			default:
+				break;
+			}
+		}
+		List<String> rolesList = new ArrayList<String>();
+		rolesList.add("ROLE_ADMIN");
+		rolesList.add("ROLE_USER");
+		List<String> activityList = new ArrayList<String>();
+		activityList.add("Tak");
+		activityList.add("Nie");
+		modelAndView.addObject("rolesList", rolesList);
+		modelAndView.addObject("activityList", activityList);
+		modelAndView.addObject("employeeForm",detailsEmployeeModelOrNull);
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/editEmployee/{id}", method = RequestMethod.POST)
+	public ModelAndView editEmployeePost(@PathVariable int id, @ModelAttribute("employeeForm") @Validated DetailsEmployeeModel employeeForm,
+			BindingResult result)
+	{
+		String emailOLD = dao.getDetailEmployee(id).getEmail();
+		String loginOLD = dao.getDetailEmployee(id).getLogin();
+		
+		if(!emailOLD.equals(employeeForm.getEmail()))
+		{
+			if(employeeForm.getEmail().length()>50)
+				result.reject("email", EMAIL_TOO_LONG);
+			int param1 = dao.checkUniqueEmailUser(employeeForm.getEmail());
+			if(param1==1)
+				result.reject("email", EMAIL_IS_USED);
+		}
+		if(!loginOLD.equals(employeeForm.getLogin()))
+		{
+			if(employeeForm.getLogin().length()>20)
+				result.reject("login",LOGIN_TOO_LONG);
+			int param2 = dao.checkUniqueLogin(employeeForm.getLogin());
+			if(param2==1)
+				result.reject("login", LOGIN_IS_USED);
+		}
+		
+		if(result.hasErrors())
+			return editEmployeeGet(id,employeeForm,1);
+		else
+		{
+			dao.editEmployee(employeeForm, id);
+			return editEmployeeGet(id,employeeForm,2);
+		}
+			
+	}
+	
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public ModelAndView registerGet(RegisterModel registerModelOrNull,
 			Integer messageCodeOrNull) {
@@ -149,8 +224,9 @@ public class ShipperController {
 	public ModelAndView menuAdmin() {
 		ModelAndView modelAndView = new ModelAndView("menuAdmin");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println(auth.getAuthorities());
 	    modelAndView.addObject("username", auth.getName());
+	    Object[] role = auth.getAuthorities().toArray();
+	    modelAndView.addObject("role",role[0].toString());
 		return modelAndView;
 	}
 	
@@ -170,7 +246,10 @@ public class ShipperController {
 	public ModelAndView employeesList()
 	{
 		ModelAndView modelAndView = new ModelAndView("employeesList");
-		List<EmployeeModel> employeeList = dao.getEmployeesList(1);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		int userID = dao.getUserIDByLogin(auth.getName());
+		int companyID = dao.getCompanyID(userID);
+		List<EmployeeModel> employeeList = dao.getEmployeesList(companyID);
 		modelAndView.addObject("employeesList", employeeList);
 		return modelAndView;
 	}
@@ -178,8 +257,6 @@ public class ShipperController {
 	public ModelAndView newUserGet(UserModel userModelOrNull,
 			Integer messageCodeOrNull) {
 		ModelAndView modelAndView = new ModelAndView("newUser");
-		List<EmployeeModel> employeeList = dao.getEmployeesList(1);
-		modelAndView.addObject("employeesList", employeeList);
 		if (userModelOrNull == null) {
 			userModelOrNull = new UserModel(null, null, null, null,
 					null, null, null);
@@ -209,7 +286,8 @@ public class ShipperController {
 			return newUserGet(userModel, 1);
 		else {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			int companyID = dao.getCompanyIDByLogin(auth.getName());
+			int userID = dao.getUserIDByLogin(auth.getName());
+			int companyID = dao.getCompanyID(userID);
 			dao.registerUser(userModel, companyID); //1 - companyID
 			return newUserGet(userModel, 2);
 		}
@@ -332,9 +410,8 @@ public class ShipperController {
 		{
 			return editCompanyGet(companyModel, 1);
 		}
-			
 		else {
-			dao.editCompany(companyModel,userID);
+			dao.editCompany(companyModel,dao.getCompanyModel(userID).getId());
 			return editCompanyGet(companyModel, 2);
 		}
 	}

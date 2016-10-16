@@ -45,7 +45,7 @@
 	<h4>Login:${detailsEmployeeModel.login }</h4>
 	<h4>Aktywność:${detailsEmployeeModel.activity }</h4>
 	<h4>Rola:${detailsEmployeeModel.role }</h4>
-	<a class="btn btn-primary" href="/auction-system/shipper/employeesList">Edycja</a>
+	<a class="btn btn-primary" href="/auction-system/shipper/editEmployee/${ detailsEmployeeModel.id }">Edycja</a>
 	<a class="btn btn-primary" href="/auction-system/shipper/employeesList">Wstecz</a>
 	</div>
 </div>

@@ -36,7 +36,8 @@ id int primary key auto_increment not null,
 login varchar(10) not null,
 password varchar(20) not null,
 id_user int not null,
-activity int default 1
+enabled TINYINT(4) default 1,
+role VARCHAR(20) not null
 );
 alter table logins
 add constraint foreign key (id_user) references users(id);
