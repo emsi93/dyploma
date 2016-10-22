@@ -12,7 +12,7 @@ import dyploma.auction.system.carriage.goods.mvc.shipper.model.RegisterModel;
 
 @Component("registerFormValidator")
 @Scope("singleton")
-public class RegisterFormValidator implements Validator{
+public class RegisterFormValidator implements Validator {
 
 	private static final String OBLIGATORY_FIELD_ERROR_MSG = "Pole jest wymagane.";
 	private static final String LOGIN_TOO_LONG = "Login jest za d³ugi.";
@@ -25,7 +25,7 @@ public class RegisterFormValidator implements Validator{
 	private static final String PASSWORD_TOO_SHORT = "Podane has³o jest za krótkie.";
 	private static final String DIFFERENT_PASSWORD = "Has³a nie mog¹ siê ró¿niæ.";
 	private static final String ERROR_PHONE_NUMBER = "Numer telefonu mo¿e zawieraæ jedynie cyfry.";
-	
+
 	private static final String COMPANY_NAME_TOO_LONG = "Nazwa firmy jest za d³uga.";
 	private static final String POSTCODE_TOO_LONG = "Kod pocztowy jest za d³ugi.";
 	private static final String NAME_CITY_TOO_LONG = "Nazwa miasta jest za d³uga.";
@@ -34,10 +34,11 @@ public class RegisterFormValidator implements Validator{
 	private static final String NIP_IS_USED = "Ten NIP jest ju¿ u¿yty.";
 	private static final String ERROR_NIP = "NIP mo¿e zawieraæ jedynie cyfry.";
 	private static final String ERROR_FLAT_NUMBER = "Numer lokalu mo¿e zawieraæ jedynie cyfry.";
-	
+	private static final String STREET_TO_LONG = "Nazwa ulicy jest za d³uga.";
+
 	@Autowired
 	private ShipperDAOInterface dao;
-	
+
 	public boolean supports(Class<?> clazz) {
 		// TODO Auto-generated method stub
 		return RegisterModel.class.equals(clazz);
@@ -46,7 +47,7 @@ public class RegisterFormValidator implements Validator{
 	public void validate(Object target, Errors errors) {
 		// TODO Auto-generated method stub
 		RegisterModel registerModel = (RegisterModel) target;
-		
+
 		ValidationUtils.rejectIfEmpty(errors, "name",
 				OBLIGATORY_FIELD_ERROR_MSG);
 		ValidationUtils.rejectIfEmpty(errors, "surname",
@@ -61,7 +62,7 @@ public class RegisterFormValidator implements Validator{
 				OBLIGATORY_FIELD_ERROR_MSG);
 		ValidationUtils.rejectIfEmpty(errors, "emailUser",
 				OBLIGATORY_FIELD_ERROR_MSG);
-		
+
 		ValidationUtils.rejectIfTooLong(errors, "name",
 				registerModel.getName(), 20, NAME_TOO_LONG);
 		ValidationUtils.rejectIfTooLong(errors, "surname",
@@ -74,23 +75,27 @@ public class RegisterFormValidator implements Validator{
 				registerModel.getEmailUser(), 50, EMAIL_TOO_LONG);
 		ValidationUtils.rejectIfTooLong(errors, "phoneNumber",
 				registerModel.getPhoneNumberUser(), 15, PHONE_NUMBER_TOO_LONG);
-		
-		if(registerModel.getPassword().length()<8 && registerModel.getPassword().length()>0)
+
+		if (registerModel.getPassword().length() < 8
+				&& registerModel.getPassword().length() > 0)
 			ValidationUtils.reject(errors, "password", PASSWORD_TOO_SHORT);
-		if(!registerModel.getPassword().equals(registerModel.getPassword2()))
+		if (!registerModel.getPassword().equals(registerModel.getPassword2()))
 			ValidationUtils.reject(errors, "password2", DIFFERENT_PASSWORD);
 		if (!registerModel.getPhoneNumberUser().matches("[0-9]+")
 				&& registerModel.getPhoneNumberUser().length() > 0)
-			ValidationUtils.reject(errors, "phoneNumberUser", ERROR_PHONE_NUMBER);
-		
+			ValidationUtils.reject(errors, "phoneNumberUser",
+					ERROR_PHONE_NUMBER);
+
 		int param1 = dao.checkUniqueEmailUser(registerModel.getEmailUser());
 		int param2 = dao.checkUniqueLogin(registerModel.getLogin());
-		
-		if(param1==1)
+
+		if (param1 == 1)
 			ValidationUtils.reject(errors, "emailUser", EMAIL_IS_USED);
-		if(param2==1)
+		if (param2 == 1)
 			ValidationUtils.reject(errors, "login", LOGIN_IS_USED);
-		
+
+		ValidationUtils.rejectIfEmpty(errors, "typeOfCompany",
+				OBLIGATORY_FIELD_ERROR_MSG);
 		ValidationUtils.rejectIfEmpty(errors, "companyName",
 				OBLIGATORY_FIELD_ERROR_MSG);
 		ValidationUtils.rejectIfEmpty(errors, "country",
@@ -99,26 +104,30 @@ public class RegisterFormValidator implements Validator{
 				OBLIGATORY_FIELD_ERROR_MSG);
 		ValidationUtils.rejectIfEmpty(errors, "city",
 				OBLIGATORY_FIELD_ERROR_MSG);
+		ValidationUtils.rejectIfEmpty(errors, "street",
+				OBLIGATORY_FIELD_ERROR_MSG);
 		ValidationUtils.rejectIfEmpty(errors, "nipNumber",
 				OBLIGATORY_FIELD_ERROR_MSG);
 		ValidationUtils.rejectIfEmpty(errors, "phoneNumber",
 				OBLIGATORY_FIELD_ERROR_MSG);
 		ValidationUtils.rejectIfEmpty(errors, "email",
 				OBLIGATORY_FIELD_ERROR_MSG);
-		
+
 		ValidationUtils.rejectIfTooLong(errors, "companyName",
 				registerModel.getCompanyName(), 50, COMPANY_NAME_TOO_LONG);
 		ValidationUtils.rejectIfTooLong(errors, "postcode",
 				registerModel.getPostcode(), 10, POSTCODE_TOO_LONG);
 		ValidationUtils.rejectIfTooLong(errors, "city",
 				registerModel.getCity(), 30, NAME_CITY_TOO_LONG);
+		ValidationUtils.rejectIfTooLong(errors, "street",
+				registerModel.getStreet(), 60, STREET_TO_LONG);
 		ValidationUtils.rejectIfTooLong(errors, "nipNumber",
 				registerModel.getPostcode(), 10, NIP_TOO_LONG);
 		ValidationUtils.rejectIfTooLong(errors, "phoneNumber",
 				registerModel.getPhoneNumber(), 15, PHONE_NUMBER_TOO_LONG);
 		ValidationUtils.rejectIfTooLong(errors, "email",
 				registerModel.getEmail(), 50, EMAIL_TOO_LONG);
-		
+
 		if (!registerModel.getPhoneNumber().matches("[0-9]+")
 				&& registerModel.getPhoneNumber().length() > 0)
 			ValidationUtils.reject(errors, "phoneNumber", ERROR_PHONE_NUMBER);
@@ -128,13 +137,13 @@ public class RegisterFormValidator implements Validator{
 		if (!registerModel.getFlatNumber().matches("[0-9]+")
 				&& registerModel.getFlatNumber().length() > 0)
 			ValidationUtils.reject(errors, "flatNumber", ERROR_FLAT_NUMBER);
-		
+
 		int param3 = dao.checkUniqueEmailCompany(registerModel.getEmail());
 		int param4 = dao.checkUniqueNip(registerModel.getNipNumber());
-		
-		if(param3 == 1)
+
+		if (param3 == 1)
 			ValidationUtils.reject(errors, "email", EMAIL_IS_USED);
-		if(param4 == 1)
+		if (param4 == 1)
 			ValidationUtils.reject(errors, "nipNumber", NIP_IS_USED);
 	}
 

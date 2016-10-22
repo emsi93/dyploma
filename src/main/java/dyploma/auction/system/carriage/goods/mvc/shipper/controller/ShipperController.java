@@ -41,9 +41,6 @@ public class ShipperController {
 	private static final String EMAIL_TOO_LONG = "Adres email jest za d³ugi.";
 	private static final String LOGIN_TOO_LONG = "Login jest za d³ugi.";
 
-	
-	private static int TYPE_OF_COMPANY = 1;
-
 	@Autowired
 	private ShipperDAOInterface dao;
 
@@ -85,13 +82,6 @@ public class ShipperController {
 	@InitBinder("employeeForm")
 	protected void initEditEmployeeFormValidator(WebDataBinder binder) {
 		binder.setValidator(editEmployeeFromValidator);
-	}
-	
-	
-	@RequestMapping("/register")
-	public ModelAndView register() {
-		ModelAndView modelAndView = new ModelAndView("register");
-		return modelAndView;
 	}
 	
 	@RequestMapping("/detailsEmployee/{id}")
@@ -173,7 +163,7 @@ public class ShipperController {
 		ModelAndView modelAndView = new ModelAndView("register");
 		if (registerModelOrNull == null) {
 			registerModelOrNull = new RegisterModel(null, null, null, null,
-					null, null, null, null, null, null, null, null, null, null,
+					null, null, null, null, null, null, null, null, null, null, null,
 					null, null);
 		}
 		if (messageCodeOrNull != null) {
@@ -202,10 +192,15 @@ public class ShipperController {
 		if (result.hasErrors())
 			return registerGet(registerModel, 1);
 		else {
-			dao.registerCompany(registerModel, TYPE_OF_COMPANY);
+			dao.registerCompany(registerModel, Integer.getInteger(registerModel.getTypeOfCompany()));
 			return registerGet(registerModel, 2);
 		}
-
+	}
+	
+	@RequestMapping(value={"index","/"})
+	public ModelAndView index() {
+		ModelAndView modelAndView = new ModelAndView("index");
+		return modelAndView;
 	}
 	
 	@RequestMapping(value="/login", method = RequestMethod.GET)
@@ -213,26 +208,18 @@ public class ShipperController {
 		ModelAndView modelAndView = new ModelAndView("login");
 		return modelAndView;
 	}
-	@RequestMapping(value="/logout")
-	public ModelAndView logout() {
-		ModelAndView modelAndView = new ModelAndView("logout");
-		return modelAndView;
-	}
-
 	
-	@RequestMapping("/menuAdmin")
-	public ModelAndView menuAdmin() {
-		ModelAndView modelAndView = new ModelAndView("menuAdmin");
+	@RequestMapping("/menu")
+	public ModelAndView menu() {
+		ModelAndView modelAndView = new ModelAndView("menu");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	    modelAndView.addObject("username", auth.getName());
+	    int userID = dao.getUserIDByLogin(auth.getName());
+	    int companyID = dao.getCompanyID(userID);
+	    int typeOfCompany = dao.getTypeOfCompany(companyID);
+	    modelAndView.addObject("typeOfCompany", String.valueOf(typeOfCompany));
 	    Object[] role = auth.getAuthorities().toArray();
 	    modelAndView.addObject("role",role[0].toString());
-		return modelAndView;
-	}
-	
-	@RequestMapping("/menuUser")
-	public ModelAndView menuUser() {
-		ModelAndView modelAndView = new ModelAndView("menuUser");
 		return modelAndView;
 	}
 	

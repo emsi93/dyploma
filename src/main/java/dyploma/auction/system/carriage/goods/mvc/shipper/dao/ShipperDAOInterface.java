@@ -50,4 +50,5 @@ public interface ShipperDAOInterface {
 	
 	public void editEmployee(DetailsEmployeeModel detailsEmployeeModel, int id) throws DataAccessException;
 
+	public int getTypeOfCompany(int companyID) throws DataAccessException;
 }

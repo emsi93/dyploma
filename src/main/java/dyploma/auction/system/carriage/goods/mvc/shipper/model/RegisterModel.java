@@ -11,6 +11,7 @@ public class RegisterModel {
 	private String nipNumber;
 	private String phoneNumber;
 	private String email;
+	private String typeOfCompany;
 
 	private String name;
 	private String surname;
@@ -22,7 +23,7 @@ public class RegisterModel {
 
 	public RegisterModel(String companyName, String country, String postcode,
 			String city, String street, String flatNumber, String nipNumber,
-			String phoneNumber, String email, String name, String surname,
+			String phoneNumber, String email, String typeOfCompany, String name, String surname,
 			String login, String password, String password2,
 			String phoneNumberUser, String emailUser) {
 		super();
@@ -35,6 +36,7 @@ public class RegisterModel {
 		this.nipNumber = nipNumber;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
+		this.typeOfCompany = typeOfCompany;
 		this.name = name;
 		this.surname = surname;
 		this.login = login;
@@ -45,8 +47,16 @@ public class RegisterModel {
 	}
 
 	public RegisterModel() {
-		this(null, null, null, null, null, null, null, null, null, null, null,
+		this(null, null, null, null, null, null, null, null, null, null, null, null,
 				null, null, null, null, null);
+	}
+
+	public String getTypeOfCompany() {
+		return typeOfCompany;
+	}
+
+	public void setTypeOfCompany(String typeOfCompany) {
+		this.typeOfCompany = typeOfCompany;
 	}
 
 	public String getCompanyName() {

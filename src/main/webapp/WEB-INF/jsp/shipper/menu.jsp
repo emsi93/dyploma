@@ -54,6 +54,7 @@
 
 <body>
 	<c:set var="role" value="${role}" />
+	<c:set var="typeOfCompany" value="${typeOfCompany }"/>
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -86,24 +87,51 @@
 		<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 		<div class="collapse navbar-collapse navbar-ex1-collapse">
 			<ul class="nav navbar-nav side-nav">
-				<li><a href="javascript:;" class="submit" id="szukajTowaru"><i
-						class="fa fa-search"></i>Szukaj towaru</a></li>
-				<li><a href="javascript:;" class="submit"
-					id="listaUżytkowników"><i class="fa fa-list-alt"></i>Lista
-						użytkowników</a></li>
-				<li><a href="javascript:;" class="submit" id="dodajPracownika"><i
-						class="fa fa-plus-circle"></i>Nowy pracownik</a></li>
+					<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
+					<c:if test="${typeOfCompany=='2' }">
+						<li><a href="javascript:;" class="submit" id="szukajTowaru"><i
+								class="fa fa-search"></i>Szukaj towaru</a></li>
+					</c:if>
+					</c:if>
+					<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
+					<c:if test="${typeOfCompany=='1' }">
+						<li><a href="javascript:;" class="submit" id="dodajTowar"><i
+								class="fa fa-search"></i>Dodaj towar</a></li>
+					</c:if>
+					</c:if>
+				<c:choose>
+					<c:when test="${ role=='ROLE_ADMIN'}">
+						<li><a href="javascript:;" class="submit"
+							id="listaUżytkowników"><i class="fa fa-list-alt"></i>Lista
+								użytkowników</a></li>
+					</c:when>
+				</c:choose>
+				<c:choose>
+					<c:when test="${ role=='ROLE_ADMIN'}">
+						<li><a href="javascript:;" class="submit"
+							id="dodajPracownika"><i class="fa fa-plus-circle"></i>Nowy
+								pracownik</a></li>
+					</c:when>
+				</c:choose>
 				<c:choose>
 					<c:when test="${role=='ROLE_ADMIN' }">
 						<li><a href="javascript:;" class="submit" id="twojaFirma"><i
 								class="fa fa-pencil-square-o"></i>Twoja firma</a></li>
 					</c:when>
 				</c:choose>
-				<li><a href="javascript:;" type="submit" id="twojProfil"><i
-						class="glyphicon glyphicon-user"></i> Twój profil</a></li>
-				<li><a href="javascript:;" class="submit"
-					id="historiaTransakcji"><i class="fa fa-fw fa-history"></i>Historia
-						transakcji</a></li>
+				<c:choose>
+					<c:when test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
+						<li><a href="javascript:;" type="submit" id="twojProfil"><i
+								class="glyphicon glyphicon-user"></i> Twój profil</a></li>
+					</c:when>
+				</c:choose>
+				<c:choose>
+					<c:when test="${role=='ROLE_ADMIN' }">
+						<li><a href="javascript:;" class="submit"
+							id="historiaTransakcji"><i class="fa fa-fw fa-history"></i>Historia
+								transakcji</a></li>
+					</c:when>
+				</c:choose>
 
 
 			</ul>
@@ -141,7 +169,7 @@
 								width="300" height="650"> </iframe>
 						</div>
 						<div style="display: none" id="viewHistoriaTransakcji">siema6</div>
-
+						<div style="display: none" id="viewDodajTowar">Dodaj towar</div>
 					</div>
 				</div>
 			</div>
@@ -235,6 +263,17 @@ div.content2 {
 						document.getElementById("viewTwojProfil").style.display = "none";
 						document.getElementById("viewHistoriaTransakcji").style.display = "block";
 					});
+	$("#dodajTowar")
+	.click(
+			function() {
+				document.getElementById("viewSzukajTowaru").style.display = "none";
+				document.getElementById("viewListaUżytkowników").style.display = "none";
+				document.getElementById("viewDodajPracownika").style.display = "none";
+				document.getElementById("viewTwojaFirma").style.display = "none";
+				document.getElementById("viewTwojProfil").style.display = "none";
+				document.getElementById("viewHistoriaTransakcji").style.display = "none";
+				document.getElementById("viewDodajTowar").style.display = "block";
+			});
 </script>
 
 </html>

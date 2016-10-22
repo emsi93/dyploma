@@ -299,6 +299,19 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 				detailsEmployeeModel.getLogin(), enabled, detailsEmployeeModel.getRole(), id);
 	}
 
+	public int getTypeOfCompany(int companyID) throws DataAccessException {
+		Object[] parameter = { companyID };
+		return jdbcTemplate.queryForObject(
+				"SELECT type_of_company FROM companies WHERE id=?", parameter,
+				new RowMapper<Integer>() {
+
+					public Integer mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new Integer(rs.getInt(1));
+					}
+				});
+	}
+
 	
 
 }

@@ -104,8 +104,9 @@
 				</div>
 				<form:input class="submit btn btn-primary" path="" type="submit"
 					value="Edytuj profil"></form:input>
+				<a class="btn btn-primary" href="/auction-system/shipper/employeesList">Wstecz</a>
 			</form:form>
-
+				
 		</div>
 	</div>
 </body>

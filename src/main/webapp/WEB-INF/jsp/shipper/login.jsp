@@ -5,28 +5,37 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Logowanie</title>
+<title>Serwis aukcyjny - logowanie</title>
 <link href="/auction-system/static/bootstrap/css/bootstrap.min.css"
 	rel="stylesheet">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="/auction-system/static/bootstrap/js/bootstrap.min.js"></script>
+
 </head>
-<body>
-	<section>
-		<div class="jumbotron">
-			<div class="container">
-				<h1>Produkty</h1>
-				<p>Dodaj produkty</p>
-			</div>
-		</div>
-	</section>
+<body background="/auction-system/static/img/header.jpg">
+	
 	<div class="container">
 		<div class="row">
+			</br> </br> </br> </br> </br> </br> </br> </br> </br> <br>
+			<nav id="mainNav" class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed"
+				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span> Menu <i
+					class="fa fa-bars"></i>
+			</button>
+			<a class="navbar-brand page-scroll" href="index">System
+				aukcyjny towarów</a>
+		</div>
+	</div>
+</nav>
 			<div class="col-md-4 col-md-offset-4">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title">Zaloguj się</h3>
+						<h3 class="panel-title">Logowanie</h3>
 					</div>
 					<div class="panel-body">
 						<c:if test="${not empty error}">
@@ -49,7 +58,7 @@
 								</div>
 								<input type="hidden" name="${_csrf.parameterName}"
 									value="${_csrf.token}" /> <input
-									class="btn btn-lg btn-success btn-block" type="submit"
+									class="btn btn-lg btn-primary btn-block" type="submit"
 									value="Zaloguj się">
 							</fieldset>
 						</form>
