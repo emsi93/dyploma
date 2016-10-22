@@ -13,7 +13,7 @@
 <script src="/auction-system/static/bootstrap/js/bootstrap.min.js"></script>
 
 </head>
-<body background="/auction-system/static/img/header.jpg">
+<body background="/auction-system/static/img/background.jpg">
 	
 	<div class="container">
 		<div class="row">
