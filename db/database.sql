@@ -36,8 +36,26 @@ id int primary key auto_increment not null,
 login varchar(10) not null,
 password varchar(20) not null,
 id_user int not null,
-enabled TINYINT(4) default 1,
-role VARCHAR(20) not null
+activity int default 1
 );
 alter table logins
 add constraint foreign key (id_user) references users(id);
+create table goods(
+id int primary key auto_increment not null,
+title varchar(50) not null,
+content varchar(1000),
+trailer varchar(50) not null,
+from_country varchar(30) not null,
+from_city varchar(30) not null,
+from_street varchar (60) not null,
+to_country varchar(30) not null,
+to_city varchar(30) not null,
+to_street varchar (60) not null,
+max_price decimal not null,
+date_adding date not null,
+date_of_delivery date not null,
+id_login int not null,
+status TINYINT(4) default '1'
+);
+alter table goods
+add constraint foreign key(id_login) references logins(id);

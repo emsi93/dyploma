@@ -7,6 +7,7 @@ import org.springframework.dao.DataAccessException;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.CompanyModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.DetailsEmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.EmployeeModel;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.GoodModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.ProfileModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.RegisterModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.UserModel;
@@ -51,4 +52,10 @@ public interface ShipperDAOInterface {
 	public void editEmployee(DetailsEmployeeModel detailsEmployeeModel, int id) throws DataAccessException;
 
 	public int getTypeOfCompany(int companyID) throws DataAccessException;
+
+	public int getLoginID(String name)throws DataAccessException;
+
+	public void insertGood(GoodModel goodModel, int loginID)throws DataAccessException;
+	
+	public String getCurrentDate()throws DataAccessException;
 }
