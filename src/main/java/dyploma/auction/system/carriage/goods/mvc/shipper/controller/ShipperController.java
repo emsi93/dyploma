@@ -18,16 +18,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import dyploma.auction.system.carriage.goods.modules.EuropeCountryList;
+import dyploma.auction.system.carriage.goods.modules.TrailersList;
 import dyploma.auction.system.carriage.goods.mvc.shipper.dao.ShipperDAOInterface;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.CompanyModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.DetailsEmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.EmployeeModel;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.GoodModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.ProfileModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.RegisterModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.UserModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.validator.EditCompanyFormValidator;
 import dyploma.auction.system.carriage.goods.mvc.shipper.validator.EditEmployeeFormValidator;
 import dyploma.auction.system.carriage.goods.mvc.shipper.validator.EditProfileFormValidator;
+import dyploma.auction.system.carriage.goods.mvc.shipper.validator.GoodFormValidator;
 import dyploma.auction.system.carriage.goods.mvc.shipper.validator.RegisterFormValidator;
 import dyploma.auction.system.carriage.goods.mvc.shipper.validator.UserFormValidator;
 
@@ -82,6 +85,14 @@ public class ShipperController {
 	@InitBinder("employeeForm")
 	protected void initEditEmployeeFormValidator(WebDataBinder binder) {
 		binder.setValidator(editEmployeeFromValidator);
+	}
+	
+	@Autowired
+	private GoodFormValidator goodFormValidator;
+	
+	@InitBinder("goodForm")
+	protected void initGoodFormValidator(WebDataBinder binder) {
+		binder.setValidator(goodFormValidator);
 	}
 	
 	@RequestMapping("/detailsEmployee/{id}")
@@ -192,7 +203,7 @@ public class ShipperController {
 		if (result.hasErrors())
 			return registerGet(registerModel, 1);
 		else {
-			dao.registerCompany(registerModel, Integer.getInteger(registerModel.getTypeOfCompany()));
+			dao.registerCompany(registerModel, Integer.parseInt(registerModel.getTypeOfCompany()));
 			return registerGet(registerModel, 2);
 		}
 	}
@@ -401,5 +412,49 @@ public class ShipperController {
 			dao.editCompany(companyModel,dao.getCompanyModel(userID).getId());
 			return editCompanyGet(companyModel, 2);
 		}
+	}
+	
+	@RequestMapping(value = "/newCargo", method = RequestMethod.GET)
+	public ModelAndView newCargoGet(GoodModel goodModelOrNull, Integer messageOrNull)
+	{
+		ModelAndView modelAndView = new ModelAndView("newCargo");
+		if (goodModelOrNull == null) {
+			goodModelOrNull = new GoodModel(null, null, null, null,
+					null, null, null, null, null, null, null);
+		}
+		if (messageOrNull != null) {
+			switch (messageOrNull) {
+			case 1:
+				modelAndView.addObject("wiadomosc", "èle wype≥ni≥eú pola");
+				break;
+			case 2:
+				modelAndView.addObject("wiadomosc",
+						"Dodanie nowego towaru przebieg≥o pomyúlnie");
+				break;
+			default:
+				break;
+			}
+		}
+		modelAndView.addObject("countryList",EuropeCountryList.getEuropeCountryList());
+		modelAndView.addObject("trailersList",TrailersList.getTrailersList());
+		modelAndView.addObject("goodForm",goodModelOrNull);
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/newCargo", method = RequestMethod.POST)
+	public ModelAndView newCargoPost(@ModelAttribute("goodForm") @Validated GoodModel goodModel,
+			BindingResult result)
+	{
+		if(result.hasErrors())
+		{
+			return newCargoGet(goodModel,1);
+		}else
+		{
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			int loginID = dao.getLoginID(auth.getName());
+			dao.insertGood(goodModel, loginID);
+			return newCargoGet(goodModel,2);
+		}
+		
 	}
 }

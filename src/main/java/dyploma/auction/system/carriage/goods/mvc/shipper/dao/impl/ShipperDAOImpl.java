@@ -20,6 +20,7 @@ import dyploma.auction.system.carriage.goods.mvc.shipper.dao.ShipperDAOInterface
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.CompanyModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.DetailsEmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.EmployeeModel;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.GoodModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.ProfileModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.RegisterModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.UserModel;
@@ -47,16 +48,28 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 
 	public void registerCompany(RegisterModel registerModel, int typeOfCompany)
 			throws DataAccessException {
-		jdbcTemplate
-				.update("INSERT INTO companies (company_name,country,postcode,city,street,flat_number,nip_number,phone_number,email,type_of_company) VALUES (?,?,?,?,?,?,?,?,?,?)",
-						registerModel.getCompanyName(),
-						registerModel.getCountry(),
-						registerModel.getPostcode(), registerModel.getCity(),
-						registerModel.getStreet(),
-						registerModel.getFlatNumber(),
-						registerModel.getNipNumber(),
-						registerModel.getPhoneNumber(),
-						registerModel.getEmail(), typeOfCompany);
+
+		if (registerModel.getFlatNumber().equals(""))
+			jdbcTemplate
+					.update("INSERT INTO companies (company_name,country,postcode,city,street,nip_number,phone_number,email,type_of_company) VALUES (?,?,?,?,?,?,?,?,?)",
+							registerModel.getCompanyName(),
+							registerModel.getCountry(),
+							registerModel.getPostcode(),
+							registerModel.getCity(), registerModel.getStreet(),
+							registerModel.getNipNumber(),
+							registerModel.getPhoneNumber(),
+							registerModel.getEmail(), typeOfCompany);
+		else
+			jdbcTemplate
+					.update("INSERT INTO companies (company_name,country,postcode,city,street,flat_number,nip_number,phone_number,email,type_of_company) VALUES (?,?,?,?,?,?,?,?,?,?)",
+							registerModel.getCompanyName(),
+							registerModel.getCountry(),
+							registerModel.getPostcode(),
+							registerModel.getCity(), registerModel.getStreet(),
+							Integer.parseInt(registerModel.getFlatNumber()),
+							registerModel.getNipNumber(),
+							registerModel.getPhoneNumber(),
+							registerModel.getEmail(), typeOfCompany);
 		int companyID = getCompanyID(registerModel.getEmail());
 		jdbcTemplate
 				.update("INSERT INTO users (name,surname, phone_number,email, id_company) VALUES (?,?,?,?,?)",
@@ -67,7 +80,7 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 		jdbcTemplate
 				.update("INSERT INTO logins(login,password,id_user, role) VALUES (?,?,?,?)",
 						registerModel.getLogin(), registerModel.getPassword(),
-						userID, "ROLE_ADMIN_COMPANY");
+						userID, "ROLE_ADMIN");
 	}
 
 	public int checkUniqueEmailUser(String emailUser) {
@@ -285,18 +298,20 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 	public void editEmployee(DetailsEmployeeModel detailsEmployeeModel, int id)
 			throws DataAccessException {
 		jdbcTemplate
-		.update("UPDATE users SET name=?,surname=?,phone_number=?,email=? WHERE id = ?",
-				detailsEmployeeModel.getName(), detailsEmployeeModel.getSurname(),
-				detailsEmployeeModel.getPhoneNumber(), detailsEmployeeModel.getEmail(),
-				id);
+				.update("UPDATE users SET name=?,surname=?,phone_number=?,email=? WHERE id = ?",
+						detailsEmployeeModel.getName(),
+						detailsEmployeeModel.getSurname(),
+						detailsEmployeeModel.getPhoneNumber(),
+						detailsEmployeeModel.getEmail(), id);
 		int enabled;
-		if(detailsEmployeeModel.getActivity().equals("Tak"))
-			enabled=1;
+		if (detailsEmployeeModel.getActivity().equals("Tak"))
+			enabled = 1;
 		else
-			enabled=0;
+			enabled = 0;
 		jdbcTemplate.update(
 				"UPDATE logins SET login=?,enabled=?,role=? WHERE id_user = ?",
-				detailsEmployeeModel.getLogin(), enabled, detailsEmployeeModel.getRole(), id);
+				detailsEmployeeModel.getLogin(), enabled,
+				detailsEmployeeModel.getRole(), id);
 	}
 
 	public int getTypeOfCompany(int companyID) throws DataAccessException {
@@ -312,6 +327,55 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 				});
 	}
 
-	
+	public int getLoginID(String name) throws DataAccessException {
+		Object[] parameter = { name };
+		return jdbcTemplate.queryForObject(
+				"SELECT id FROM logins WHERE login=?", parameter,
+				new RowMapper<Integer>() {
+
+					public Integer mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new Integer(rs.getInt(1));
+					}
+				});
+	}
+
+	public void insertGood(GoodModel goodModel, int loginID)
+			throws DataAccessException {
+		
+		if (goodModel.getContent().equals(""))
+			jdbcTemplate
+					.update("INSERT INTO goods (title,trailer,from_country,from_city,from_street,to_country,to_city,to_street,max_price,date_adding,date_of_delivery,id_login) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+							goodModel.getTitle(), goodModel.getTrailer(),
+							goodModel.getFromCountry(),
+							goodModel.getFromCity(), goodModel.getFromStreet(),
+							goodModel.getToCountry(), goodModel.getToCity(),
+							goodModel.getToStreet(), goodModel.getMaxPrice(),
+							getCurrentDate(), goodModel.getDateOfDelivery(),
+							loginID);
+		else
+			jdbcTemplate
+					.update("INSERT INTO goods (title,content,trailer,from_country,from_city,from_street,to_country,to_city,to_street,max_price,date_adding,date_of_delivery,id_login) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",
+							goodModel.getTitle(), goodModel.getContent(),
+							goodModel.getTrailer(), goodModel.getFromCountry(),
+							goodModel.getFromCity(), goodModel.getFromStreet(),
+							goodModel.getToCountry(), goodModel.getToCity(),
+							goodModel.getToStreet(), goodModel.getMaxPrice(),
+							getCurrentDate(), goodModel.getDateOfDelivery(),
+							loginID);
+
+	}
+
+	public String getCurrentDate() throws DataAccessException {
+		return jdbcTemplate.queryForObject(
+				"SELECT DATE_FORMAT(CURDATE(),'%d.%m.%Y')",
+				new RowMapper<String>() {
+
+					public String mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new String(rs.getString(1));
+					}
+				});
+	}
 
 }

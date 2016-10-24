@@ -169,7 +169,9 @@
 								width="300" height="650"> </iframe>
 						</div>
 						<div style="display: none" id="viewHistoriaTransakcji">siema6</div>
-						<div style="display: none" id="viewDodajTowar">Dodaj towar</div>
+						<div style="display: none" id="viewDodajTowar"><iframe src="newCargo.jsp" name="targetframe"
+								allowTransparency="true" scrolling="no" frameborder="0"
+								width="500" height="2000"> </iframe></div>
 					</div>
 				</div>
 			</div>
@@ -196,6 +198,7 @@ div.content2 {
 	$("#szukajTowaru")
 			.click(
 					function() {
+						document.getElementById("viewDodajTowar").style.display = "none";
 						document.getElementById("viewSzukajTowaru").style.display = "block";
 						document.getElementById("viewListaUżytkowników").style.display = "none";
 						document.getElementById("viewDodajPracownika").style.display = "none";
@@ -206,6 +209,7 @@ div.content2 {
 	$("#listaUżytkowników")
 			.click(
 					function() {
+						document.getElementById("viewDodajTowar").style.display = "none";
 						document.getElementById("viewSzukajTowaru").style.display = "none";
 						document.getElementById("viewListaUżytkowników").style.display = "block";
 						document.getElementById("viewDodajPracownika").style.display = "none";
@@ -216,6 +220,7 @@ div.content2 {
 	$("#dodajPracownika")
 			.click(
 					function() {
+						document.getElementById("viewDodajTowar").style.display = "none";
 						document.getElementById("viewSzukajTowaru").style.display = "none";
 						document.getElementById("viewListaUżytkowników").style.display = "none";
 						document.getElementById("viewDodajPracownika").style.display = "block";
@@ -226,6 +231,7 @@ div.content2 {
 	$("#twojaFirma")
 			.click(
 					function() {
+						document.getElementById("viewDodajTowar").style.display = "none";
 						document.getElementById("viewSzukajTowaru").style.display = "none";
 						document.getElementById("viewListaUżytkowników").style.display = "none";
 						document.getElementById("viewDodajPracownika").style.display = "none";
@@ -236,6 +242,7 @@ div.content2 {
 	$("#twojProfil")
 			.click(
 					function() {
+						document.getElementById("viewDodajTowar").style.display = "none";
 						document.getElementById("viewSzukajTowaru").style.display = "none";
 						document.getElementById("viewListaUżytkowników").style.display = "none";
 						document.getElementById("viewDodajPracownika").style.display = "none";
@@ -246,6 +253,7 @@ div.content2 {
 	$("#twojProfil1")
 			.click(
 					function() {
+						document.getElementById("viewDodajTowar").style.display = "none";
 						document.getElementById("viewSzukajTowaru").style.display = "none";
 						document.getElementById("viewListaUżytkowników").style.display = "none";
 						document.getElementById("viewDodajPracownika").style.display = "none";
@@ -256,12 +264,14 @@ div.content2 {
 	$("#historiaTransakcji")
 			.click(
 					function() {
+						document.getElementById("viewDodajTowar").style.display = "none";
 						document.getElementById("viewSzukajTowaru").style.display = "none";
 						document.getElementById("viewListaUżytkowników").style.display = "none";
 						document.getElementById("viewDodajPracownika").style.display = "none";
 						document.getElementById("viewTwojaFirma").style.display = "none";
 						document.getElementById("viewTwojProfil").style.display = "none";
 						document.getElementById("viewHistoriaTransakcji").style.display = "block";
+						
 					});
 	$("#dodajTowar")
 	.click(
