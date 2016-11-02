@@ -11,7 +11,7 @@ public class TrailersList {
 		
 		trailersList.add("");
 		trailersList.add("kurtynowa");
-		trailersList.add("naczepowa");
+		trailersList.add("kontenerowa");
 		trailersList.add("ch³odnicza");
 		trailersList.add("typu MEGA");
 		trailersList.add("ponadgabarytowa");

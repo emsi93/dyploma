@@ -34,20 +34,107 @@
 <script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="container">
-	<div class="row">
-	
-	<h4>ID:${detailsEmployeeModel.id }</h4>
-	<h4>Imię:${detailsEmployeeModel.name }</h4>
-	<h4>Nazwisko:${detailsEmployeeModel.surname }</h4>
-	<h4>Telefon:${detailsEmployeeModel.phoneNumber }</h4>
-	<h4>Email:${detailsEmployeeModel.email }</h4>
-	<h4>Login:${detailsEmployeeModel.login }</h4>
-	<h4>Aktywność:${detailsEmployeeModel.activity }</h4>
-	<h4>Rola:${detailsEmployeeModel.role }</h4>
-	<a class="btn btn-primary" href="/auction-system/shipper/editEmployee/${ detailsEmployeeModel.id }">Edycja</a>
-	<a class="btn btn-primary" href="/auction-system/shipper/employeesList">Wstecz</a>
+	<div class="container">
+		<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+			<!-- Grupowanie "marki" i przycisku rozwijania mobilnego menu -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Rozwiń nawigację</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/auction-system/shipper/menu.jsp">System
+					aukcyjny towarów</a>
+			</div>
+
+			<!-- Grupowanie elementów menu w celu lepszego wyświetlania na urządzeniach moblinych -->
+			<div class="collapse navbar-collapse"
+				id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown">Menu<span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
+								<c:if test="${typeOfCompany=='2' }">
+									<li><a href="#">Szukaj towaru</a></li>
+									<li class="divider"></li>
+								</c:if>
+							</c:if>
+							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
+								<c:if test="${typeOfCompany=='1' }">
+									<li><a href="/auction-system/shipper/newCargo">Dodaj
+											towar</a></li>
+									<li class="divider"></li>
+								</c:if>
+							</c:if>
+							<c:choose>
+								<c:when test="${ role=='ROLE_ADMIN'}">
+									<li><a href="/auction-system/shipper/employeesList">Lista
+											użytkowników</a></li>
+									<li class="divider"></li>
+								</c:when>
+							</c:choose>
+							<c:choose>
+								<c:when test="${ role=='ROLE_ADMIN'}">
+									<li><a href="/auction-system/shipper/newUser">Nowy
+											pracownik</a></li>
+									<li class="divider"></li>
+								</c:when>
+							</c:choose>
+							<c:choose>
+								<c:when test="${ role=='ROLE_ADMIN'}">
+									<li><a href="/auction-system/shipper/editCompany">Twoja
+											firma</a></li>
+									<li class="divider"></li>
+								</c:when>
+							</c:choose>
+							<li><a href="/auction-system/shipper/editProfile">Twój
+									profil</a></li>
+							<li class="divider"></li>
+							<li><a href="#">Historia transakcji</a></li>
+						</ul></li>
+				</ul>
+
+				<ul class="nav navbar-nav navbar-right">
+					<form class="navbar-form navbar-left" role="search">
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="Szukaj">
+						</div>
+						<button type="submit" class="btn btn-default">Wyślij</button>
+					</form>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown">${username }<span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="/auction-system/shipper/editProfile">Edytuj
+									profil</a></li>
+							<li><a href="<c:url value="/j_spring_security_logout" />">Wyloguj
+									się</a></li>
+						</ul></li>
+				</ul>
+			</div>
+		</div>
+		</nav>
+		<div class="row">
+			<div class="col-lg-4"></div>
+			<div class="col-lg-4">
+				<h4>ID:${detailsEmployeeModel.id }</h4>
+				<h4>Imię:${detailsEmployeeModel.name }</h4>
+				<h4>Nazwisko:${detailsEmployeeModel.surname }</h4>
+				<h4>Telefon:${detailsEmployeeModel.phoneNumber }</h4>
+				<h4>Email:${detailsEmployeeModel.email }</h4>
+				<h4>Login:${detailsEmployeeModel.login }</h4>
+				<h4>Aktywność:${detailsEmployeeModel.activity }</h4>
+				<h4>Rola:${detailsEmployeeModel.role }</h4>
+				<a class="btn btn-primary"
+					href="/auction-system/shipper/editEmployee/${ detailsEmployeeModel.id }">Edycja</a>
+				<a class="btn btn-primary"
+					href="/auction-system/shipper/employeesList">Lista pracowników</a>
+			</div>
+			<div class="col-lg-4"></div>
+
+		</div>
 	</div>
-</div>
 </body>
 </html>

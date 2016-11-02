@@ -9,35 +9,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Serwis aukcyjny - edycja profilu</title>
+<title>Serwis aukcyjny - szczegóły ładunku</title>
 <link href="/auction-system/static/menu/css/bootstrap.min.css"
 	rel="stylesheet">
-
-
-
-<!-- Custom Fonts -->
 <link
 	href="/auction-system/static/menu/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
 <link href="/auction-system/static/css/errors.css" rel="stylesheet">
-
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-<!-- jQuery -->
 <script src="/auction-system/static/menu/js/jquery.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
 <script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
-
 </head>
+
 <body>
+	<c:set var="role" value="${role}" />
+	<c:set var="typeOfCompany" value="${typeOfCompany }" />
 	<div class="container">
-		<c:set var="role" value="${role}" />
-		<c:set var="typeOfCompany" value="${typeOfCompany }" />
 		<nav class="navbar navbar-default" role="navigation">
 		<div class="container-fluid">
 			<!-- Grupowanie "marki" i przycisku rozwijania mobilnego menu -->
@@ -66,28 +52,42 @@
 							</c:if>
 							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
 								<c:if test="${typeOfCompany=='1' }">
-									<li><a href="newCargo">Dodaj towar</a></li>
+									<li><a href="/auction-system/shipper/newCargo">Dodaj
+											towar</a></li>
+									<li class="divider"></li>
+								</c:if>
+							</c:if>
+							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
+								<c:if test="${typeOfCompany=='1' }">
+									<li><a href="/auction-system/shipper/cargosList">Lista
+											towarów</a></li>
 									<li class="divider"></li>
 								</c:if>
 							</c:if>
 							<c:choose>
 								<c:when test="${ role=='ROLE_ADMIN'}">
-									<li><a href="employeesList">Lista użytkowników</a></li>
+									<li><a href="/auction-system/shipper/employeesList">Lista
+											użytkowników</a></li>
 									<li class="divider"></li>
 								</c:when>
 							</c:choose>
 							<c:choose>
 								<c:when test="${ role=='ROLE_ADMIN'}">
-									<li><a href="newUser">Nowy pracownik</a></li>
+									<li><a href="/auction-system/shipper/newUser">Nowy
+											pracownik</a></li>
 									<li class="divider"></li>
 								</c:when>
 							</c:choose>
 							<c:choose>
 								<c:when test="${ role=='ROLE_ADMIN'}">
-									<li><a href="editCompany">Twoja firma</a></li>
+									<li><a href="/auction-system/shipper/editCompany">Twoja
+											firma</a></li>
 									<li class="divider"></li>
 								</c:when>
 							</c:choose>
+							<li><a href="/auction-system/shipper/editProfile">Twój
+									profil</a></li>
+							<li class="divider"></li>
 							<li><a href="#">Historia transakcji</a></li>
 						</ul></li>
 				</ul>
@@ -102,7 +102,8 @@
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown">${username }<span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="editProfile">Edytuj profil</a></li>
+							<li><a href="/auction-system/shipper/editProfile">Edytuj
+									profil</a></li>
 							<li><a href="<c:url value="/j_spring_security_logout" />">Wyloguj
 									się</a></li>
 						</ul></li>
@@ -111,76 +112,29 @@
 		</div>
 		</nav>
 		<div class="row">
-
-			<div class="col-lg-4"></div>
-			<div class="col-lg-4">
-				${wiadomosc }
-				<h2>Edycja profilu</h2>
-				<form:form method="post" modelAttribute="profileForm"
-				action="/auction-system/shipper/editProfile" role="form">
-				<div class="form-group">
-					<label class="sr-only">Imie</label>
-					<form:input path="name" type="text" class="form-control"
-						placeholder="*Imię..." value="${profileForm.name }" />
-					<div class="errors">
-						<form:errors path="name" element="div" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="sr-only">Nazwisko</label>
-					<form:input path="surname" type="text" class="form-control"
-						placeholder="*Nazwisko..." value="${profileForm.surname }" />
-					<div class="errors">
-						<form:errors path="surname" element="div" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="sr-only">Login</label>
-					<form:input path="login" type="text" class="form-control"
-						placeholder="*Login..." value="${profileForm.login }" />
-					<div class="errors">
-						<form:errors path="login" element="div" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="sr-only">Hasło</label>
-					<form:input path="password" type="password" class="form-control"
-						placeholder="*Hasło..." />
-					<div class="errors">
-						<form:errors path="password" element="div" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="sr-only">Powtórz hasło</label>
-					<form:input path="password2" type="password" class="form-control"
-						placeholder="*Powtórz hasło..." value="${profileForm.password }" />
-					<div class="errors">
-						<form:errors path="password2" element="div" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="sr-only">Numer telefonu</label>
-					<form:input path="phoneNumber" type="text" class="form-control"
-						placeholder="*Numer telefonu..."
-						value="${profileForm.phoneNumber }" />
-					<div class="errors">
-						<form:errors path="phoneNumber" element="div" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="sr-only">Email</label>
-					<form:input path="email" type="email" class="form-control"
-						placeholder="*Email..." value="${profileForm.email }" />
-					<div class="errors">
-						<form:errors path="email" element="div" />
-					</div>
-				</div>
-				<form:input class="submit btn btn-primary" path="" type="submit"
-					value="Edytuj profil"></form:input>
-			</form:form>
+			<div class="col-lg-3"></div>
+			<div class="col-lg-6">
+				<h4>Nagłówek: ${detailsCargoModel.title }</h4>
+				<h4>Opis: ${detailsCargoModel.content }</h4>
+				<h4>Rodzaj naczepy: ${detailsCargoModel.trailer }</h4>
+				<h4>Miejsce załadunku: ${detailsCargoModel.fromCountry },
+					${detailsCargoModel.fromCity }, ${detailsCargoModel.fromStreet }</h4>
+				<h4>Miejsce rozładunku: ${detailsCargoModel.toCountry },
+					${detailsCargoModel.toCity }, ${detailsCargoModel.toStreet }</h4>
+				<h4>Data dodania: ${detailsCargoModel.dateAdding }</h4>
+				<h4>Termin dostarczenia: ${detailsCargoModel.dateOfDelivery }</h4>
+				<h4>Kwota początkowa: ${detailsCargoModel.maxPrice }</h4>
+				<h4>Aktualna kwota: ${detailsCargoModel.actualPrice}</h4>
+				<h4>Autor: ${detailsCargoModel.name }
+					${detailsCargoModel.surname}</h4>
+				<h4>Nazwa firmy: ${detailsCargoModel.company }</h4>
+				<a class="btn btn-primary" href="/auction-system/shipper/newCargo">Dodaj
+					towar</a> <a class="btn btn-primary"
+					href="/auction-system/shipper/cargosList">Lista towarów</a>
 			</div>
-			<div class="col-lg-4"></div>
+			<div class="col-lg-3"></div>
 		</div>
 	</div>
+
 </body>
 </html>

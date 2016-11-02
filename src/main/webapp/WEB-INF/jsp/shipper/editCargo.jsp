@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Serwis aukcyjny - edycja firmy</title>
+<title>Serwis aukcyjny - edycja ładunku</title>
 <link href="/auction-system/static/menu/css/bootstrap.min.css"
 	rel="stylesheet">
 <link
@@ -19,6 +19,7 @@
 <script src="/auction-system/static/menu/js/jquery.js"></script>
 <script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
 </head>
+
 <body>
 	<c:set var="role" value="${role}" />
 	<c:set var="typeOfCompany" value="${typeOfCompany }" />
@@ -33,7 +34,8 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="menu">System aukcyjny towarów</a>
+				<a class="navbar-brand" href="/auction-system/shipper/menu">System
+					aukcyjny towarów</a>
 			</div>
 
 			<!-- Grupowanie elementów menu w celu lepszego wyświetlania na urządzeniach moblinych -->
@@ -51,23 +53,41 @@
 							</c:if>
 							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
 								<c:if test="${typeOfCompany=='1' }">
-									<li><a href="newCargo">Dodaj towar</a></li>
+									<li><a href="/auction-system/shipper/newCargo">Dodaj
+											towar</a></li>
+									<li class="divider"></li>
+								</c:if>
+							</c:if>
+							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
+								<c:if test="${typeOfCompany=='1' }">
+									<li><a href="/auction-system/shipper/cargosList">Lista
+											towarów</a></li>
 									<li class="divider"></li>
 								</c:if>
 							</c:if>
 							<c:choose>
 								<c:when test="${ role=='ROLE_ADMIN'}">
-									<li><a href="employeesList">Lista użytkowników</a></li>
+									<li><a href="/auction-system/shipper/employeesList">Lista
+											użytkowników</a></li>
 									<li class="divider"></li>
 								</c:when>
 							</c:choose>
 							<c:choose>
 								<c:when test="${ role=='ROLE_ADMIN'}">
-									<li><a href="newUser">Nowy pracownik</a></li>
+									<li><a href="/auction-system/shipper/newUser">Nowy
+											pracownik</a></li>
 									<li class="divider"></li>
 								</c:when>
 							</c:choose>
-							<li><a href="editProfile">Twój profil</a></li>
+							<c:choose>
+								<c:when test="${ role=='ROLE_ADMIN'}">
+									<li><a href="/auction-system/shipper/editCompany">Twoja
+											firma</a></li>
+									<li class="divider"></li>
+								</c:when>
+							</c:choose>
+							<li><a href="/auction-system/shipper/editProfile">Twój
+									profil</a></li>
 							<li class="divider"></li>
 							<li><a href="#">Historia transakcji</a></li>
 						</ul></li>
@@ -83,7 +103,8 @@
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown">${username }<span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="editProfile">Edytuj profil</a></li>
+							<li><a href="/auction-system/shipper/editProfile">Edytuj
+									profil</a></li>
 							<li><a href="<c:url value="/j_spring_security_logout" />">Wyloguj
 									się</a></li>
 						</ul></li>
@@ -92,107 +113,125 @@
 		</div>
 		</nav>
 		<div class="row">
-			<div class="col-lg-4"></div>
-			<div class="col-lg-4">
-				${wiadomosc}
-				<h2>Edycja firmy</h2>
-				<form:form method="post" modelAttribute="companyForm"
-					action="/auction-system/shipper/editCompany" role="form">
+			<form:form method="post" modelAttribute="editGoodForm"
+				action="/auction-system/shipper/editCargo/${editGoodForm.id }"
+				role="form">
+
+				<div class="col-lg-2">*Pola wymagane</div>
+				<div class="col-lg-4">
+					<h2>Nowy towar</h2>
+					${wiadomosc}
 					<div class="form-group">
-						<label class="sr-only">Nazwa firmy</label>
-						<form:input path="companyName" type="text" class="form-control"
-							placeholder="*Nazwa firmy..." value="${companyForm.companyName }" />
+						<label class="sr-only">Nagłówek</label>
+						<form:input path="title" type="text" class="form-control"
+							placeholder="*Nagłówek..." value="${editGoodForm.title }" />
 						<div class="errors">
-							<form:errors path="companyName" element="div" />
+							<form:errors path="title" element="div" />
 						</div>
 					</div>
+					<div class="form-group">
+						<label class="sr-only">Opis</label>
+						<form:textarea rows="4" path="content" type="text"
+							class="form-control" placeholder="Opis..."
+							value="${editGoodForm.content }" />
+						<div class="errors">
+							<form:errors path="content" element="div" />
+						</div>
+					</div>
+					<label>Miejsce załadunku</label>
 					<div class="form-group">
 						<label>Kraj</label>
-						<form:select path="country" items="${countryList}"
-							class="form-control" value="${companyForm.country }" />
+						<form:select path="fromCountry" items="${countryList}"
+							class="form-control" value="${editGoodForm.fromCountry }" />
 						<div class="errors">
-							<form:errors path="country" element="div" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="sr-only">Kod pocztowy</label>
-						<form:input path="postcode" type="text" class="form-control"
-							placeholder="*Kod pocztowy..." value="${companyForm.postcode }" />
-						<div class="errors">
-							<form:errors path="postcode" element="div" />
+							<form:errors path="fromCountry" element="div" />
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="sr-only">Miasto</label>
-						<form:input path="city" type="text" class="form-control"
-							placeholder="*Miasto..." value="${companyForm.city }" />
+						<form:input path="fromCity" type="text" class="form-control"
+							placeholder="*Miasto..." value="${editGoodForm.fromCity }" />
 						<div class="errors">
-							<form:errors path="postcode" element="div" />
+							<form:errors path="fromCity" element="div" />
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="sr-only">Ulica</label>
-						<form:input path="street" type="text" class="form-control"
-							placeholder="*Ulica..." value="${companyForm.street }" />
+						<form:input path="fromStreet" type="text" class="form-control"
+							placeholder="*Ulica..." value="${editGoodForm.fromStreet }" />
 						<div class="errors">
-							<form:errors path="street" element="div" />
+							<form:errors path="fromStreet" element="div" />
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4">
+					<div class="form-group">
+						<label class="sr-only">Cena przewozu</label>
+						<div class="row">
+							<form:input path="maxPrice" min="0" type="number"
+								class="form-control" placeholder="*Cena przewozu"
+								value="${editGoodForm.maxPrice }" />
+						</div>
+						<div class="errors">
+							<form:errors path="maxPrice" element="div" />
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="sr-only">Numer domu</label>
-						<form:input path="flatNumber" type="text" class="form-control"
-							placeholder="Numer domu..." value="${companyForm.flatNumber }" />
+						</br> <label>Rodzaj naczepy</label>
+						<form:select path="trailer" items="${trailersList}"
+							class="form-control" value="${editGoodForm.trailer }" />
 						<div class="errors">
-							<form:errors path="flatNumber" element="div" />
+							<form:errors path="trailer" element="div" />
+						</div>
+					</div>
+					<label>Termin dostarczenia</label></br>
+					<div class="form-group">
+						<form:input type='date' path="dateOfDelivery" class="form-control"
+							value="${editGoodForm.dateOfDelivery }" />
+
+						<div class="errors">
+							<form:errors path="dateOfDelivery" element="div" />
+						</div>
+					</div>
+					<label>Miejsce dostarczenia</label>
+					<div class="form-group">
+						<label>Kraj</label>
+						<form:select path="toCountry" items="${countryList}"
+							class="form-control" value="${editGoodForm.toCountry }" />
+						<div class="errors">
+							<form:errors path="toCountry" element="div" />
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="sr-only">NIP</label>
-						<form:input path="nipNumber" type="text" class="form-control"
-							placeholder="*NIP..." value="${companyForm.nipNumber }" />
+						<label class="sr-only">Miasto</label>
+						<form:input path="toCity" type="text" class="form-control"
+							placeholder="*Miasto..." value="${editGoodForm.toCity }" />
 						<div class="errors">
-							<form:errors path="nipNumber" element="div" />
+							<form:errors path="toCity" element="div" />
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="sr-only">Numer telefonu</label>
-						<form:input path="phoneNumber" type="text" class="form-control"
-							placeholder="*Numer telefonu..."
-							value="${companyForm.phoneNumber }" />
+						<label class="sr-only">Ulica</label>
+						<form:input path="toStreet" type="text" class="form-control"
+							placeholder="*Ulica..." value="${editGoodForm.toStreet }" />
 						<div class="errors">
-							<form:errors path="phoneNumber" element="div" />
+							<form:errors path="toStreet" element="div" />
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="sr-only">Email</label>
-						<form:input path="email" type="email" class="form-control"
-							placeholder="*Email..." value="${companyForm.email }" />
+						<label>Wystawiony na aukcje:</label>
+						<form:select path="status" items="${activityList}"
+							class="form-control" value="${editGoodForm.status }" />
 						<div class="errors">
-							<form:errors path="email" element="div" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="sr-only">Opis firmy</label>
-						<form:input path="description" type="text" class="form-control"
-							placeholder="*Opis firmy..." value="${companyForm.description }" />
-						<div class="errors">
-							<form:errors path="description" element="div" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="sr-only">Strona internetowa</label>
-						<form:input path="website" type="text" class="form-control"
-							placeholder="*Strona internetowa..."
-							value="${companyForm.website }" />
-						<div class="errors">
-							<form:errors path="website" element="div" />
+							<form:errors path="status" element="div" />
 						</div>
 					</div>
 					<form:input class="submit btn btn-primary" path="" type="submit"
-						value="Zakończ edycję"></form:input>
-				</form:form>
-			</div>
-			<div class="col-lg-4"></div>
+						value="Edycja"></form:input>
+				</div>
+
+				<div class="col-lg-2"></div>
+			</form:form>
 		</div>
 	</div>
 </body>

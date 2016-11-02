@@ -2,6 +2,9 @@ package dyploma.auction.system.carriage.goods.mvc.shipper.dao.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -19,8 +22,11 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 import dyploma.auction.system.carriage.goods.mvc.shipper.dao.ShipperDAOInterface;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.CompanyModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.DetailsEmployeeModel;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.DetailsGoodModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.EmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.GoodModel;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.GoodModelForEdit;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.GoodModelForList;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.ProfileModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.RegisterModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.UserModel;
@@ -342,7 +348,7 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 
 	public void insertGood(GoodModel goodModel, int loginID)
 			throws DataAccessException {
-		
+
 		if (goodModel.getContent().equals(""))
 			jdbcTemplate
 					.update("INSERT INTO goods (title,trailer,from_country,from_city,from_street,to_country,to_city,to_street,max_price,date_adding,date_of_delivery,id_login) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
@@ -367,15 +373,90 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 	}
 
 	public String getCurrentDate() throws DataAccessException {
-		return jdbcTemplate.queryForObject(
-				"SELECT DATE_FORMAT(CURDATE(),'%d.%m.%Y')",
-				new RowMapper<String>() {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		return dateFormat.format(date);
+	}
 
-					public String mapRow(ResultSet rs, int rowNumber)
-							throws SQLException {
-						return new String(rs.getString(1));
-					}
-				});
+	public List<GoodModelForList> getGoodsList(int companyID)
+			throws DataAccessException {
+		return jdbcTemplate
+				.query("SELECT g.id, g.title, g.from_country, g.from_city, g.to_country, g.to_city, g.date_adding, g.date_of_delivery FROM goods g INNER JOIN logins l ON g.id_login = l.id INNER JOIN users u ON l.id_user = u.id INNER JOIN companies c ON c.id = u.id_company WHERE u.id_company = ? AND g.status = 1",
+						new RowMapper<GoodModelForList>() {
+
+							public GoodModelForList mapRow(ResultSet rs,
+									int rowNumber) throws SQLException {
+								return new GoodModelForList(rs.getInt(1), rs
+										.getString(2), rs.getString(3), rs
+										.getString(4), rs.getString(5), rs
+										.getString(6), rs.getString(7), rs
+										.getString(8));
+							}
+						}, new Object[] { companyID });
+	}
+
+	public DetailsGoodModel getDetailsGood(int id) throws DataAccessException {
+		return jdbcTemplate
+				.queryForObject(
+						"SELECT g.title, g.content, g.trailer, g.from_country, g.from_city, g.from_street, g.to_country, g.to_city, g.to_street, g.max_price, g.date_adding, g.date_of_delivery, g.actual_price, u.name, u.surname, c.company_name FROM goods g INNER JOIN logins l ON g.id_login = l.id INNER JOIN users u ON l.id_user = u.id INNER JOIN companies c ON c.id = u.id_company WHERE g.id = ?",
+						new RowMapper<DetailsGoodModel>() {
+							public DetailsGoodModel mapRow(ResultSet rs,
+									int rowNumber) throws SQLException {
+								return new DetailsGoodModel(rs.getString(1), rs
+										.getString(2), rs.getString(3), rs
+										.getString(4), rs.getString(5), rs
+										.getString(6), rs.getString(7), rs
+										.getString(8), rs.getString(9), rs
+										.getDouble(10), rs.getString(11), rs
+										.getString(12), rs.getString(13), rs
+										.getString(14), rs.getString(15), rs
+										.getString(16));
+							}
+						}, new Object[] { id });
+	}
+
+	public GoodModelForEdit getGoodModelForEdit(int id)
+			throws DataAccessException {
+		return jdbcTemplate
+				.queryForObject(
+						"SELECT g.id, g.title, g.content, g.trailer, g.from_country, g.from_city, g.from_street, g.to_country, g.to_city, g.to_street, g.max_price, g.date_of_delivery, g.status FROM goods g WHERE g.id = ?",
+						new RowMapper<GoodModelForEdit>() {
+							public GoodModelForEdit mapRow(ResultSet rs,
+									int rowNumber) throws SQLException {
+								return new GoodModelForEdit(rs.getInt(1), rs
+										.getString(2), rs.getString(3), rs
+										.getString(4), rs.getString(5), rs
+										.getString(6), rs.getString(7), rs
+										.getString(8), rs.getString(9), rs
+										.getString(10), rs.getDouble(11), rs
+										.getString(12), rs.getString(13));
+							}
+						}, new Object[] { id });
+	}
+
+	public void editCargo(GoodModelForEdit goodModelForEdit)
+			throws DataAccessException {
+		String status = null;
+		if (goodModelForEdit.getStatus().equals("Tak"))
+			status = "1";
+		else
+			status = "2";
+		jdbcTemplate
+				.update("UPDATE goods SET title=?, content=?, trailer=?, from_country=?, from_city=?, from_street=?, to_country=?, to_city=?, to_street=?, max_price=?, date_of_delivery=?, status=? WHERE id = ?",
+						goodModelForEdit.getTitle(),
+						goodModelForEdit.getContent(),
+						goodModelForEdit.getTrailer(),
+						goodModelForEdit.getFromCountry(),
+						goodModelForEdit.getFromCity(),
+						goodModelForEdit.getFromStreet(),
+						goodModelForEdit.getToCountry(),
+						goodModelForEdit.getToCity(),
+						goodModelForEdit.getToStreet(),
+						goodModelForEdit.getMaxPrice(),
+						goodModelForEdit.getDateOfDelivery(), status,
+						goodModelForEdit.getId()
+				);
+
 	}
 
 }

@@ -20,71 +20,145 @@
 <script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
 </head>
 <body>
+	<c:set var="role" value="${role}" />
+	<c:set var="typeOfCompany" value="${typeOfCompany }" />
 	<div class="container">
+		<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+			<!-- Grupowanie "marki" i przycisku rozwijania mobilnego menu -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Rozwiń nawigację</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="menu">System aukcyjny towarów</a>
+			</div>
+
+			<!-- Grupowanie elementów menu w celu lepszego wyświetlania na urządzeniach moblinych -->
+			<div class="collapse navbar-collapse"
+				id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown">Menu<span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
+								<c:if test="${typeOfCompany=='2' }">
+									<li><a href="#">Szukaj towaru</a></li>
+									<li class="divider"></li>
+								</c:if>
+							</c:if>
+							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
+								<c:if test="${typeOfCompany=='1' }">
+									<li><a href="newCargo">Dodaj towar</a></li>
+									<li class="divider"></li>
+								</c:if>
+							</c:if>
+							<c:choose>
+								<c:when test="${ role=='ROLE_ADMIN'}">
+									<li><a href="employeesList">Lista użytkowników</a></li>
+									<li class="divider"></li>
+								</c:when>
+							</c:choose>
+							<c:choose>
+								<c:when test="${ role=='ROLE_ADMIN'}">
+									<li><a href="editCompany">Twoja firma</a></li>
+									<li class="divider"></li>
+								</c:when>
+							</c:choose>
+							<li><a href="editProfile">Twój profil</a></li>
+							<li class="divider"></li>
+							<li><a href="#">Historia transakcji</a></li>
+						</ul></li>
+				</ul>
+
+				<ul class="nav navbar-nav navbar-right">
+					<form class="navbar-form navbar-left" role="search">
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="Szukaj">
+						</div>
+						<button type="submit" class="btn btn-default">Wyślij</button>
+					</form>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown">${username }<span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="editProfile">Edytuj profil</a></li>
+							<li><a href="<c:url value="/j_spring_security_logout" />">Wyloguj
+									się</a></li>
+						</ul></li>
+				</ul>
+			</div>
+		</div>
+		</nav>
 		<div class="row">
-			${wiadomosc}
-			<h2>Dodawanie nowego pracownika</h2>
-			<form:form method="post" modelAttribute="userForm"
-				action="/auction-system/shipper/newUser" role="form">
-				<div class="form-group">
-					<label class="sr-only">Imie</label>
-					<form:input path="name" type="text" class="form-control"
-						placeholder="*Imię..." />
-					<div class="errors">
-						<form:errors path="name" element="div" />
+			<div class="col-lg-4"></div>
+			<div class="col-lg-4">${wiadomosc}
+				<h2>Dodawanie nowego pracownika</h2>
+				<form:form method="post" modelAttribute="userForm"
+					action="/auction-system/shipper/newUser" role="form">
+					<div class="form-group">
+						<label class="sr-only">Imie</label>
+						<form:input path="name" type="text" class="form-control"
+							placeholder="*Imię..." />
+						<div class="errors">
+							<form:errors path="name" element="div" />
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label class="sr-only">Nazwisko</label>
-					<form:input path="surname" type="text" class="form-control"
-						placeholder="*Nazwisko..." />
-					<div class="errors">
-						<form:errors path="surname" element="div" />
+					<div class="form-group">
+						<label class="sr-only">Nazwisko</label>
+						<form:input path="surname" type="text" class="form-control"
+							placeholder="*Nazwisko..." />
+						<div class="errors">
+							<form:errors path="surname" element="div" />
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label class="sr-only">Login</label>
-					<form:input path="login" type="text" class="form-control"
-						placeholder="*Login..." />
-					<div class="errors">
-						<form:errors path="login" element="div" />
+					<div class="form-group">
+						<label class="sr-only">Login</label>
+						<form:input path="login" type="text" class="form-control"
+							placeholder="*Login..." />
+						<div class="errors">
+							<form:errors path="login" element="div" />
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label class="sr-only">Hasło</label>
-					<form:input path="password" type="password" class="form-control"
-						placeholder="*Hasło..." />
-					<div class="errors">
-						<form:errors path="password" element="div" />
+					<div class="form-group">
+						<label class="sr-only">Hasło</label>
+						<form:input path="password" type="password" class="form-control"
+							placeholder="*Hasło..." />
+						<div class="errors">
+							<form:errors path="password" element="div" />
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label class="sr-only">Powtórz hasło</label>
-					<form:input path="password2" type="password" class="form-control"
-						placeholder="*Powtórz hasło..." />
-					<div class="errors">
-						<form:errors path="password2" element="div" />
+					<div class="form-group">
+						<label class="sr-only">Powtórz hasło</label>
+						<form:input path="password2" type="password" class="form-control"
+							placeholder="*Powtórz hasło..." />
+						<div class="errors">
+							<form:errors path="password2" element="div" />
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label class="sr-only">Numer telefonu</label>
-					<form:input path="phoneNumberUser" type="text" class="form-control"
-						placeholder="*Numer telefonu..." />
-					<div class="errors">
-						<form:errors path="phoneNumberUser" element="div" />
+					<div class="form-group">
+						<label class="sr-only">Numer telefonu</label>
+						<form:input path="phoneNumberUser" type="text"
+							class="form-control" placeholder="*Numer telefonu..." />
+						<div class="errors">
+							<form:errors path="phoneNumberUser" element="div" />
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label class="sr-only">Email</label>
-					<form:input path="emailUser" type="email" class="form-control"
-						placeholder="*Email..." />
-					<div class="errors">
-						<form:errors path="emailUser" element="div" />
+					<div class="form-group">
+						<label class="sr-only">Email</label>
+						<form:input path="emailUser" type="email" class="form-control"
+							placeholder="*Email..." />
+						<div class="errors">
+							<form:errors path="emailUser" element="div" />
+						</div>
 					</div>
-				</div>
-				<form:input class="submit btn btn-primary" path="" type="submit"
-					value="Dodaj pracownika" id="register"></form:input>
-			</form:form>
+					<form:input class="submit btn btn-primary" path="" type="submit"
+						value="Dodaj pracownika" id="register"></form:input>
+				</form:form>
+			</div>
+			<div class="col-lg-4"></div>
+
 		</div>
 	</div>
 </body>
