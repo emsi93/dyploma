@@ -9,35 +9,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Serwis aukcyjny - edycja profilu</title>
+<title>Serwis aukcyjny - lista ładunków</title>
 <link href="/auction-system/static/menu/css/bootstrap.min.css"
 	rel="stylesheet">
-
-
-
-<!-- Custom Fonts -->
 <link
 	href="/auction-system/static/menu/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
 <link href="/auction-system/static/css/errors.css" rel="stylesheet">
-
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-<!-- jQuery -->
 <script src="/auction-system/static/menu/js/jquery.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
 <script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
-
 </head>
+
 <body>
+	<c:set var="role" value="${role}" />
+	<c:set var="typeOfCompany" value="${typeOfCompany }" />
 	<div class="container">
-		<c:set var="role" value="${role}" />
-		<c:set var="typeOfCompany" value="${typeOfCompany }" />
 		<nav class="navbar navbar-default" role="navigation">
 		<div class="container-fluid">
 			<!-- Grupowanie "marki" i przycisku rozwijania mobilnego menu -->
@@ -88,6 +74,8 @@
 									<li class="divider"></li>
 								</c:when>
 							</c:choose>
+							<li><a href="editProfile">Twój profil</a></li>
+							<li class="divider"></li>
 							<li><a href="#">Historia transakcji</a></li>
 						</ul></li>
 				</ul>
@@ -111,75 +99,37 @@
 		</div>
 		</nav>
 		<div class="row">
-
-			<div class="col-lg-4"></div>
-			<div class="col-lg-4">
-				${wiadomosc }
-				<h2>Edycja profilu</h2>
-				<form:form method="post" modelAttribute="profileForm"
-				action="/auction-system/shipper/editProfile" role="form">
-				<div class="form-group">
-					<label class="sr-only">Imie</label>
-					<form:input path="name" type="text" class="form-control"
-						placeholder="*Imię..." value="${profileForm.name }" />
-					<div class="errors">
-						<form:errors path="name" element="div" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="sr-only">Nazwisko</label>
-					<form:input path="surname" type="text" class="form-control"
-						placeholder="*Nazwisko..." value="${profileForm.surname }" />
-					<div class="errors">
-						<form:errors path="surname" element="div" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="sr-only">Login</label>
-					<form:input path="login" type="text" class="form-control"
-						placeholder="*Login..." value="${profileForm.login }" />
-					<div class="errors">
-						<form:errors path="login" element="div" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="sr-only">Hasło</label>
-					<form:input path="password" type="password" class="form-control"
-						placeholder="*Hasło..." />
-					<div class="errors">
-						<form:errors path="password" element="div" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="sr-only">Powtórz hasło</label>
-					<form:input path="password2" type="password" class="form-control"
-						placeholder="*Powtórz hasło..." value="${profileForm.password }" />
-					<div class="errors">
-						<form:errors path="password2" element="div" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="sr-only">Numer telefonu</label>
-					<form:input path="phoneNumber" type="text" class="form-control"
-						placeholder="*Numer telefonu..."
-						value="${profileForm.phoneNumber }" />
-					<div class="errors">
-						<form:errors path="phoneNumber" element="div" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="sr-only">Email</label>
-					<form:input path="email" type="email" class="form-control"
-						placeholder="*Email..." value="${profileForm.email }" />
-					<div class="errors">
-						<form:errors path="email" element="div" />
-					</div>
-				</div>
-				<form:input class="submit btn btn-primary" path="" type="submit"
-					value="Edytuj profil"></form:input>
-			</form:form>
-			</div>
-			<div class="col-lg-4"></div>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>LP.</th>
+						<th>Nagłówek</th>
+						<th>Miejsce załadunku</th>
+						<th>Miejsce rozładunku</th>
+						<th>Data dodania</th>
+						<th>Termin dostarczenia</th>
+						<th>Szczegóły</th>
+						<th>Edycja</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${goodsList}" var="good" varStatus="loop">
+						<tr>
+							<td>${loop.count}</td>
+							<td>${good.title }</td>
+							<td>${good.fromCountry},${good.fromCity}</td>
+							<td>${good.toCountry},${good.toCity}</td>
+							<td>${good.dateAdding }</td>
+							<td>${good.dateOfDelivery }</td>
+							<td><a class="btn btn-primary"
+								href="/auction-system/shipper/detailsCargo/${good.id }">Szczegóły</a></td>
+							<td><a class="btn btn-primary"
+								href="/auction-system/shipper/editCargo/${good.id }">Edycja</a></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+			<a class="btn btn-primary" href="newCargo">Dodaj towar</a>
 		</div>
 	</div>
 </body>

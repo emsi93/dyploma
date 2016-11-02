@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Rejestracja załadowcy</title>
+<title>Serwis aukcyjny towarów - rejestracja</title>
 <link href="/auction-system/static/bootstrap/css/bootstrap.min.css"
 	rel="stylesheet">
 <script
