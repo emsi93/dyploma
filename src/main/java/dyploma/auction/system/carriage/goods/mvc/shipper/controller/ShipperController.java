@@ -27,6 +27,7 @@ import dyploma.auction.system.carriage.goods.mvc.shipper.model.EmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.GoodModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.GoodModelForEdit;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.GoodModelForList;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.NewPrice;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.ProfileModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.RegisterModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.UserModel;
@@ -35,6 +36,7 @@ import dyploma.auction.system.carriage.goods.mvc.shipper.validator.EditEmployeeF
 import dyploma.auction.system.carriage.goods.mvc.shipper.validator.EditGoodFormValidator;
 import dyploma.auction.system.carriage.goods.mvc.shipper.validator.EditProfileFormValidator;
 import dyploma.auction.system.carriage.goods.mvc.shipper.validator.GoodFormValidator;
+import dyploma.auction.system.carriage.goods.mvc.shipper.validator.NewPriceFormValidator;
 import dyploma.auction.system.carriage.goods.mvc.shipper.validator.RegisterFormValidator;
 import dyploma.auction.system.carriage.goods.mvc.shipper.validator.UserFormValidator;
 
@@ -105,6 +107,14 @@ public class ShipperController {
 	@InitBinder("editGoodForm")
 	protected void initEditGoodFormValidator(WebDataBinder binder) {
 		binder.setValidator(editGoodFormValidator);
+	}
+
+	@Autowired
+	private NewPriceFormValidator newPriceFormValidator;
+
+	@InitBinder("priceForm")
+	protected void initNewPriceFormValidator(WebDataBinder binder) {
+		binder.setValidator(newPriceFormValidator);
 	}
 
 	@RequestMapping("/detailsEmployee/{id}")
@@ -237,7 +247,7 @@ public class ShipperController {
 		}
 		List<String> countryList = null;
 		countryList = EuropeCountryList.getEuropeCountryList();
-		modelAndView.addObject("countryList",countryList);
+		modelAndView.addObject("countryList", countryList);
 		modelAndView.addObject("registerForm", registerModelOrNull);
 		return modelAndView;
 	}
@@ -280,6 +290,75 @@ public class ShipperController {
 		Object[] role = auth.getAuthorities().toArray();
 		modelAndView.addObject("role", role[0].toString());
 		return modelAndView;
+	}
+
+	@RequestMapping("/searchCargo")
+	public ModelAndView searchCargo() {
+		ModelAndView modelAndView = new ModelAndView("searchCargo");
+		Authentication auth = SecurityContextHolder.getContext()
+				.getAuthentication();
+		modelAndView.addObject("username", auth.getName());
+		int userID = dao.getUserIDByLogin(auth.getName());
+		int companyID = dao.getCompanyID(userID);
+		int typeOfCompany = dao.getTypeOfCompany(companyID);
+		modelAndView.addObject("typeOfCompany", String.valueOf(typeOfCompany));
+		Object[] role = auth.getAuthorities().toArray();
+		modelAndView.addObject("role", role[0].toString());
+		List<GoodModelForList> goodsList = dao.getGoodsList();
+		modelAndView.addObject("goodsList", goodsList);
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/cargo/{id}", method = RequestMethod.GET)
+	public ModelAndView cargoGet(@PathVariable int id, NewPrice newPriceOrNull,
+			Integer messageCodeOrNull) {
+		ModelAndView modelAndView = new ModelAndView("cargo");
+
+		if (newPriceOrNull == null) {
+			newPriceOrNull = new NewPrice(null, null, null);
+		}
+
+		if (messageCodeOrNull != null) {
+			switch (messageCodeOrNull) {
+			case 1:
+				modelAndView.addObject("wiadomosc", "Poda³eœ z³¹ kwotê");
+				break;
+			case 2:
+				modelAndView.addObject("wiadomosc", "Zmieni³eœ kwotê");
+				break;
+			default:
+				break;
+			}
+		}
+		Authentication auth = SecurityContextHolder.getContext()
+				.getAuthentication();
+		modelAndView.addObject("username", auth.getName());
+		int userID = dao.getUserIDByLogin(auth.getName());
+		int companyID = dao.getCompanyID(userID);
+		int typeOfCompany = dao.getTypeOfCompany(companyID);
+		modelAndView.addObject("typeOfCompany", String.valueOf(typeOfCompany));
+		Object[] role = auth.getAuthorities().toArray();
+		modelAndView.addObject("role", role[0].toString());
+		DetailsGoodModel detailsGoodModel = dao.getDetailsGood(id);
+		modelAndView.addObject("detailsCargoModel", detailsGoodModel);
+		modelAndView.addObject("priceForm", newPriceOrNull);
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/cargo/{id}", method = RequestMethod.POST)
+	public ModelAndView cargoPost(@PathVariable int id,
+			@ModelAttribute("priceForm") @Validated NewPrice newPrice,
+			BindingResult result) {
+		if (result.hasErrors())
+		{
+			return cargoGet(id, newPrice, 1);
+		}else
+		{
+			dao.updatePrice(id,newPrice.getPrice());
+			return cargoGet(id, newPrice, 2);
+		}
+			
+		
 	}
 
 	@RequestMapping("/cargosList")
@@ -469,7 +548,7 @@ public class ShipperController {
 		modelAndView.addObject("role", role[0].toString());
 		List<String> countryList = null;
 		countryList = EuropeCountryList.getEuropeCountryList();
-		modelAndView.addObject("countryList",countryList);
+		modelAndView.addObject("countryList", countryList);
 		modelAndView.addObject("companyForm", companyModel);
 		return modelAndView;
 	}
@@ -538,7 +617,7 @@ public class ShipperController {
 		modelAndView.addObject("role", role[0].toString());
 		List<String> countryList = null;
 		countryList = EuropeCountryList.getEuropeCountryList();
-		modelAndView.addObject("countryList",countryList);
+		modelAndView.addObject("countryList", countryList);
 		List<String> trailersList = null;
 		trailersList = TrailersList.getTrailersList();
 		modelAndView.addObject("trailersList", trailersList);
@@ -594,7 +673,7 @@ public class ShipperController {
 		activityList.add("Nie");
 		List<String> countryList = null;
 		countryList = EuropeCountryList.getEuropeCountryList();
-		modelAndView.addObject("countryList",countryList);
+		modelAndView.addObject("countryList", countryList);
 		List<String> trailersList = null;
 		trailersList = TrailersList.getTrailersList();
 		modelAndView.addObject("trailersList", trailersList);

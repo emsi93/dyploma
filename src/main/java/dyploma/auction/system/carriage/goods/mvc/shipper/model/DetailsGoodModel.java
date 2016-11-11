@@ -2,6 +2,7 @@ package dyploma.auction.system.carriage.goods.mvc.shipper.model;
 
 public class DetailsGoodModel {
 
+	private int id;
 	private String title;
 	private String content;
 	private String trailer;
@@ -114,12 +115,22 @@ public class DetailsGoodModel {
 	public void setCompany(String company) {
 		this.company = company;
 	}
-	public DetailsGoodModel(String title, String content, String trailer,
+	
+	
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public DetailsGoodModel(int id, String title, String content, String trailer,
 			String fromCountry, String fromCity, String fromStreet,
 			String toCountry, String toCity, String toStreet, Double maxPrice,
 			String dateAdding, String dateOfDelivery, String actualPrice,
 			String name, String surname, String company) {
 		super();
+		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.trailer = trailer;
