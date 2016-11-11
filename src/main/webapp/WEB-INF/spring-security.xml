@@ -14,6 +14,10 @@
 			access="ROLE_ADMIN,ROLE_USER" />
 		<security:intercept-url pattern="/shipper/editProfile"
 			access="ROLE_ADMIN,ROLE_USER" />
+		<security:intercept-url pattern="/shipper/searchCargo"
+			access="ROLE_ADMIN,ROLE_USER" />
+		<security:intercept-url pattern="/shipper/cargo"
+			access="ROLE_ADMIN,ROLE_USER" />
 		<security:intercept-url pattern="/shipper/employeeList"
 			access="ROLE_ADMIN" />
 		<security:intercept-url pattern="/shipper/newUser"
@@ -23,6 +27,12 @@
 		<security:intercept-url pattern="/shipper/editEmployee"
 			access="ROLE_ADMIN" />
 		<security:intercept-url pattern="/shipper/detailsEmployee"
+			access="ROLE_ADMIN" />
+		<security:intercept-url pattern="/shipper/editCargo"
+			access="ROLE_ADMIN" />
+		<security:intercept-url pattern="/shipper/detailsCargo"
+			access="ROLE_ADMIN" />
+		<security:intercept-url pattern="/shipper/cargosList"
 			access="ROLE_ADMIN" />
 		<security:form-login login-page="/shipper/login"
 			default-target-url="/shipper/menu" authentication-failure-url="/shipper/errorLogin" />

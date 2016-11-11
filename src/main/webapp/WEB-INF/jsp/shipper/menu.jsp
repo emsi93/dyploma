@@ -46,7 +46,7 @@
 						<ul class="dropdown-menu" role="menu">
 							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
 								<c:if test="${typeOfCompany=='2' }">
-									<li><a href="#">Szukaj towaru</a></li>
+									<li><a href="searchCargo">Szukaj towaru</a></li>
 									<li class="divider"></li>
 								</c:if>
 							</c:if>

@@ -34,7 +34,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="menu">System aukcyjny towarów</a>
+				<a class="navbar-brand" href="/auction-system/shipper/menu">System aukcyjny towarów</a>
 			</div>
 
 			<!-- Grupowanie elementów menu w celu lepszego wyświetlania na urządzeniach moblinych -->
@@ -128,14 +128,33 @@
 				<h4>Autor: ${detailsCargoModel.name }
 					${detailsCargoModel.surname}</h4>
 				<h4>Nazwa firmy: ${detailsCargoModel.company }</h4>
-				<c:if test="${typeOfCompany=='1' }">
-				<a class="btn btn-primary" href="/auction-system/shipper/newCargo">Dodaj
-					towar</a> <a class="btn btn-primary"
-					href="/auction-system/shipper/cargosList">Lista towarów</a>
-				</c:if>
+				${wiadomosc }
+				<form:form method="post" modelAttribute="priceForm"
+					action="/auction-system/shipper/cargo/${detailsCargoModel.id}" role="form">
+						<div class="form-group">
+						<label class="sr-only">Kwota</label>
+						<form:input path="price" type="number" class="form-control"
+							placeholder="*Kwota..." />
+						<div class="errors">
+							<form:errors path="price" element="div" />
+						</div>
+						<div class="form-group">
+							<form:input path="actualPrice" type="hidden" class="form-control"
+								value="${detailsCargoModel.actualPrice}"/>
+						</div>
+						<div class="form-group">
+							<form:input path="maxPrice" type="hidden" class="form-control"
+								value="${detailsCargoModel.maxPrice}"/>
+						</div>
+						<form:input class="submit btn btn-primary" path="" type="submit"
+						value="Licytuj"></form:input>
+					</div>
+				</form:form>
 				<c:if test="${typeOfCompany=='2' }">
-				<a class="btn btn-primary" href="/auction-system/shipper/searchCargo">Lista towarów</a>
+					<a class="btn btn-primary"
+						href="/auction-system/shipper/searchCargo">Lista towarów</a>
 				</c:if>
+
 			</div>
 			<div class="col-lg-3"></div>
 		</div>

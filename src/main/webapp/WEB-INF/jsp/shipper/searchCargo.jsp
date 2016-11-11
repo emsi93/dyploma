@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Serwis aukcyjny - szczegóły ładunku</title>
+<title>Serwis aukcyjny - szukaj towaru</title>
 <link href="/auction-system/static/menu/css/bootstrap.min.css"
 	rel="stylesheet">
 <link
@@ -44,49 +44,25 @@
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown">Menu<span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
-								<c:if test="${typeOfCompany=='2' }">
-									<li><a href="#">Szukaj towaru</a></li>
-									<li class="divider"></li>
-								</c:if>
-							</c:if>
-							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
-								<c:if test="${typeOfCompany=='1' }">
-									<li><a href="/auction-system/shipper/newCargo">Dodaj
-											towar</a></li>
-									<li class="divider"></li>
-								</c:if>
-							</c:if>
-							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
-								<c:if test="${typeOfCompany=='1' }">
-									<li><a href="/auction-system/shipper/cargosList">Lista
-											towarów</a></li>
-									<li class="divider"></li>
-								</c:if>
-							</c:if>
 							<c:choose>
 								<c:when test="${ role=='ROLE_ADMIN'}">
-									<li><a href="/auction-system/shipper/employeesList">Lista
-											użytkowników</a></li>
+									<li><a href="employeesList">Lista użytkowników</a></li>
 									<li class="divider"></li>
 								</c:when>
 							</c:choose>
 							<c:choose>
 								<c:when test="${ role=='ROLE_ADMIN'}">
-									<li><a href="/auction-system/shipper/newUser">Nowy
-											pracownik</a></li>
+									<li><a href="newUser">Nowy pracownik</a></li>
 									<li class="divider"></li>
 								</c:when>
 							</c:choose>
 							<c:choose>
 								<c:when test="${ role=='ROLE_ADMIN'}">
-									<li><a href="/auction-system/shipper/editCompany">Twoja
-											firma</a></li>
+									<li><a href="editCompany">Twoja firma</a></li>
 									<li class="divider"></li>
 								</c:when>
 							</c:choose>
-							<li><a href="/auction-system/shipper/editProfile">Twój
-									profil</a></li>
+							<li><a href="editProfile">Twój profil</a></li>
 							<li class="divider"></li>
 							<li><a href="#">Historia transakcji</a></li>
 						</ul></li>
@@ -102,8 +78,7 @@
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown">${username }<span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="/auction-system/shipper/editProfile">Edytuj
-									profil</a></li>
+							<li><a href="editProfile">Edytuj profil</a></li>
 							<li><a href="<c:url value="/j_spring_security_logout" />">Wyloguj
 									się</a></li>
 						</ul></li>
@@ -111,35 +86,37 @@
 			</div>
 		</div>
 		</nav>
-		<div class="row">
-			<div class="col-lg-3"></div>
-			<div class="col-lg-6">
-				<h4>Nagłówek: ${detailsCargoModel.title }</h4>
-				<h4>Opis: ${detailsCargoModel.content }</h4>
-				<h4>Rodzaj naczepy: ${detailsCargoModel.trailer }</h4>
-				<h4>Miejsce załadunku: ${detailsCargoModel.fromCountry },
-					${detailsCargoModel.fromCity }, ${detailsCargoModel.fromStreet }</h4>
-				<h4>Miejsce rozładunku: ${detailsCargoModel.toCountry },
-					${detailsCargoModel.toCity }, ${detailsCargoModel.toStreet }</h4>
-				<h4>Data dodania: ${detailsCargoModel.dateAdding }</h4>
-				<h4>Termin dostarczenia: ${detailsCargoModel.dateOfDelivery }</h4>
-				<h4>Kwota początkowa: ${detailsCargoModel.maxPrice }</h4>
-				<h4>Aktualna kwota: ${detailsCargoModel.actualPrice}</h4>
-				<h4>Autor: ${detailsCargoModel.name }
-					${detailsCargoModel.surname}</h4>
-				<h4>Nazwa firmy: ${detailsCargoModel.company }</h4>
-				<c:if test="${typeOfCompany=='1' }">
-				<a class="btn btn-primary" href="/auction-system/shipper/newCargo">Dodaj
-					towar</a> <a class="btn btn-primary"
-					href="/auction-system/shipper/cargosList">Lista towarów</a>
-				</c:if>
-				<c:if test="${typeOfCompany=='2' }">
-				<a class="btn btn-primary" href="/auction-system/shipper/searchCargo">Lista towarów</a>
-				</c:if>
-			</div>
-			<div class="col-lg-3"></div>
-		</div>
+		<div class="row"></div>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>LP.</th>
+					<th>Nagłówek</th>
+					<th>Miejsce załadunku</th>
+					<th>Miejsce rozładunku</th>
+					<th>Data dodania</th>
+					<th>Termin dostarczenia</th>
+					<th>Cena początkowa/Cena aktualna</th>
+					<th>Szczegóły</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${goodsList}" var="good" varStatus="loop">
+					<tr>
+						<td>${loop.count}</td>
+						<td>${good.title }</td>
+						<td>${good.fromCountry}, ${good.fromCity}</td>
+						<td>${good.toCountry}, ${good.toCity}</td>
+						<td>${good.dateAdding}</td>
+						<td>${good.dateOfDelivery}</td>
+						<td></td>
+						<td><a class="btn btn-primary"
+							href="/auction-system/shipper/cargo/${good.id }">Szczegóły</a></td>
+						
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
 	</div>
-
 </body>
 </html>

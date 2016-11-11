@@ -29,7 +29,7 @@ public interface ShipperDAOInterface {
 			throws DataAccessException;
 
 	public int checkUniqueNip(String nip) throws DataAccessException;
-
+	
 	public int getCompanyID(String email) throws DataAccessException;
 
 	public int getCompanyID(int userID) throws DataAccessException;
@@ -63,10 +63,14 @@ public interface ShipperDAOInterface {
 	public String getCurrentDate()throws DataAccessException;
 
 	public List<GoodModelForList> getGoodsList(int companyID)throws DataAccessException;
+	
+	public List<GoodModelForList> getGoodsList()throws DataAccessException;
 
 	public DetailsGoodModel getDetailsGood(int id)throws DataAccessException;
 
 	public GoodModelForEdit getGoodModelForEdit(int id)throws DataAccessException;
 
 	public void editCargo(GoodModelForEdit goodModelForEdit)throws DataAccessException;
+
+	public void updatePrice(int id, Double price)throws DataAccessException;
 }
