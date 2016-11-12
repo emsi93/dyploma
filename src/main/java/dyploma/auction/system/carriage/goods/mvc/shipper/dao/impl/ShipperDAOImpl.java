@@ -395,8 +395,7 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 						}, new Object[] { companyID });
 	}
 
-	public List<GoodModelForList> getGoodsList()
-			throws DataAccessException {
+	public List<GoodModelForList> getGoodsList() throws DataAccessException {
 		return jdbcTemplate
 				.query("SELECT g.id, g.title, g.from_country, g.from_city, g.to_country, g.to_city, g.date_adding, g.date_of_delivery FROM goods g INNER JOIN logins l ON g.id_login = l.id INNER JOIN users u ON l.id_user = u.id INNER JOIN companies c ON c.id = u.id_company WHERE g.status = 1",
 						new RowMapper<GoodModelForList>() {
@@ -409,25 +408,26 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 										.getString(6), rs.getString(7), rs
 										.getString(8));
 							}
-						}, new Object[] {  });
+						}, new Object[] {});
 	}
-	
+
 	public DetailsGoodModel getDetailsGood(int id) throws DataAccessException {
 		return jdbcTemplate
 				.queryForObject(
-						"SELECT g.id, g.title, g.content, g.trailer, g.from_country, g.from_city, g.from_street, g.to_country, g.to_city, g.to_street, g.max_price, g.date_adding, g.date_of_delivery, g.actual_price, u.name, u.surname, c.company_name FROM goods g INNER JOIN logins l ON g.id_login = l.id INNER JOIN users u ON l.id_user = u.id INNER JOIN companies c ON c.id = u.id_company WHERE g.id = ?",
+						"SELECT g.id, g.title, g.content, g.trailer, g.from_country, g.from_city, g.from_street, g.to_country, g.to_city, g.to_street, g.max_price, g.date_adding, g.date_of_delivery, g.actual_price, u.name, u.surname, c.company_name, c.id FROM goods g INNER JOIN logins l ON g.id_login = l.id INNER JOIN users u ON l.id_user = u.id INNER JOIN companies c ON c.id = u.id_company WHERE g.id = ?",
 						new RowMapper<DetailsGoodModel>() {
 							public DetailsGoodModel mapRow(ResultSet rs,
 									int rowNumber) throws SQLException {
-								return new DetailsGoodModel(rs.getInt(1), rs.getString(2), rs
-										.getString(3), rs.getString(4), rs
-										.getString(5), rs.getString(6), rs
-										.getString(7), rs.getString(8), rs
-										.getString(9), rs.getString(10), rs
-										.getDouble(11), rs.getString(12), rs
-										.getString(13), rs.getString(14), rs
-										.getString(15), rs.getString(16), rs
-										.getString(17));
+								return new DetailsGoodModel(rs.getInt(1), rs
+										.getString(2), rs.getString(3), rs
+										.getString(4), rs.getString(5), rs
+										.getString(6), rs.getString(7), rs
+										.getString(8), rs.getString(9), rs
+										.getString(10), rs.getDouble(11), rs
+										.getString(12), rs.getString(13), rs
+										.getString(14), rs.getString(15), rs
+										.getString(16), rs.getString(17), rs
+										.getInt(18));
 							}
 						}, new Object[] { id });
 	}
@@ -471,15 +471,33 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 						goodModelForEdit.getToStreet(),
 						goodModelForEdit.getMaxPrice(),
 						goodModelForEdit.getDateOfDelivery(), status,
-						goodModelForEdit.getId()
-				);
+						goodModelForEdit.getId());
 
 	}
 
-
 	public void updatePrice(int id, Double price) throws DataAccessException {
 		// TODO Auto-generated method stub
-		jdbcTemplate.update("UPDATE goods SET actual_price=? WHERE id = ?",price, id);
+		jdbcTemplate.update("UPDATE goods SET actual_price=? WHERE id = ?",
+				price, id);
+	}
+
+	public CompanyModel getInfoCompany(int idCompany)
+			throws DataAccessException {
+		return jdbcTemplate
+				.queryForObject(
+						"SELECT c.id, c.company_name, c.country, c.postcode, c.city, c.street, c.flat_number, c.nip_number, c.phone_number, c.website, c.email, c.description FROM companies c  WHERE c.id = ?",
+						new RowMapper<CompanyModel>() {
+							public CompanyModel mapRow(ResultSet rs,
+									int rowNumber) throws SQLException {
+								return new CompanyModel(rs.getInt(1), rs
+										.getString(2), rs.getString(3), rs
+										.getString(4), rs.getString(5), rs
+										.getString(6), rs.getString(7), rs
+										.getString(8), rs.getString(9), rs
+										.getString(10), rs.getString(11), rs
+										.getString(12));
+							}
+						}, new Object[] { idCompany });
 	}
 
 }

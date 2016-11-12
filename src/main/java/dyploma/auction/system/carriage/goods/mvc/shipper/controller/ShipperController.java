@@ -291,6 +291,23 @@ public class ShipperController {
 		modelAndView.addObject("role", role[0].toString());
 		return modelAndView;
 	}
+	
+	@RequestMapping("/aboutCompany/{id}")
+	public ModelAndView aboutCompany(@PathVariable int id) {
+		ModelAndView modelAndView = new ModelAndView("aboutCompany");
+		Authentication auth = SecurityContextHolder.getContext()
+				.getAuthentication();
+		modelAndView.addObject("username", auth.getName());
+		int userID = dao.getUserIDByLogin(auth.getName());
+		int companyID = dao.getCompanyID(userID);
+		int typeOfCompany = dao.getTypeOfCompany(companyID);
+		modelAndView.addObject("typeOfCompany", String.valueOf(typeOfCompany));
+		Object[] role = auth.getAuthorities().toArray();
+		modelAndView.addObject("role", role[0].toString());
+		CompanyModel companyModel = dao.getInfoCompany(id);
+		modelAndView.addObject("companyModel", companyModel);
+		return modelAndView;
+	}
 
 	@RequestMapping("/searchCargo")
 	public ModelAndView searchCargo() {
@@ -349,16 +366,13 @@ public class ShipperController {
 	public ModelAndView cargoPost(@PathVariable int id,
 			@ModelAttribute("priceForm") @Validated NewPrice newPrice,
 			BindingResult result) {
-		if (result.hasErrors())
-		{
+		if (result.hasErrors()) {
 			return cargoGet(id, newPrice, 1);
-		}else
-		{
-			dao.updatePrice(id,newPrice.getPrice());
+		} else {
+			dao.updatePrice(id, newPrice.getPrice());
 			return cargoGet(id, newPrice, 2);
 		}
-			
-		
+
 	}
 
 	@RequestMapping("/cargosList")
