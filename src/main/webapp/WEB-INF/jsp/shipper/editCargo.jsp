@@ -227,7 +227,7 @@
 						</div>
 					</div>
 					<form:input class="submit btn btn-primary" path="" type="submit"
-						value="Edycja"></form:input>
+						value="Edytuj"></form:input>
 				</div>
 
 				<div class="col-lg-2"></div>

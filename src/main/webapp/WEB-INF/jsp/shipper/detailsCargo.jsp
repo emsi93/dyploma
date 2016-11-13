@@ -155,7 +155,7 @@
 						</tr>
 						<tr>
 							<td>Autor:</td>
-							<td>${detailsCargoModel.name }${detailsCargoModel.surname}</td>
+							<td>${detailsCargoModel.name } ${detailsCargoModel.surname}</td>
 						</tr>
 						<tr>
 							<td>Nazwa firmy:</td>
@@ -168,6 +168,8 @@
 						towar</a>
 					<a class="btn btn-primary"
 						href="/auction-system/shipper/cargosList">Lista towarów</a>
+					<a class="btn btn-primary"
+						href="/auction-system/shipper/editCargo/${detailsCargoModel.id }">Edycja</a>
 				</c:if>
 				<c:if test="${typeOfCompany=='2' }">
 					<a class="btn btn-primary"
@@ -182,6 +184,7 @@
 
 </body>
 <script>
+
 	function initMap() {
 
 		var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -202,8 +205,8 @@
 
 	function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 		directionsService.route({
-			origin : "Warszawa",
-			destination : "Łódź, Ofiarna",
+			origin : "${detailsCargoModel.fromCountry }, ${detailsCargoModel.fromCity }, ${detailsCargoModel.fromStreet }",
+			destination : "${detailsCargoModel.toCountry }, ${detailsCargoModel.toCity }, ${detailsCargoModel.toStreet }",
 			travelMode : google.maps.TravelMode.DRIVING
 		}, function(response, status) {
 			if (status == google.maps.DirectionsStatus.OK) {

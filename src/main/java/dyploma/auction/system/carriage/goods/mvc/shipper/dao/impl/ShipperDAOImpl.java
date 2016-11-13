@@ -381,7 +381,7 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 	public List<GoodModelForList> getGoodsList(int companyID)
 			throws DataAccessException {
 		return jdbcTemplate
-				.query("SELECT g.id, g.title, g.from_country, g.from_city, g.to_country, g.to_city, g.date_adding, g.date_of_delivery FROM goods g INNER JOIN logins l ON g.id_login = l.id INNER JOIN users u ON l.id_user = u.id INNER JOIN companies c ON c.id = u.id_company WHERE u.id_company = ? AND g.status = 1",
+				.query("SELECT g.id, g.title, g.from_country, g.from_city, g.to_country, g.to_city, g.date_adding, g.date_of_delivery, g.max_price, g.actual_price FROM goods g INNER JOIN logins l ON g.id_login = l.id INNER JOIN users u ON l.id_user = u.id INNER JOIN companies c ON c.id = u.id_company WHERE u.id_company = ? AND g.status = 1",
 						new RowMapper<GoodModelForList>() {
 
 							public GoodModelForList mapRow(ResultSet rs,
@@ -390,14 +390,14 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 										.getString(2), rs.getString(3), rs
 										.getString(4), rs.getString(5), rs
 										.getString(6), rs.getString(7), rs
-										.getString(8));
+										.getString(8),rs.getDouble(9), rs.getDouble(10));
 							}
 						}, new Object[] { companyID });
 	}
 
 	public List<GoodModelForList> getGoodsList() throws DataAccessException {
 		return jdbcTemplate
-				.query("SELECT g.id, g.title, g.from_country, g.from_city, g.to_country, g.to_city, g.date_adding, g.date_of_delivery FROM goods g INNER JOIN logins l ON g.id_login = l.id INNER JOIN users u ON l.id_user = u.id INNER JOIN companies c ON c.id = u.id_company WHERE g.status = 1",
+				.query("SELECT g.id, g.title, g.from_country, g.from_city, g.to_country, g.to_city, g.date_adding, g.date_of_delivery, g.max_price, g.actual_price FROM goods g INNER JOIN logins l ON g.id_login = l.id INNER JOIN users u ON l.id_user = u.id INNER JOIN companies c ON c.id = u.id_company WHERE g.status = 1",
 						new RowMapper<GoodModelForList>() {
 
 							public GoodModelForList mapRow(ResultSet rs,
@@ -406,7 +406,7 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 										.getString(2), rs.getString(3), rs
 										.getString(4), rs.getString(5), rs
 										.getString(6), rs.getString(7), rs
-										.getString(8));
+										.getString(8), rs.getDouble(9), rs.getDouble(10));
 							}
 						}, new Object[] {});
 	}

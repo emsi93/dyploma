@@ -3,6 +3,8 @@ package dyploma.auction.system.carriage.goods.mvc.shipper.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -291,7 +293,7 @@ public class ShipperController {
 		modelAndView.addObject("role", role[0].toString());
 		return modelAndView;
 	}
-	
+
 	@RequestMapping("/aboutCompany/{id}")
 	public ModelAndView aboutCompany(@PathVariable int id) {
 		ModelAndView modelAndView = new ModelAndView("aboutCompany");
@@ -322,7 +324,25 @@ public class ShipperController {
 		Object[] role = auth.getAuthorities().toArray();
 		modelAndView.addObject("role", role[0].toString());
 		List<GoodModelForList> goodsList = dao.getGoodsList();
+		JSONArray jsonA = new JSONArray();
+		for (int i = 0; i < goodsList.size(); i++) {
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("id", goodsList.get(i).getId());
+			jsonObject.put("title", goodsList.get(i).getTitle());
+			jsonObject.put("from", goodsList.get(i).getFromCountry() + ", "
+					+ goodsList.get(i).getFromCity());
+			jsonObject.put("to", goodsList.get(i).getToCountry() + ", "
+					+ goodsList.get(i).getToCity());
+			jsonObject.put("dateAdding", goodsList.get(i).getDateAdding());
+			jsonObject
+					.put("dateDelivery", goodsList.get(i).getDateOfDelivery());
+			jsonObject.put("prices", goodsList.get(i).getMaxPrice() + "z³/"
+					+ goodsList.get(i).getActualPrice() + "z³");
+			jsonA.put(jsonObject);
+
+		}
 		modelAndView.addObject("goodsList", goodsList);
+		modelAndView.addObject("jsonA", jsonA);
 		return modelAndView;
 	}
 
@@ -388,7 +408,24 @@ public class ShipperController {
 		Object[] role = auth.getAuthorities().toArray();
 		modelAndView.addObject("role", role[0].toString());
 		List<GoodModelForList> goodsList = dao.getGoodsList(companyID);
-		modelAndView.addObject("goodsList", goodsList);
+		JSONArray jsonA = new JSONArray();
+		for (int i = 0; i < goodsList.size(); i++) {
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("id", goodsList.get(i).getId());
+			jsonObject.put("title", goodsList.get(i).getTitle());
+			jsonObject.put("from", goodsList.get(i).getFromCountry() + ", "
+					+ goodsList.get(i).getFromCity());
+			jsonObject.put("to", goodsList.get(i).getToCountry() + ", "
+					+ goodsList.get(i).getToCity());
+			jsonObject.put("dateAdding", goodsList.get(i).getDateAdding());
+			jsonObject
+					.put("dateDelivery", goodsList.get(i).getDateOfDelivery());
+			jsonObject.put("prices", goodsList.get(i).getMaxPrice() + "z³/"
+					+ goodsList.get(i).getActualPrice() + "z³");
+			jsonA.put(jsonObject);
+
+		}
+		modelAndView.addObject("jsonA", jsonA);
 		return modelAndView;
 	}
 
@@ -408,10 +445,21 @@ public class ShipperController {
 		int companyID = dao.getCompanyID(userID);
 		int typeOfCompany = dao.getTypeOfCompany(companyID);
 		List<EmployeeModel> employeeList = dao.getEmployeesList(companyID);
+		JSONArray jsonA = new JSONArray();
+		for(int i=0; i<employeeList.size();i++)
+		{
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("id", employeeList.get(i).getId() );
+			jsonObject.put("name", employeeList.get(i).getName() );
+			jsonObject.put("surname", employeeList.get(i).getSurname() );
+			jsonObject.put("phoneNumber", employeeList.get(i).getPhoneNumber() );
+			jsonObject.put("email", employeeList.get(i).getEmail() );
+			jsonA.put(jsonObject);
+		}
 		modelAndView.addObject("role", role[0].toString());
 		modelAndView.addObject("username", auth.getName());
 		modelAndView.addObject("typeOfCompany", String.valueOf(typeOfCompany));
-		modelAndView.addObject("employeesList", employeeList);
+		modelAndView.addObject("jsonA", jsonA);
 		return modelAndView;
 	}
 
