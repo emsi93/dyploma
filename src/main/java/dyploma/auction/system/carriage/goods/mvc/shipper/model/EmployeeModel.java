@@ -47,5 +47,12 @@ public class EmployeeModel {
 	public void setId(int id) {
 		this.id = id;
 	}
+	@Override
+	public String toString() {
+		return "EmployeeModel [id=" + id + ", name=" + name + ", surname="
+				+ surname + ", phoneNumber=" + phoneNumber + ", email=" + email
+				+ "]";
+	}
+	
 	
 }

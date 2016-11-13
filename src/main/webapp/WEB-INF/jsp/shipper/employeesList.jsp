@@ -12,32 +12,20 @@
 <title>Serwis aukcyjny - lista pracowników</title>
 <link href="/auction-system/static/menu/css/bootstrap.min.css"
 	rel="stylesheet">
-
-
-
-<!-- Custom Fonts -->
 <link
 	href="/auction-system/static/menu/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
 <link href="/auction-system/static/css/errors.css" rel="stylesheet">
-
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-<!-- jQuery -->
 <script src="/auction-system/static/menu/js/jquery.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
 <script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+<script src="/auction-system/static/angular/filterModule.js"></script>
 </head>
-<body>
+<body ng-app="myModule">
 	<c:set var="role" value="${role}" />
 	<c:set var="typeOfCompany" value="${typeOfCompany }" />
 	<div class="container">
-	<nav class="navbar navbar-default" role="navigation">
+		<nav class="navbar navbar-default" role="navigation">
 		<div class="container-fluid">
 			<!-- Grupowanie "marki" i przycisku rozwijania mobilnego menu -->
 			<div class="navbar-header">
@@ -59,7 +47,7 @@
 						<ul class="dropdown-menu" role="menu">
 							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
 								<c:if test="${typeOfCompany=='2' }">
-									<li><a href="#">Szukaj towaru</a></li>
+									<li><a href="/auction-system/shipper/searchCargo">Szukaj towaru</a></li>
 									<li class="divider"></li>
 								</c:if>
 							</c:if>
@@ -105,36 +93,46 @@
 			</div>
 		</div>
 		</nav>
-		<div class="row">
+		<div class="row" ng-controller="myController">
 			<table class="table table-striped">
 				<thead>
 					<tr>
 						<th>LP.</th>
-						<th>Imię</th>
-						<th>Nazwisko</th>
-						<th>Numer telefonu</th>
-						<th>Email</th>
+						<th ng-click="sortData('name')">Imię</th>
+						<th ng-click="sortData('surname')">Nazwisko</th>
+						<th ng-click="sortData('phoneNumber')">Numer telefonu</th>
+						<th ng-click="sortData('email')">Email</th>
 						<th>Edycja</th>
 						<th>Szczegóły</th>
 					</tr>
+					<tr>
+						<th></th>
+						<th><input type="text" ng-model="searchText.name" size="15" /></th>
+						<th><input type="text" ng-model="searchText.surname" size="15" /></th>
+						<th><input type="text" ng-model="searchText.phoneNumber" size="15" /></th>
+						<th><input type="text" ng-model="searchText.email" size="15" /></th>
+					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${employeesList}" var="employee" varStatus="loop">
-						<tr>
-							<td>${loop.count}</td>
-							<td>${employee.name }</td>
-							<td>${employee.surname }</td>
-							<td>${employee.phoneNumber }</td>
-							<td>${employee.email }</td>
-							<td><a class="btn btn-primary" href="/auction-system/shipper/editEmployee/${employee.id }">Edytuj</a></td>
-							<td><a class="btn btn-primary" href="/auction-system/shipper/detailsEmployee/${employee.id }">Szczegóły</a></td>
+				
+						<tr ng-repeat="employee in data | filter:searchText | orderBy:sortColumn:reverseSort">
+							<td>{{$index+1}}</td>
+							<td>{{employee.name }}</td>
+							<td>{{employee.surname }}</td>
+							<td>{{employee.phoneNumber }}</td>
+							<td>{{employee.email }}</td>
+							<td><a class="btn btn-primary"
+								href="/auction-system/shipper/editEmployee/{{employee.id }}">Edytuj</a></td>
+							<td><a class="btn btn-primary"
+								href="/auction-system/shipper/detailsEmployee/{{employee.id }}">Szczegóły</a></td>
 						</tr>
-
-					</c:forEach>
 				</tbody>
 			</table>
-			<a class="btn btn-primary" href="newUser">Dodaj pracownika</a></td>
+			<a class="btn btn-primary" href="newUser">Dodaj pracownika</a>
 		</div>
 	</div>
 </body>
+<script>
+	var datas = ${jsonA	};
+</script>
 </html>

@@ -18,9 +18,12 @@
 <link href="/auction-system/static/css/errors.css" rel="stylesheet">
 <script src="/auction-system/static/menu/js/jquery.js"></script>
 <script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+<script src="/auction-system/static/angular/filterModule.js"></script>
 </head>
 
-<body>
+<body ng-app="myModule">
 	<c:set var="role" value="${role}" />
 	<c:set var="typeOfCompany" value="${typeOfCompany }" />
 	<div class="container">
@@ -98,39 +101,57 @@
 			</div>
 		</div>
 		</nav>
-		<div class="row">
+		<div class="row" ng-controller="myController">
 			<table class="table table-striped">
 				<thead>
 					<tr>
 						<th>LP.</th>
-						<th>Nagłówek</th>
-						<th>Miejsce załadunku</th>
-						<th>Miejsce rozładunku</th>
-						<th>Data dodania</th>
-						<th>Termin dostarczenia</th>
+						<th ng-click="sortData('title')">Nagłówek</th>
+						<th ng-click="sortData('from')">Miejsce załadunku</th>
+						<th ng-click="sortData('to')">Miejsce rozładunku</th>
+						<th ng-click="sortData('dateAdding')">Data dodania</th>
+						<th ng-click="sortData('dateDelivery')">Termin dostarczenia</th>
+						<th ng-click="sortData('prices')">Cena początkowa/Cena
+							aktualna</th>
 						<th>Szczegóły</th>
 						<th>Edycja</th>
 					</tr>
+					<tr>
+						<th></th>
+						<th><input type="text" ng-model="searchText.title" size="12" /></th>
+						<th><input type="text" ng-model="searchText.from" size="12" /></th>
+						<th><input type="text" ng-model="searchText.to" size="12" /></th>
+						<th><input type="text" ng-model="searchText.dateAdding"
+							size="12" /></th>
+						<th><input type="text" ng-model="searchText.dateDelivery"
+							size="12" /></th>
+						<th><input type="text" ng-model="searchText.prices" size="12" /></th>
+					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${goodsList}" var="good" varStatus="loop">
-						<tr>
-							<td>${loop.count}</td>
-							<td>${good.title }</td>
-							<td>${good.fromCountry},${good.fromCity}</td>
-							<td>${good.toCountry},${good.toCity}</td>
-							<td>${good.dateAdding }</td>
-							<td>${good.dateOfDelivery }</td>
-							<td><a class="btn btn-primary"
-								href="/auction-system/shipper/detailsCargo/${good.id }">Szczegóły</a></td>
-							<td><a class="btn btn-primary"
-								href="/auction-system/shipper/editCargo/${good.id }">Edycja</a></td>
-						</tr>
-					</c:forEach>
+
+					<tr
+						ng-repeat="good in data | filter:searchText | orderBy:sortColumn:reverseSort">
+						<td>{{$index+1}}</td>
+						<td>{{good.title }}</td>
+						<td>{{good.from }}</td>
+						<td>{{good.to }}</td>
+						<td>{{good.dateAdding | date:"dd.MM.yyyy" }}</td>
+						<td>{{good.dateDelivery | date:"dd.MM.yyyy"}}</td>
+						<td>{{good.prices }}</td>
+						<td><a class="btn btn-primary"
+							href="/auction-system/shipper/detailsCargo/{{good.id }}">Szczegóły</a></td>
+						<td><a class="btn btn-primary"
+							href="/auction-system/shipper/editCargo/{{good.id }}">Edycja</a></td>
+					</tr>
+
 				</tbody>
 			</table>
 			<a class="btn btn-primary" href="newCargo">Dodaj towar</a>
 		</div>
 	</div>
 </body>
+<script>
+	var datas = ${jsonA};
+</script>
 </html>

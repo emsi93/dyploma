@@ -47,6 +47,8 @@ public interface ShipperDAOInterface {
 	public void editProfile(ProfileModel profileForm, int userID)throws DataAccessException;
 	
 	public CompanyModel getCompanyModel(int userID) throws DataAccessException;
+	
+	public CompanyModel getInfoCompany(int idCompany) throws DataAccessException;
 
 	public void editCompany(CompanyModel companyModel, int companyID)throws DataAccessException;
 

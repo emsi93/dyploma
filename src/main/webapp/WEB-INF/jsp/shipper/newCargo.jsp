@@ -86,7 +86,7 @@
 		</div>
 		</nav>
 		<div class="row">
-			<form:form method="post" modelAttribute="editGoodForm"
+			<form:form method="post" modelAttribute="goodForm"
 				action="/auction-system/shipper/newCargo/${editGoodForm.id }" role="form">
 				
 				<div class="col-lg-2">*Pola wymagane</div>
@@ -96,7 +96,7 @@
 					<div class="form-group">
 						<label class="sr-only">Nagłówek</label>
 						<form:input path="title" type="text" class="form-control"
-							placeholder="*Nagłówek..." value="${editGoodForm.title }" />
+							placeholder="*Nagłówek..."  />
 						<div class="errors">
 							<form:errors path="title" element="div" />
 						</div>
@@ -104,7 +104,7 @@
 					<div class="form-group">
 						<label class="sr-only">Opis</label>
 						<form:textarea rows="4" path="content" type="text"
-							class="form-control" placeholder="Opis..." value="${editGoodForm.content }"/>
+							class="form-control" placeholder="Opis..." />
 						<div class="errors">
 							<form:errors path="content" element="div" />
 						</div>
@@ -113,7 +113,7 @@
 					<div class="form-group">
 						<label>Kraj</label>
 						<form:select path="fromCountry" items="${countryList}"
-							class="form-control" value="${editGoodForm.fromCountry }"/>
+							class="form-control" />
 						<div class="errors">
 							<form:errors path="fromCountry" element="div" />
 						</div>
@@ -121,7 +121,7 @@
 					<div class="form-group">
 						<label class="sr-only">Miasto</label>
 						<form:input path="fromCity" type="text" class="form-control"
-							placeholder="*Miasto..." value="${editGoodForm.fromCity }"/>
+							placeholder="*Miasto..." />
 						<div class="errors">
 							<form:errors path="fromCity" element="div" />
 						</div>
@@ -129,7 +129,7 @@
 					<div class="form-group">
 						<label class="sr-only">Ulica</label>
 						<form:input path="fromStreet" type="text" class="form-control"
-							placeholder="*Ulica..." value="${editGoodForm.fromStreet }"/>
+							placeholder="*Ulica..." />
 						<div class="errors">
 							<form:errors path="fromStreet" element="div" />
 						</div>
@@ -140,7 +140,7 @@
 						<label class="sr-only">Cena przewozu</label>
 						<div class="row">
 							<form:input path="maxPrice" min="0" type="number"
-								class="form-control" placeholder="*Cena przewozu" value="${editGoodForm.maxPrice }"/>
+								class="form-control" placeholder="*Cena przewozu" />
 						</div>
 						<div class="errors">
 							<form:errors path="maxPrice" element="div" />
@@ -149,7 +149,7 @@
 					<div class="form-group">
 						</br> <label>Rodzaj naczepy</label>
 						<form:select path="trailer" items="${trailersList}"
-							class="form-control" value="${editGoodForm.trailer }"/>
+							class="form-control" />
 						<div class="errors">
 							<form:errors path="trailer" element="div" />
 						</div>
@@ -157,7 +157,7 @@
 					<label>Termin dostarczenia</label></br>
 						<div class="form-group">
 							<form:input type='date' path="dateOfDelivery"
-								class="form-control" value="${editGoodForm.dateOfDelivery }"/>
+								class="form-control" />
 
 							<div class="errors">
 								<form:errors path="dateOfDelivery" element="div" />
@@ -167,7 +167,7 @@
 						<div class="form-group">
 							<label>Kraj</label>
 							<form:select path="toCountry" items="${countryList}"
-								class="form-control" value="${editGoodForm.toCountry }"/>
+								class="form-control" />
 							<div class="errors">
 								<form:errors path="toCountry" element="div" />
 							</div>
@@ -175,7 +175,7 @@
 						<div class="form-group">
 							<label class="sr-only">Miasto</label>
 							<form:input path="toCity" type="text" class="form-control"
-								placeholder="*Miasto..." value="${editGoodForm.toCity }"/>
+								placeholder="*Miasto..." />
 							<div class="errors">
 								<form:errors path="toCity" element="div" />
 							</div>
@@ -183,21 +183,13 @@
 						<div class="form-group">
 							<label class="sr-only">Ulica</label>
 							<form:input path="toStreet" type="text" class="form-control"
-								placeholder="*Ulica..." value="${editGoodForm.toStreet }"/>
+								placeholder="*Ulica..." />
 							<div class="errors">
 								<form:errors path="toStreet" element="div" />
 							</div>
 						</div>
-						<div class="form-group">
-							<label>Wystawiony na aukcję:</label>
-							<form:select path="status" items="${activityList}"
-								class="form-control" value="${editGoodForm.status }"/>
-							<div class="errors">
-								<form:errors path="status" element="div" />
-							</div>
-						</div>
 						<form:input class="submit btn btn-primary" path="" type="submit"
-						value="Edytuj"></form:input>
+						value="Dodaj"></form:input>
 				</div>
 				
 				<div class="col-lg-2"></div>

@@ -112,34 +112,117 @@
 		</div>
 		</nav>
 		<div class="row">
-			<div class="col-lg-3"></div>
-			<div class="col-lg-6">
-				<h4>Nagłówek: ${detailsCargoModel.title }</h4>
-				<h4>Opis: ${detailsCargoModel.content }</h4>
-				<h4>Rodzaj naczepy: ${detailsCargoModel.trailer }</h4>
-				<h4>Miejsce załadunku: ${detailsCargoModel.fromCountry },
-					${detailsCargoModel.fromCity }, ${detailsCargoModel.fromStreet }</h4>
-				<h4>Miejsce rozładunku: ${detailsCargoModel.toCountry },
-					${detailsCargoModel.toCity }, ${detailsCargoModel.toStreet }</h4>
-				<h4>Data dodania: ${detailsCargoModel.dateAdding }</h4>
-				<h4>Termin dostarczenia: ${detailsCargoModel.dateOfDelivery }</h4>
-				<h4>Kwota początkowa: ${detailsCargoModel.maxPrice }</h4>
-				<h4>Aktualna kwota: ${detailsCargoModel.actualPrice}</h4>
-				<h4>Autor: ${detailsCargoModel.name }
-					${detailsCargoModel.surname}</h4>
-				<h4>Nazwa firmy: ${detailsCargoModel.company }</h4>
+			<div class="col-lg-4">
+				<table class="table table-striped">
+					<tbody>
+						<tr>
+							<td>Nagłówek:</td>
+							<td>${detailsCargoModel.title }</td>
+						</tr>
+						<tr>
+							<td>Opis:</td>
+							<td>${detailsCargoModel.content }</td>
+						</tr>
+						<tr>
+							<td>Rodzaj naczepy:</td>
+							<td>${detailsCargoModel.trailer }</td>
+						</tr>
+						<tr>
+							<td>Miejsce załadunku:</td>
+							<td>${detailsCargoModel.fromCountry },
+								${detailsCargoModel.fromCity }, ${detailsCargoModel.fromStreet }</td>
+						</tr>
+						<tr>
+							<td>Miejsce rozładunku:</td>
+							<td>${detailsCargoModel.toCountry },
+								${detailsCargoModel.toCity }, ${detailsCargoModel.toStreet }</td>
+						</tr>
+						<tr>
+							<td>Data dodania:</td>
+							<td>${detailsCargoModel.dateAdding }</td>
+						</tr>
+						<tr>
+							<td>Termin dostarczenia:</td>
+							<td>${detailsCargoModel.dateOfDelivery }</td>
+						</tr>
+						<tr>
+							<td>Kwota początkowa:</td>
+							<td>${detailsCargoModel.maxPrice }zł</td>
+						</tr>
+						<tr>
+							<td>Aktualna kwota:</td>
+							<td>${detailsCargoModel.actualPrice }zł</td>
+						</tr>
+						<tr>
+							<td>Autor:</td>
+							<td>${detailsCargoModel.name } ${detailsCargoModel.surname}</td>
+						</tr>
+						<tr>
+							<td>Nazwa firmy:</td>
+							<td>${detailsCargoModel.company }</td>
+						</tr>
+					</tbody>
+				</table>
 				<c:if test="${typeOfCompany=='1' }">
-				<a class="btn btn-primary" href="/auction-system/shipper/newCargo">Dodaj
-					towar</a> <a class="btn btn-primary"
-					href="/auction-system/shipper/cargosList">Lista towarów</a>
+					<a class="btn btn-primary" href="/auction-system/shipper/newCargo">Dodaj
+						towar</a>
+					<a class="btn btn-primary"
+						href="/auction-system/shipper/cargosList">Lista towarów</a>
+					<a class="btn btn-primary"
+						href="/auction-system/shipper/editCargo/${detailsCargoModel.id }">Edycja</a>
 				</c:if>
 				<c:if test="${typeOfCompany=='2' }">
-				<a class="btn btn-primary" href="/auction-system/shipper/searchCargo">Lista towarów</a>
+					<a class="btn btn-primary"
+						href="/auction-system/shipper/searchCargo">Lista towarów</a>
 				</c:if>
 			</div>
-			<div class="col-lg-3"></div>
+			<div class="col-lg-8" id="map">
+			
+			</div>
 		</div>
 	</div>
 
 </body>
+<script>
+
+	function initMap() {
+
+		var directionsDisplay = new google.maps.DirectionsRenderer;
+		var directionsService = new google.maps.DirectionsService;
+		var map = new google.maps.Map(document.getElementById('map'), {
+			zoom : 8,
+			center : {
+				lat : 52.13,
+				lng : 21.00
+			}
+		});
+		var trafficLayer = new google.maps.TrafficLayer();
+		trafficLayer.setMap(map);
+		directionsDisplay.setMap(map);
+		calculateAndDisplayRoute(directionsService, directionsDisplay);
+
+	}
+
+	function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+		directionsService.route({
+			origin : "${detailsCargoModel.fromCountry }, ${detailsCargoModel.fromCity }, ${detailsCargoModel.fromStreet }",
+			destination : "${detailsCargoModel.toCountry }, ${detailsCargoModel.toCity }, ${detailsCargoModel.toStreet }",
+			travelMode : google.maps.TravelMode.DRIVING
+		}, function(response, status) {
+			if (status == google.maps.DirectionsStatus.OK) {
+				directionsDisplay.setDirections(response);
+			}
+		});
+	}
+</script>
+<script async defer
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQAR809YkzO5lbIQ_dht4OlSFEaznt2T4&callback=initMap">
+	
+</script>
+<style>
+#map {
+	height: 550px;
+	width: 65%;
+}
+</style>
 </html>

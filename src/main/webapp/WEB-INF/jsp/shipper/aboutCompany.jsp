@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Serwis aukcyjny - edycja ładunku</title>
+<title>Serwis aukcyjny - o firmie</title>
 <link href="/auction-system/static/menu/css/bootstrap.min.css"
 	rel="stylesheet">
 <link
@@ -113,126 +113,62 @@
 		</div>
 		</nav>
 		<div class="row">
-			<form:form method="post" modelAttribute="editGoodForm"
-				action="/auction-system/shipper/editCargo/${editGoodForm.id }"
-				role="form">
-
-				<div class="col-lg-2">*Pola wymagane</div>
-				<div class="col-lg-4">
-					<h2>Nowy towar</h2>
-					${wiadomosc}
-					<div class="form-group">
-						<label class="sr-only">Nagłówek</label>
-						<form:input path="title" type="text" class="form-control"
-							placeholder="*Nagłówek..." value="${editGoodForm.title }" />
-						<div class="errors">
-							<form:errors path="title" element="div" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="sr-only">Opis</label>
-						<form:textarea rows="4" path="content" type="text"
-							class="form-control" placeholder="Opis..."
-							value="${editGoodForm.content }" />
-						<div class="errors">
-							<form:errors path="content" element="div" />
-						</div>
-					</div>
-					<label>Miejsce załadunku</label>
-					<div class="form-group">
-						<label>Kraj</label>
-						<form:select path="fromCountry" items="${countryList}"
-							class="form-control" value="${editGoodForm.fromCountry }" />
-						<div class="errors">
-							<form:errors path="fromCountry" element="div" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="sr-only">Miasto</label>
-						<form:input path="fromCity" type="text" class="form-control"
-							placeholder="*Miasto..." value="${editGoodForm.fromCity }" />
-						<div class="errors">
-							<form:errors path="fromCity" element="div" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="sr-only">Ulica</label>
-						<form:input path="fromStreet" type="text" class="form-control"
-							placeholder="*Ulica..." value="${editGoodForm.fromStreet }" />
-						<div class="errors">
-							<form:errors path="fromStreet" element="div" />
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4">
-					<div class="form-group">
-						<label class="sr-only">Cena przewozu</label>
-						<div class="row">
-							<form:input path="maxPrice" min="0" type="number"
-								class="form-control" placeholder="*Cena przewozu"
-								value="${editGoodForm.maxPrice }" />
-						</div>
-						<div class="errors">
-							<form:errors path="maxPrice" element="div" />
-						</div>
-					</div>
-					<div class="form-group">
-						</br> <label>Rodzaj naczepy</label>
-						<form:select path="trailer" items="${trailersList}"
-							class="form-control" value="${editGoodForm.trailer }" />
-						<div class="errors">
-							<form:errors path="trailer" element="div" />
-						</div>
-					</div>
-					<label>Termin dostarczenia</label></br>
-					<div class="form-group">
-						<form:input type='date' path="dateOfDelivery" class="form-control"
-							value="${editGoodForm.dateOfDelivery }" />
-
-						<div class="errors">
-							<form:errors path="dateOfDelivery" element="div" />
-						</div>
-					</div>
-					<label>Miejsce dostarczenia</label>
-					<div class="form-group">
-						<label>Kraj</label>
-						<form:select path="toCountry" items="${countryList}"
-							class="form-control" value="${editGoodForm.toCountry }" />
-						<div class="errors">
-							<form:errors path="toCountry" element="div" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="sr-only">Miasto</label>
-						<form:input path="toCity" type="text" class="form-control"
-							placeholder="*Miasto..." value="${editGoodForm.toCity }" />
-						<div class="errors">
-							<form:errors path="toCity" element="div" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="sr-only">Ulica</label>
-						<form:input path="toStreet" type="text" class="form-control"
-							placeholder="*Ulica..." value="${editGoodForm.toStreet }" />
-						<div class="errors">
-							<form:errors path="toStreet" element="div" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label>Wystawiony na aukcje:</label>
-						<form:select path="status" items="${activityList}"
-							class="form-control" value="${editGoodForm.status }" />
-						<div class="errors">
-							<form:errors path="status" element="div" />
-						</div>
-					</div>
-					<form:input class="submit btn btn-primary" path="" type="submit"
-						value="Edytuj"></form:input>
-				</div>
-
-				<div class="col-lg-2"></div>
-			</form:form>
+			<div class="col-lg-4"></div>
+			<div class="col-lg-4">
+				<table class="table table-striped">
+				<tbody>
+					<tr>
+						<td>Nazwa firmy:</td>
+						<td>${companyModel.companyName }</td>
+					</tr>
+					<tr>
+						<td>Kraj:</td>
+						<td>${companyModel.country }</td>
+					</tr>
+					<tr>
+						<td>Kod pocztowy:</td>
+						<td>${companyModel.postcode }</td>
+					</tr>
+					<tr>
+						<td>Miasto:</td>
+						<td>${companyModel.city }
+					</td>
+					</tr>
+					<tr>
+						<td>Ulica:</td>
+						<td>${companyModel.street }
+					</td>
+					</tr>
+					<tr>
+						<td>Numer domu:</td>
+						<td>${companyModel.flatNumber }</td>
+					</tr>
+					<tr>
+						<td>Numer NIP:</td>
+						<td>${companyModel.nipNumber }</td>
+					</tr>
+					<tr>
+						<td>Numer telefonu:</td>
+						<td>${companyModel.phoneNumber }</td>
+					</tr>
+					<tr>
+						<td>Strona internetowa:</td>
+						<td>${companyModel.website }</td>
+					</tr>
+					<tr>
+						<td>E-mail:</td>
+						<td>${companyModel.email }</td>
+					</tr>
+					<tr>
+						<td>Opis firmy:</td>
+						<td>${companyModel.description }</td>
+					</tr>
+				</tbody>
+			</table>
+			</div>
+			<div class="col-lg-4"></div>
 		</div>
 	</div>
+
 </body>
 </html>
