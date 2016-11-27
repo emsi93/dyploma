@@ -27,6 +27,7 @@ import dyploma.auction.system.carriage.goods.mvc.shipper.model.EmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.GoodModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.GoodModelForEdit;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.GoodModelForList;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.PricesFromDB;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.ProfileModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.RegisterModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.UserModel;
@@ -390,7 +391,8 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 										.getString(2), rs.getString(3), rs
 										.getString(4), rs.getString(5), rs
 										.getString(6), rs.getString(7), rs
-										.getString(8),rs.getDouble(9), rs.getDouble(10));
+										.getString(8), rs.getDouble(9), rs
+										.getDouble(10));
 							}
 						}, new Object[] { companyID });
 	}
@@ -406,7 +408,8 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 										.getString(2), rs.getString(3), rs
 										.getString(4), rs.getString(5), rs
 										.getString(6), rs.getString(7), rs
-										.getString(8), rs.getDouble(9), rs.getDouble(10));
+										.getString(8), rs.getDouble(9), rs
+										.getDouble(10));
 							}
 						}, new Object[] {});
 	}
@@ -498,6 +501,18 @@ public class ShipperDAOImpl implements ShipperDAOInterface {
 										.getString(12));
 							}
 						}, new Object[] { idCompany });
+	}
+	public PricesFromDB getPricesFromDB(int id) throws DataAccessException {
+		return jdbcTemplate
+				.queryForObject(
+						"SELECT max_price, actual_price FROM goods  WHERE id = ?",
+						new RowMapper<PricesFromDB>() {
+							public PricesFromDB mapRow(ResultSet rs,
+									int rowNumber) throws SQLException {
+								return new PricesFromDB(rs.getDouble(1), rs
+										.getString(2));
+							}
+						}, new Object[] { id });
 	}
 
 }

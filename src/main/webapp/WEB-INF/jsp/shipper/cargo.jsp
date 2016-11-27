@@ -47,7 +47,8 @@
 						<ul class="dropdown-menu" role="menu">
 							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
 								<c:if test="${typeOfCompany=='2' }">
-									<li><a href="#">Szukaj towaru</a></li>
+									<li><a href="/auction-system/shipper/searchCargo">Szukaj
+											towaru</a></li>
 									<li class="divider"></li>
 								</c:if>
 							</c:if>
@@ -113,94 +114,101 @@
 		</div>
 		</nav>
 		<div class="row">
+
 			<div class="col-lg-4">
-			<table class="table table-striped">
-				<tbody>
-					<tr>
-						<td>Nagłówek:</td>
-						<td>${detailsCargoModel.title }</td>
-					</tr>
-					<tr>
-						<td>Opis:</td>
-						<td>${detailsCargoModel.content }</td>
-					</tr>
-					<tr>
-						<td>Rodzaj naczepy:</td>
-						<td>${detailsCargoModel.trailer }</td>
-					</tr>
-					<tr>
-						<td>Miejsce załadunku:</td>
-						<td>${detailsCargoModel.fromCountry },
-					${detailsCargoModel.fromCity }, ${detailsCargoModel.fromStreet }</td>
-					</tr>
-					<tr>
-						<td>Miejsce rozładunku:</td>
-						<td>${detailsCargoModel.toCountry },
-					${detailsCargoModel.toCity }, ${detailsCargoModel.toStreet }</td>
-					</tr>
-					<tr>
-						<td>Data dodania:</td>
-						<td>${detailsCargoModel.dateAdding }</td>
-					</tr>
-					<tr>
-						<td>Termin dostarczenia:</td>
-						<td>${detailsCargoModel.dateOfDelivery }</td>
-					</tr>
-					<tr>
-						<td>Kwota początkowa:</td>
-						<td>${detailsCargoModel.maxPrice } zł</td>
-					</tr>
-					<tr>
-						<td>Aktualna kwota:</td>
-						<td>${detailsCargoModel.actualPrice } zł</td>
-					</tr>
-					<tr>
-						<td>Autor:</td>
-						<td>${detailsCargoModel.name }
-					${detailsCargoModel.surname}</td>
-					</tr>
-					<tr>
-						<td>Nazwa firmy:</td>
-						<td>${detailsCargoModel.company }</td>
-					</tr>
-				</tbody>
-			</table>
-				<div id="licytacja" style="display: none">
+				<div class="errors">
 				${wiadomosc }
-				<form:form method="post" modelAttribute="priceForm"
-					action="/auction-system/shipper/cargo/${detailsCargoModel.id}"
-					role="form">
-					<div class="form-group">
-						<label class="sr-only">Kwota</label>
-						<form:input path="price" type="number" class="form-control"
-							placeholder="*Kwota..." />
-						<div class="errors">
-							<form:errors path="price" element="div" />
-						</div>
-						<div class="form-group">
-							<form:input path="actualPrice" type="hidden" class="form-control"
-								value="${detailsCargoModel.actualPrice}" />
-						</div>
-						<div class="form-group">
-							<form:input path="maxPrice" type="hidden" class="form-control"
-								value="${detailsCargoModel.maxPrice}" />
-						</div>
-						<form:input class="submit btn btn-primary" path="" type="submit"
-							value="Licytuj"></form:input>
-					</div>
-				</form:form>
 				</div>
-				<button class="btn btn-primary" id="licytacjaButton">Licytuj</button>
+				<table class="table table-striped">
+					<tbody>
+						<tr>
+							<td>Nagłówek:</td>
+							<td>${detailsCargoModel.title }</td>
+						</tr>
+						<tr>
+							<td>Opis:</td>
+							<td>${detailsCargoModel.content }</td>
+						</tr>
+						<tr>
+							<td>Rodzaj naczepy:</td>
+							<td>${detailsCargoModel.trailer }</td>
+						</tr>
+						<tr>
+							<td>Miejsce załadunku:</td>
+							<td>${detailsCargoModel.fromCountry },
+								${detailsCargoModel.fromCity }, ${detailsCargoModel.fromStreet }</td>
+						</tr>
+						<tr>
+							<td>Miejsce rozładunku:</td>
+							<td>${detailsCargoModel.toCountry },
+								${detailsCargoModel.toCity }, ${detailsCargoModel.toStreet }</td>
+						</tr>
+						<tr>
+							<td>Data dodania:</td>
+							<td>${detailsCargoModel.dateAdding }</td>
+						</tr>
+						<tr>
+							<td>Termin dostarczenia:</td>
+							<td>${detailsCargoModel.dateOfDelivery }</td>
+						</tr>
+						<tr>
+							<td>Kwota początkowa:</td>
+							<td>${detailsCargoModel.maxPrice }zł</td>
+						</tr>
+						<tr>
+							<td>Aktualna kwota:</td>
+							<td>${detailsCargoModel.actualPrice }zł</td>
+						</tr>
+						<tr>
+							<td>Autor:</td>
+							<td>${detailsCargoModel.name }${detailsCargoModel.surname}</td>
+						</tr>
+						<tr>
+							<td>Nazwa firmy:</td>
+							<td>${detailsCargoModel.company }</td>
+						</tr>
+					</tbody>
+				</table>
+				<div id="licytacja" style="display: none">
+
+					<form:form method="post" modelAttribute="priceForm"
+						action="/auction-system/shipper/cargo/${detailsCargoModel.id}"
+						role="form">
+						<div class="form-group">
+							<label class="sr-only">Kwota</label>
+							<form:input path="price" type="number" class="form-control"
+								placeholder="*Kwota..." />
+							<div class="errors">
+								<form:errors path="price" element="div" />
+							</div>
+							<div class="form-group">
+								<form:input path="actualPrice" type="hidden"
+									class="form-control" value="${detailsCargoModel.actualPrice}" />
+							</div>
+							<div class="form-group">
+								<form:input path="maxPrice" type="hidden" class="form-control"
+									value="${detailsCargoModel.maxPrice}" />
+							</div>
+							<div class="form-group">
+								<form:input path="id" type="hidden" class="form-control"
+									value="${detailsCargoModel.id}" />
+							</div>
+							<form:input class="submit btn btn-primary" path="" type="submit"
+								value="Licytuj"></form:input>
+						</div>
+					</form:form>
+				</div>
+
 				<c:if test="${typeOfCompany=='2' }">
+					<button class="btn btn-primary" id="licytacjaButton">Licytuj</button>
 					<a class="btn btn-primary"
 						href="/auction-system/shipper/searchCargo">Lista towarów</a>
 					<a class="btn btn-primary"
-						href="/auction-system/shipper/aboutCompany/${detailsCargoModel.idCompany }">O firmie</a>
+						href="/auction-system/shipper/aboutCompany/${detailsCargoModel.idCompany }">O
+						firmie</a>
 				</c:if>
 			</div>
-			<div class="col-lg-8" id="map">
-			
-			</div>
+			<div class="col-lg-8" id="map"></div>
 		</div>
 	</div>
 
@@ -219,41 +227,45 @@
 		else
 			button.value == "Licytuj";
 	});
-	
+
 	function initMap() {
-		 
-        var directionsDisplay = new google.maps.DirectionsRenderer;
-        var directionsService = new google.maps.DirectionsService;
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 8,
-          center: {lat:52.13, lng: 21.00}
-        });
+
+		var directionsDisplay = new google.maps.DirectionsRenderer;
+		var directionsService = new google.maps.DirectionsService;
+		var map = new google.maps.Map(document.getElementById('map'), {
+			zoom : 8,
+			center : {
+				lat : 52.13,
+				lng : 21.00
+			}
+		});
 		var trafficLayer = new google.maps.TrafficLayer();
 		trafficLayer.setMap(map);
-        directionsDisplay.setMap(map);
+		directionsDisplay.setMap(map);
 		calculateAndDisplayRoute(directionsService, directionsDisplay);
-        
-      }
 
-      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-        directionsService.route({
-           origin: "Warszawa",
-          destination: "Łódź, Ofiarna",
-          travelMode: google.maps.TravelMode.DRIVING
-        }, function(response, status) {
-          if (status == google.maps.DirectionsStatus.OK) {
-            directionsDisplay.setDirections(response);
-          }
-        });
-      }
-    </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQAR809YkzO5lbIQ_dht4OlSFEaznt2T4&callback=initMap">
-    </script>
-    <style>
-       #map {
-        height: 550px;
-        width: 65%;
-       }
-    </style>
+	}
+
+	function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+		directionsService.route({
+			origin : "Warszawa",
+			destination : "Łódź, Ofiarna",
+			travelMode : google.maps.TravelMode.DRIVING
+		}, function(response, status) {
+			if (status == google.maps.DirectionsStatus.OK) {
+				directionsDisplay.setDirections(response);
+			}
+		});
+	}
+</script>
+<script async defer
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQAR809YkzO5lbIQ_dht4OlSFEaznt2T4&callback=initMap">
+	
+</script>
+<style>
+#map {
+	height: 550px;
+	width: 65%;
+}
+</style>
 </html>

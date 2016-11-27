@@ -58,13 +58,19 @@
 						<ul class="dropdown-menu" role="menu">
 							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
 								<c:if test="${typeOfCompany=='2' }">
-									<li><a href="#">Szukaj towaru</a></li>
+									<li><a href="/auction-system/shipper/searchCargo">Szukaj towaru</a></li>
 									<li class="divider"></li>
 								</c:if>
 							</c:if>
 							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
 								<c:if test="${typeOfCompany=='1' }">
 									<li><a href="/auction-system/shipper/newCargo">Dodaj towar</a></li>
+									<li class="divider"></li>
+								</c:if>
+							</c:if>
+							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
+								<c:if test="${typeOfCompany=='1' }">
+									<li><a href="/auction-system/shipper/cargosList">Lista towarów</a></li>
 									<li class="divider"></li>
 								</c:if>
 							</c:if>
