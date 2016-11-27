@@ -12,9 +12,11 @@
 <title>Serwis aukcyjny towarów - rejestracja</title>
 <link href="/auction-system/static/bootstrap/css/bootstrap.min.css"
 	rel="stylesheet">
+<link href="/auction-system/static/css/errors.css" rel="stylesheet">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="/auction-system/static/bootstrap/js/bootstrap.min.js"></script>
+
 </head>
 <body background="/auction-system/static/img/background.jpg">
 	<div class="container">

@@ -14,6 +14,7 @@ import dyploma.auction.system.carriage.goods.mvc.shipper.model.GoodModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.ProfileModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.RegisterModel;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.UserModel;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.PricesFromDB;
 
 public interface ShipperDAOInterface {
 
@@ -75,4 +76,7 @@ public interface ShipperDAOInterface {
 	public void editCargo(GoodModelForEdit goodModelForEdit)throws DataAccessException;
 
 	public void updatePrice(int id, Double price)throws DataAccessException;
+
+	public PricesFromDB getPricesFromDB(int id)throws DataAccessException;
+
 }

@@ -13,24 +13,11 @@
 <link href="/auction-system/static/menu/css/bootstrap.min.css"
 	rel="stylesheet">
 
-
-
-<!-- Custom Fonts -->
 <link
 	href="/auction-system/static/menu/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
 <link href="/auction-system/static/css/errors.css" rel="stylesheet">
-
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-<!-- jQuery -->
 <script src="/auction-system/static/menu/js/jquery.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
 <script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
 
 </head>
@@ -48,7 +35,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="menu">System aukcyjny towarów</a>
+				<a class="navbar-brand" href="/auction-system/shipper/menu">System aukcyjny towarów</a>
 			</div>
 
 			<!-- Grupowanie elementów menu w celu lepszego wyświetlania na urządzeniach moblinych -->
@@ -60,34 +47,42 @@
 						<ul class="dropdown-menu" role="menu">
 							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
 								<c:if test="${typeOfCompany=='2' }">
-									<li><a href="#">Szukaj towaru</a></li>
+									<li><a href="/auction-system/shipper/searchCargo">Szukaj towaru</a></li>
 									<li class="divider"></li>
 								</c:if>
 							</c:if>
 							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
 								<c:if test="${typeOfCompany=='1' }">
-									<li><a href="newCargo">Dodaj towar</a></li>
+									<li><a href="/auction-system/shipper/newCargo">Dodaj towar</a></li>
+									<li class="divider"></li>
+								</c:if>
+							</c:if>
+							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
+								<c:if test="${typeOfCompany=='1' }">
+									<li><a href="/auction-system/shipper/cargosList">Lista towarów</a></li>
 									<li class="divider"></li>
 								</c:if>
 							</c:if>
 							<c:choose>
 								<c:when test="${ role=='ROLE_ADMIN'}">
-									<li><a href="employeesList">Lista użytkowników</a></li>
+									<li><a href="/auction-system/shipper/employeesList">Lista użytkowników</a></li>
 									<li class="divider"></li>
 								</c:when>
 							</c:choose>
 							<c:choose>
 								<c:when test="${ role=='ROLE_ADMIN'}">
-									<li><a href="newUser">Nowy pracownik</a></li>
+									<li><a href="/auction-system/shipper/newUser">Nowy pracownik</a></li>
 									<li class="divider"></li>
 								</c:when>
 							</c:choose>
 							<c:choose>
 								<c:when test="${ role=='ROLE_ADMIN'}">
-									<li><a href="editCompany">Twoja firma</a></li>
+									<li><a href="/auction-system/shipper/editCompany">Twoja firma</a></li>
 									<li class="divider"></li>
 								</c:when>
 							</c:choose>
+							<li><a href="/auction-system/shipper/editProfile">Twój profil</a></li>
+							<li class="divider"></li>
 							<li><a href="#">Historia transakcji</a></li>
 						</ul></li>
 				</ul>

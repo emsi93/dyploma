@@ -1,22 +1,14 @@
 package dyploma.auction.system.carriage.goods.mvc.shipper.model;
 
-public class NewPrice {
+public class PricesFromDB {
 
-	private int id;
 	private Double maxPrice;
 	private String actualPrice;
-	private Double price;
-	public NewPrice(int id, Double maxPrice, String actualPrice, Double price) {
+
+	public PricesFromDB(Double maxPrice, String actualPrice) {
 		super();
-		this.id = id;
 		this.maxPrice = maxPrice;
 		this.actualPrice = actualPrice;
-		this.price = price;
-	}
-
-	public NewPrice()
-	{
-		this(0,null,null,null);
 	}
 
 	public Double getMaxPrice() {
@@ -35,22 +27,4 @@ public class NewPrice {
 		this.actualPrice = actualPrice;
 	}
 
-	public Double getPrice() {
-		return price;
-	}
-
-	public void setPrice(Double price) {
-		this.price = price;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-	
-	
-	
 }

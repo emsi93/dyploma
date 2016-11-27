@@ -34,7 +34,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="menu">System aukcyjny towarów</a>
+				<a class="navbar-brand" href="/auction-system/shipper/menu">System aukcyjny towarów</a>
 			</div>
 
 			<!-- Grupowanie elementów menu w celu lepszego wyświetlania na urządzeniach moblinych -->
@@ -46,41 +46,41 @@
 						<ul class="dropdown-menu" role="menu">
 							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
 								<c:if test="${typeOfCompany=='2' }">
-									<li><a href="searchCargo">Szukaj towaru</a></li>
+									<li><a href="/auction-system/shipper/searchCargo">Szukaj towaru</a></li>
 									<li class="divider"></li>
 								</c:if>
 							</c:if>
 							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
 								<c:if test="${typeOfCompany=='1' }">
-									<li><a href="newCargo">Dodaj towar</a></li>
+									<li><a href="/auction-system/shipper/newCargo">Dodaj towar</a></li>
 									<li class="divider"></li>
 								</c:if>
 							</c:if>
 							<c:if test="${ role=='ROLE_ADMIN' || role=='ROLE_USER'}">
 								<c:if test="${typeOfCompany=='1' }">
-									<li><a href="cargosList">Lista towarów</a></li>
+									<li><a href="/auction-system/shipper/cargosList">Lista towarów</a></li>
 									<li class="divider"></li>
 								</c:if>
 							</c:if>
 							<c:choose>
 								<c:when test="${ role=='ROLE_ADMIN'}">
-									<li><a href="employeesList">Lista użytkowników</a></li>
+									<li><a href="/auction-system/shipper/employeesList">Lista użytkowników</a></li>
 									<li class="divider"></li>
 								</c:when>
 							</c:choose>
 							<c:choose>
 								<c:when test="${ role=='ROLE_ADMIN'}">
-									<li><a href="newUser">Nowy pracownik</a></li>
+									<li><a href="/auction-system/shipper/newUser">Nowy pracownik</a></li>
 									<li class="divider"></li>
 								</c:when>
 							</c:choose>
 							<c:choose>
 								<c:when test="${ role=='ROLE_ADMIN'}">
-									<li><a href="editCompany">Twoja firma</a></li>
+									<li><a href="/auction-system/shipper/editCompany">Twoja firma</a></li>
 									<li class="divider"></li>
 								</c:when>
 							</c:choose>
-							<li><a href="editProfile">Twój profil</a></li>
+							<li><a href="/auction-system/shipper/editProfile">Twój profil</a></li>
 							<li class="divider"></li>
 							<li><a href="#">Historia transakcji</a></li>
 						</ul></li>
@@ -104,6 +104,18 @@
 			</div>
 		</div>
 		</nav>
+		<div class="row">
+		<div class="col-lg-2"></div>
+		<div class="col-lg-8">	
+			<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">${username }</h3>
+					</div>
+					<div class="panel-body"><center><h3>Witamy w systemie aukcyjnym przewozu towarów</h3></center></div>
+				</div>
+		</div>
+		<div class="col-lg-2"></div>
+		</div>
 	</div>
 </body>
 </html>

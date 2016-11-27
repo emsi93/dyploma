@@ -9,6 +9,7 @@ import org.springframework.validation.Validator;
 import dyploma.auction.system.carriage.goods.modules.ValidationUtils;
 import dyploma.auction.system.carriage.goods.mvc.shipper.dao.ShipperDAOInterface;
 import dyploma.auction.system.carriage.goods.mvc.shipper.model.NewPrice;
+import dyploma.auction.system.carriage.goods.mvc.shipper.model.PricesFromDB;
 
 @Component("priceFormValidator")
 @Scope("singleton")
@@ -43,7 +44,21 @@ public class NewPriceFormValidator implements Validator {
 				ValidationUtils.reject(errors, "actualPrice", PRICE_ERROR);
 			}
 		}
-
+		int id = newPrice.getId();
+		PricesFromDB pricesFromDB = dao.getPricesFromDB(id);
+		
+		if (pricesFromDB.getActualPrice().equals("")) {
+			if (pricesFromDB.getMaxPrice() < newPrice.getPrice()) {
+				ValidationUtils.reject(errors, "actualPrice", PRICE_ERROR);
+			}
+		} else {
+			if (Double.parseDouble(pricesFromDB.getActualPrice()) < newPrice
+					.getPrice()) {
+				ValidationUtils.reject(errors, "actualPrice", PRICE_ERROR);
+			}
+		}
+		
+		
 	}
 
 }

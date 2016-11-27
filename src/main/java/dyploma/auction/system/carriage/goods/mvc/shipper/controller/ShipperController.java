@@ -352,7 +352,7 @@ public class ShipperController {
 		ModelAndView modelAndView = new ModelAndView("cargo");
 
 		if (newPriceOrNull == null) {
-			newPriceOrNull = new NewPrice(null, null, null);
+			newPriceOrNull = new NewPrice(0,null, null, null);
 		}
 
 		if (messageCodeOrNull != null) {
