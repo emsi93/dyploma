@@ -8,35 +8,41 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
 	<security:http auto-config="true">
-		<security:intercept-url pattern="/shipper/menu"
-			access="ROLE_ADMIN,ROLE_USER" />
-		<security:intercept-url pattern="/shipper/newCargo"
-			access="ROLE_ADMIN,ROLE_USER" />
-		<security:intercept-url pattern="/shipper/editProfile"
-			access="ROLE_ADMIN,ROLE_USER" />
-		<security:intercept-url pattern="/shipper/searchCargo"
-			access="ROLE_ADMIN,ROLE_USER" />
-		<security:intercept-url pattern="/shipper/cargo"
-			access="ROLE_ADMIN,ROLE_USER" />
-		<security:intercept-url pattern="/shipper/employeeList"
-			access="ROLE_ADMIN" />
-		<security:intercept-url pattern="/shipper/newUser"
-			access="ROLE_ADMIN" />
-		<security:intercept-url pattern="/shipper/editCompany"
-			access="ROLE_ADMIN" />
-		<security:intercept-url pattern="/shipper/editEmployee"
-			access="ROLE_ADMIN" />
-		<security:intercept-url pattern="/shipper/detailsEmployee"
-			access="ROLE_ADMIN" />
-		<security:intercept-url pattern="/shipper/editCargo"
-			access="ROLE_ADMIN" />
-		<security:intercept-url pattern="/shipper/detailsCargo"
-			access="ROLE_ADMIN" />
-		<security:intercept-url pattern="/shipper/cargosList"
-			access="ROLE_ADMIN" />
-		<security:form-login login-page="/shipper/login"
-			default-target-url="/shipper/menu" authentication-failure-url="/shipper/errorLogin" />
-		<security:logout logout-success-url="/shipper/index" />
+		<security:intercept-url pattern="/webapp/menu"
+			access="ROLE_ADMIN_SHIPPER,ROLE_USER_SHIPPER,ROLE_ADMIN_CARRIER,ROLE_USER_CARRIER,ROLE_ADMIN" />
+		<security:intercept-url pattern="/webapp/newCargo"
+			access="ROLE_ADMIN_SHIPPER,ROLE_USER_SHIPPER" />
+		<security:intercept-url pattern="/webapp/editProfile"
+			access="ROLE_ADMIN_SHIPPER,ROLE_USER_SHIPPER,ROLE_ADMIN_CARRIER,ROLE_USER_CARRIER,ROLE_ADMIN" />
+		<security:intercept-url pattern="/webapp/searchCargo"
+			access="ROLE_ADMIN_CARRIER,ROLE_USER_CARRIER,ROLE_ADMIN" />
+		<security:intercept-url pattern="/webapp/cargo"
+			access="ROLE_ADMIN_SHIPPER,ROLE_USER_SHIPPER,ROLE_ADMIN_CARRIER,ROLE_USER_CARRIER,ROLE_ADMIN" />
+		<security:intercept-url pattern="/webapp/employeeList"
+			access="ROLE_ADMIN,ROLE_ADMIN_SHIPPER,ROLE_ADMIN_CARRIER" />
+		<security:intercept-url pattern="/webapp/newUser"
+			access="ROLE_ADMIN_SHIPPER,ROLE_ADMIN_CARRIER" />
+		<security:intercept-url pattern="/webapp/editCompany"
+			access="ROLE_ADMIN,ROLE_ADMIN_SHIPPER,ROLE_ADMIN_CARRIER" />
+		<security:intercept-url pattern="/webapp/editEmployee"
+			access="ROLE_ADMIN,ROLE_ADMIN_SHIPPER,ROLE_ADMIN_CARRIER" />
+		<security:intercept-url pattern="/webapp/detailsEmployee"
+			access="ROLE_ADMIN,ROLE_ADMIN_SHIPPER,ROLE_ADMIN_CARRIER" />
+		<security:intercept-url pattern="/webapp/editCargo"
+			access="ROLE_ADMIN,ROLE_ADMIN_SHIPPER" />
+		<security:intercept-url pattern="/webapp/detailsCargo"
+			access="ROLE_ADMIN,ROLE_ADMIN_SHIPPER,ROLE_USER_SHIPPER,ROLE_ADMIN_CARRIER,ROLE_USER_CARRIER" />
+		<security:intercept-url pattern="/webapp/cargosList"
+			access="ROLE_ADMIN, ROLE_ADMIN_SHIPPER, ROLE_USER_SHIPPER" />
+		<!--  <security:intercept-url pattern="/webapp/login"
+			access="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="/webapp/index"
+			access="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="/webapp/register"
+			access="ROLE_ANONYMOUS" />-->
+		<security:form-login login-page="/webapp/login"
+			default-target-url="/webapp/menu" authentication-failure-url="/webapp/errorLogin" />
+		<security:logout logout-success-url="/webapp/index" />
 	</security:http>
 
 

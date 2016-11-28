@@ -33,36 +33,19 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+
+
 	<servlet>
-		<servlet-name>administration</servlet-name>
+		<servlet-name>webapp</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>administration</servlet-name>
-		<url-pattern>/administration/*</url-pattern>
+		<servlet-name>webapp</servlet-name>
+		<url-pattern>/webapp/*</url-pattern>
 	</servlet-mapping>
 
-	<servlet>
-		<servlet-name>shipper</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>shipper</servlet-name>
-		<url-pattern>/shipper/*</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>carrier</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>carrier</servlet-name>
-		<url-pattern>/carrier/*</url-pattern>
-	</servlet-mapping>
-
+	
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
