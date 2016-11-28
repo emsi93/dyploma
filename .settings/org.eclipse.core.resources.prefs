@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
-encoding//src/main/webapp/WEB-INF/jsp/shipper/editProfile.jsp=UTF-8
-encoding//src/main/webapp/WEB-INF/jsp/shipper/login.jsp=UTF-8
-encoding//src/main/webapp/WEB-INF/jsp/shipper/register.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/webapp/aboutCompany.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/webapp/editProfile.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/webapp/login.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/webapp/register.jsp=UTF-8
