@@ -48,6 +48,8 @@ public class GoodFormValidator implements Validator{
 				OBLIGATORY_FIELD_ERROR_MSG);
 		ValidationUtils.rejectIfEmpty(errors, "trailer",
 				OBLIGATORY_FIELD_ERROR_MSG);
+		ValidationUtils.rejectIfEmpty(errors, "weight",
+				OBLIGATORY_FIELD_ERROR_MSG);
 		
 		
 		ValidationUtils.rejectIfTooLong(errors, "title",

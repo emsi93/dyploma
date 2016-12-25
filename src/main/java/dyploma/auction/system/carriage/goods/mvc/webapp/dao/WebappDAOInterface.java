@@ -8,6 +8,7 @@ import dyploma.auction.system.carriage.goods.mvc.webapp.model.CompanyModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.DetailsEmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.DetailsGoodModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.EmployeeModel;
+import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodData;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForEdit;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForList;
@@ -78,5 +79,7 @@ public interface WebappDAOInterface {
 	public void updatePrice(int id, Double price)throws DataAccessException;
 
 	public PricesFromDB getPricesFromDB(int id)throws DataAccessException;
+
+	public List<GoodData> getGoodData(int companyID)throws DataAccessException;
 
 }

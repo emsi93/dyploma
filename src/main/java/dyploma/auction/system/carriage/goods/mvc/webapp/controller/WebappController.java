@@ -26,6 +26,7 @@ import dyploma.auction.system.carriage.goods.mvc.webapp.model.CompanyModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.DetailsEmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.DetailsGoodModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.EmployeeModel;
+import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodData;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForEdit;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForList;
@@ -280,6 +281,41 @@ public class WebappController {
 		return modelAndView;
 	}
 
+	@RequestMapping("/charts")
+	public ModelAndView charts() {
+		ModelAndView modelAndView = new ModelAndView("charts");
+		Authentication auth = SecurityContextHolder.getContext()
+				.getAuthentication();
+		modelAndView.addObject("username", auth.getName());
+		int userID = dao.getUserIDByLogin(auth.getName());
+		int companyID = dao.getCompanyID(userID);
+		int typeOfCompany = dao.getTypeOfCompany(companyID);
+		modelAndView.addObject("typeOfCompany", String.valueOf(typeOfCompany));
+		Object[] role = auth.getAuthorities().toArray();
+		modelAndView.addObject("role", role[0].toString());
+		
+		List<GoodData> goodData = dao.getGoodData(companyID);
+		JSONArray jsonArray = new JSONArray();
+		for (int i=0; i<goodData.size();i++)
+		{
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("name",goodData.get(i).getName());
+			jsonObject.put("actualPrice",goodData.get(i).getActualPrice());
+			jsonArray.put(jsonObject);
+		}
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("GoodList",jsonArray);
+		modelAndView.addObject("goodData", jsonObject);
+		modelAndView.addObject("size", goodData.size());
+		return modelAndView;
+	}
+	
+	@RequestMapping("/about")
+	public ModelAndView about() {
+		ModelAndView modelAndView = new ModelAndView("about");
+		return modelAndView;
+	}
+	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login() {
 		ModelAndView modelAndView = new ModelAndView("login");
@@ -661,7 +697,7 @@ public class WebappController {
 		ModelAndView modelAndView = new ModelAndView("newCargo");
 		if (goodModelOrNull == null) {
 			goodModelOrNull = new GoodModel(null, null, null, null, null, null,
-					null, null, null, null, null);
+					null, null, null, null, null, null);
 		}
 		if (messageOrNull != null) {
 			switch (messageOrNull) {

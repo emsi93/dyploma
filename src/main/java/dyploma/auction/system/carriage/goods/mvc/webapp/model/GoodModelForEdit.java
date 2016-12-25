@@ -15,10 +15,11 @@ public class GoodModelForEdit {
 	private Double maxPrice;
 	private String dateOfDelivery;
 	private String status;
+	private Double weight;
 	public GoodModelForEdit(int id, String title, String content, String trailer,
 			String fromCountry, String fromCity, String fromStreet,
 			String toCountry, String toCity, String toStreet, Double maxPrice,
-			String dateOfDelivery, String status) {
+			String dateOfDelivery, String status, Double weight) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -32,6 +33,7 @@ public class GoodModelForEdit {
 		this.toStreet = toStreet;
 		this.maxPrice = maxPrice;
 		this.dateOfDelivery = dateOfDelivery;
+		this.weight = weight;
 		//if(status.equals("1"))
 			this.status = status;
 		//else
@@ -40,7 +42,7 @@ public class GoodModelForEdit {
 	
 	public GoodModelForEdit()
 	{
-		this(0,null,null,null,null,null,null,null,null,null,null,null,null);
+		this(0,null,null,null,null,null,null,null,null,null,null,null,null,null);
 	}
 	
 	public String getTitle() {
@@ -120,6 +122,14 @@ public class GoodModelForEdit {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public Double getWeight() {
+		return weight;
+	}
+
+	public void setWeight(Double weight) {
+		this.weight = weight;
 	}
 	
 	

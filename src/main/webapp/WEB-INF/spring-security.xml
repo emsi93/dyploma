@@ -39,7 +39,9 @@
 		<security:intercept-url pattern="/webapp/index"
 			access="ROLE_ANONYMOUS" />
 		<security:intercept-url pattern="/webapp/register"
-			access="ROLE_ANONYMOUS" />-->
+			access="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="/webapp/about"
+			access="ROLE_ANONYMOUS" />	-->
 		<security:form-login login-page="/webapp/login"
 			default-target-url="/webapp/menu" authentication-failure-url="/webapp/errorLogin" />
 		<security:logout logout-success-url="/webapp/index" />

@@ -48,6 +48,9 @@ public class EditGoodFormValidator implements Validator {
 				OBLIGATORY_FIELD_ERROR_MSG);
 		ValidationUtils.rejectIfEmpty(errors, "status",
 				OBLIGATORY_FIELD_ERROR_MSG);
+		ValidationUtils.rejectIfEmpty(errors, "weight",
+				OBLIGATORY_FIELD_ERROR_MSG);
+
 
 		ValidationUtils.rejectIfTooLong(errors, "title", goodModel.getTitle(),
 				50, TITLE_TOO_LONG);
