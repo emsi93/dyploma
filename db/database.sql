@@ -56,7 +56,8 @@ date_adding date not null,
 date_of_delivery date not null,
 id_login int not null,
 status TINYINT(4) default '1',
-actual_price decimal not 
+actual_price decimal not,
+weight decimal not null
 );
 alter table goods
 add constraint foreign key(id_login) references logins(id);

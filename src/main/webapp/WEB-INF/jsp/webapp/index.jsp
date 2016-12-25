@@ -58,6 +58,9 @@
 									href="login">Zaloguj się</a> <a
 									class="btn btn-lg btn-primary btn-block" type="submit"
 									href="register">Rejestracja</a>
+									<a
+									class="btn btn-lg btn-primary btn-block" type="submit"
+									href="about">O nas</a>
 					</div>
 
 				</div>

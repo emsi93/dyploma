@@ -20,6 +20,7 @@ public class DetailsGoodModel {
 	private String surname;
 	private String company;
 	private int idCompany;
+	private Double weight;
 
 	public String getTitle() {
 		return title;
@@ -170,7 +171,7 @@ public class DetailsGoodModel {
 			String fromStreet, String toCountry, String toCity,
 			String toStreet, Double maxPrice, String dateAdding,
 			String dateOfDelivery, String actualPrice, String name,
-			String surname, String company, int idCompany) {
+			String surname, String company, int idCompany, Double weight) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -190,6 +191,16 @@ public class DetailsGoodModel {
 		this.surname = surname;
 		this.company = company;
 		this.idCompany = idCompany;
+		this.weight = weight;
 	}
 
+	public Double getWeight() {
+		return weight;
+	}
+
+	public void setWeight(Double weight) {
+		this.weight = weight;
+	}
+	
+	
 }
