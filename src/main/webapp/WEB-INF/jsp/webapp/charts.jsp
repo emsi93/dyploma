@@ -22,7 +22,7 @@
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
 
-<body>
+<body background="/auction-system/static/img/background.jpg">
 <c:set var="role" value="${role}" />
 	<c:set var="typeOfCompany" value="${typeOfCompany }" />
 	<div class="container">
@@ -30,12 +30,18 @@
 		<%@include file="navbar.jsp" %>
 		
 		<div class="row">
-			<div class="col-lg-3"></div>
-			<div class="col-lg-6">
-				<div id="barchart_values" style="width: 900px; height: 400px;"></div>
+			<div class="col-lg-2"></div>
+			<div class="col-lg-8">
+				<div class="panel panel-default">
+				<div class="panel-heading">
+					<h1 class="panel-title">Wykres</h1>
+				</div>
+				<div class="panel-body">
+				<div id="barchart_values" style="width: 900px; height: 400px;"></div></div>
 			</div>
-			<div class="col-lg-3"></div>
+			<div class="col-lg-2"></div>
 			</div>
+		</div>
 		</div>
 
 

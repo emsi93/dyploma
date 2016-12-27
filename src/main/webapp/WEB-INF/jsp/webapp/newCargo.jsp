@@ -19,130 +19,156 @@
 <script src="/auction-system/static/menu/js/jquery.js"></script>
 <script src="/auction-system/static/menu/js/bootstrap.js"></script>
 </head>
-<body>
+<body background="/auction-system/static/img/background.jpg">
 	<c:set var="role" value="${role}" />
 	<c:set var="typeOfCompany" value="${typeOfCompany }" />
 	<div class="container">
-		<%@include file="navbar.jsp" %>
+		<%@include file="navbar.jsp"%>
 		<div class="row">
-			<form:form method="post" modelAttribute="goodForm"
-				action="/auction-system/webapp/newCargo/${editGoodForm.id }" role="form">
-				
-				<div class="col-lg-2">*Pola wymagane</div>
-				<div class="col-lg-4">
-					<h2>Nowy towar</h2>
-					${wiadomosc} 
-					<div class="form-group">
-						<label class="sr-only">Nagłówek</label>
-						<form:input path="title" type="text" class="form-control"
-							placeholder="*Nagłówek..."  />
-						<div class="errors">
-							<form:errors path="title" element="div" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="sr-only">Opis</label>
-						<form:textarea rows="4" path="content" type="text"
-							class="form-control" placeholder="Opis..." />
-						<div class="errors">
-							<form:errors path="content" element="div" />
-						</div>
-					</div>
-					<label>Miejsce załadunku</label>
-					<div class="form-group">
-						<label>Kraj</label>
-						<form:select path="fromCountry" items="${countryList}"
-							class="form-control" />
-						<div class="errors">
-							<form:errors path="fromCountry" element="div" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="sr-only">Miasto</label>
-						<form:input path="fromCity" type="text" class="form-control"
-							placeholder="*Miasto..." />
-						<div class="errors">
-							<form:errors path="fromCity" element="div" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="sr-only">Ulica</label>
-						<form:input path="fromStreet" type="text" class="form-control"
-							placeholder="*Ulica..." />
-						<div class="errors">
-							<form:errors path="fromStreet" element="div" />
-						</div>
-					</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h1 class="panel-title">Nowy towar</h1>
+					<h6>*Pola wymagane</h6>
 				</div>
-				<div class="col-lg-4">
-					<div class="form-group">
-						<label class="sr-only">Cena przewozu</label>
+				<div class="panel-body">
+					<form:form method="post" modelAttribute="goodForm"
+						action="/auction-system/webapp/newCargo/${editGoodForm.id }"
+						role="form">
 						<div class="row">
-							<form:input path="maxPrice" min="0" type="number"
-								class="form-control" placeholder="*Cena przewozu" />
+							<div class="col-lg-2"></div>
+							<div class="col-lg-8">
+								<c:if test="${not empty wiadomosc}">
+									<div class="alert alert-info"><center>${wiadomosc}</center></div>
+								</c:if>
+							</div>
+							<div class="col-lg-2"></div>
 						</div>
-						<div class="errors">
-							<form:errors path="maxPrice" element="div" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="sr-only">Waga towaru (t)</label>
 						<div class="row">
-							<form:input path="weight" min="0" type="number"
-								class="form-control" placeholder="*Waga towaru" />
+						<div class="col-lg-2"></div>
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label class="sr-only">Nagłówek</label>
+								<form:input path="title" type="text" class="form-control"
+									placeholder="*Nagłówek..." />
+								<div class="errors">
+									<form:errors path="title" element="div" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="sr-only">Opis</label>
+								<form:textarea rows="4" path="content" type="text"
+									class="form-control" placeholder="Opis..." />
+								<div class="errors">
+									<form:errors path="content" element="div" />
+								</div>
+							</div>
+							<label>Miejsce załadunku</label>
+							<div class="form-group">
+								<label>Kraj</label>
+								<form:select path="fromCountry" items="${countryList}"
+									class="form-control" />
+								<div class="errors">
+									<form:errors path="fromCountry" element="div" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="sr-only">Miasto</label>
+								<form:input path="fromCity" type="text" class="form-control"
+									placeholder="*Miasto..." />
+								<div class="errors">
+									<form:errors path="fromCity" element="div" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="sr-only">Ulica</label>
+								<form:input path="fromStreet" type="text" class="form-control"
+									placeholder="*Ulica..." />
+								<div class="errors">
+									<form:errors path="fromStreet" element="div" />
+								</div>
+							</div>
 						</div>
-						<div class="errors">
-							<form:errors path="weight" element="div" />
-						</div>
-					</div>
-					<div class="form-group">
-						</br> <label>Rodzaj naczepy</label>
-						<form:select path="trailer" items="${trailersList}"
-							class="form-control" />
-						<div class="errors">
-							<form:errors path="trailer" element="div" />
-						</div>
-					</div>
-					<label>Termin dostarczenia</label></br>
-						<div class="form-group">
-							<form:input type='date' path="dateOfDelivery"
-								class="form-control" />
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label class="sr-only">Cena przewozu</label>
+								<div class="row">
+									<form:input path="maxPrice" min="0" type="number"
+										class="form-control" placeholder="*Cena przewozu" />
+								</div>
+								<div class="errors">
+									<form:errors path="maxPrice" element="div" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="sr-only">Waga towaru (t)</label>
+								<div class="row">
+									<form:input path="weight" min="0" type="number"
+										class="form-control" placeholder="*Waga towaru" />
+								</div>
+								<div class="errors">
+									<form:errors path="weight" element="div" />
+								</div>
+							</div>
+							<div class="form-group">
+								</br> <label>Rodzaj naczepy</label>
+								<form:select path="trailer" items="${trailersList}"
+									class="form-control" />
+								<div class="errors">
+									<form:errors path="trailer" element="div" />
+								</div>
+							</div>
+							<label>Termin dostarczenia</label></br>
+							<div class="form-group">
+								<form:input type='date' path="dateOfDelivery"
+									class="form-control" />
 
-							<div class="errors">
-								<form:errors path="dateOfDelivery" element="div" />
+								<div class="errors">
+									<form:errors path="dateOfDelivery" element="div" />
+								</div>
 							</div>
-						</div>
-					<label>Miejsce dostarczenia</label>
-						<div class="form-group">
-							<label>Kraj</label>
-							<form:select path="toCountry" items="${countryList}"
-								class="form-control" />
-							<div class="errors">
-								<form:errors path="toCountry" element="div" />
+							<label>Termin licytacji</label>
+							<div class="form-group">
+								<form:input type='date' path="deadlineAuction"
+									class="form-control" />
+
+								<div class="errors">
+									<form:errors path="deadlineAuction" element="div" />
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="sr-only">Miasto</label>
-							<form:input path="toCity" type="text" class="form-control"
-								placeholder="*Miasto..." />
-							<div class="errors">
-								<form:errors path="toCity" element="div" />
+							<label>Miejsce dostarczenia</label>
+							<div class="form-group">
+								<label>Kraj</label>
+								<form:select path="toCountry" items="${countryList}"
+									class="form-control" />
+								<div class="errors">
+									<form:errors path="toCountry" element="div" />
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="sr-only">Ulica</label>
-							<form:input path="toStreet" type="text" class="form-control"
-								placeholder="*Ulica..." />
-							<div class="errors">
-								<form:errors path="toStreet" element="div" />
+							<div class="form-group">
+								<label class="sr-only">Miasto</label>
+								<form:input path="toCity" type="text" class="form-control"
+									placeholder="*Miasto..." />
+								<div class="errors">
+									<form:errors path="toCity" element="div" />
+								</div>
 							</div>
+							<div class="form-group">
+								<label class="sr-only">Ulica</label>
+								<form:input path="toStreet" type="text" class="form-control"
+									placeholder="*Ulica..." />
+								<div class="errors">
+									<form:errors path="toStreet" element="div" />
+								</div>
+							</div>
+							<form:input class="submit btn btn-primary" path="" type="submit"
+								value="Dodaj"></form:input>
 						</div>
-						<form:input class="submit btn btn-primary" path="" type="submit"
-						value="Dodaj"></form:input>
+
+						<div class="col-lg-2"></div>
+						</div>
+					</form:form>
 				</div>
-				
-				<div class="col-lg-2"></div>
-			</form:form>
+			</div>
 		</div>
 	</div>
 </body>

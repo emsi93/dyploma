@@ -20,22 +20,35 @@
 <script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
 </head>
 
-<body>
+<body background="/auction-system/static/img/background.jpg">
 	<c:set var="role" value="${role}" />
 	<c:set var="typeOfCompany" value="${typeOfCompany }" />
 	<div class="container">
 		<%@include file="navbar.jsp" %>
 		<div class="row">
+		<div class="panel panel-default">
+				<div class="panel-heading">
+					<h1 class="panel-title">Edycja towaru: ${editGoodForm.title }</h1>
+					<h6>*Pola wymagane</h6>
+				</div>
+				<div class="panel-body">
 			<form:form method="post" modelAttribute="editGoodForm"
 				action="/auction-system/webapp/editCargo/${editGoodForm.id }"
 				role="form">
-
-				<div class="col-lg-2">*Pola wymagane</div>
+				<div class="row">
+							<div class="col-lg-2"></div>
+							<div class="col-lg-8">
+								<c:if test="${not empty wiadomosc}">
+									<div class="alert alert-info"><center>${wiadomosc}</center></div>
+								</c:if>
+							</div>
+							<div class="col-lg-2"></div>
+						</div>
+				<div class="row">
+				<div class="col-lg-2"></div>
 				<div class="col-lg-4">
-					<h2>Nowy towar</h2>
-					${wiadomosc}
 					<div class="form-group">
-						<label class="sr-only">Nagłówek</label>
+						<label>Nagłówek</label>
 						<form:input path="title" type="text" class="form-control"
 							placeholder="*Nagłówek..." value="${editGoodForm.title }" />
 						<div class="errors">
@@ -43,7 +56,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="sr-only">Opis</label>
+						<label>Opis</label>
 						<form:textarea rows="4" path="content" type="text"
 							class="form-control" placeholder="Opis..."
 							value="${editGoodForm.content }" />
@@ -61,7 +74,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="sr-only">Miasto</label>
+						<label>Miasto</label>
 						<form:input path="fromCity" type="text" class="form-control"
 							placeholder="*Miasto..." value="${editGoodForm.fromCity }" />
 						<div class="errors">
@@ -69,11 +82,36 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="sr-only">Ulica</label>
+						<label>Ulica</label>
 						<form:input path="fromStreet" type="text" class="form-control"
 							placeholder="*Ulica..." value="${editGoodForm.fromStreet }" />
 						<div class="errors">
 							<form:errors path="fromStreet" element="div" />
+						</div>
+					</div>
+					<label>Miejsce dostarczenia</label>
+					<div class="form-group">
+						<label>Kraj</label>
+						<form:select path="toCountry" items="${countryList}"
+							class="form-control" value="${editGoodForm.toCountry }" />
+						<div class="errors">
+							<form:errors path="toCountry" element="div" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Miasto</label>
+						<form:input path="toCity" type="text" class="form-control"
+							placeholder="*Miasto..." value="${editGoodForm.toCity }" />
+						<div class="errors">
+							<form:errors path="toCity" element="div" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Ulica</label>
+						<form:input path="toStreet" type="text" class="form-control"
+							placeholder="*Ulica..." value="${editGoodForm.toStreet }" />
+						<div class="errors">
+							<form:errors path="toStreet" element="div" />
 						</div>
 					</div>
 				</div>
@@ -117,29 +155,13 @@
 							<form:errors path="dateOfDelivery" element="div" />
 						</div>
 					</div>
-					<label>Miejsce dostarczenia</label>
+					<label>Termin licytacji</label></br>
 					<div class="form-group">
-						<label>Kraj</label>
-						<form:select path="toCountry" items="${countryList}"
-							class="form-control" value="${editGoodForm.toCountry }" />
+						<form:input type='date' path="deadlineAuction" class="form-control"
+							value="${editGoodForm.deadlineAuction }" />
+
 						<div class="errors">
-							<form:errors path="toCountry" element="div" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="sr-only">Miasto</label>
-						<form:input path="toCity" type="text" class="form-control"
-							placeholder="*Miasto..." value="${editGoodForm.toCity }" />
-						<div class="errors">
-							<form:errors path="toCity" element="div" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="sr-only">Ulica</label>
-						<form:input path="toStreet" type="text" class="form-control"
-							placeholder="*Ulica..." value="${editGoodForm.toStreet }" />
-						<div class="errors">
-							<form:errors path="toStreet" element="div" />
+							<form:errors path="deadlineAuction" element="div" />
 						</div>
 					</div>
 					<div class="form-group">
@@ -155,8 +177,11 @@
 				</div>
 
 				<div class="col-lg-2"></div>
+				</div>
 			</form:form>
 		</div>
+	</div>
+	</div>
 	</div>
 </body>
 </html>

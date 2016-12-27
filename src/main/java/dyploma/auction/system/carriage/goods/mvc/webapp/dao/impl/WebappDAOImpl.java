@@ -255,16 +255,29 @@ public class WebappDAOImpl implements WebappDAOInterface {
 
 	public void editCompany(CompanyModel companyModel, int companyID)
 			throws DataAccessException {
-		jdbcTemplate
-				.update("UPDATE  companies SET company_name=?, country=?, postcode=?, city=?, street=?, flat_number=?, nip_number=?, phone_number=?, website=?, email=?, description=? WHERE id = ?",
-						companyModel.getCompanyName(),
-						companyModel.getCountry(), companyModel.getPostcode(),
-						companyModel.getCity(), companyModel.getStreet(),
-						companyModel.getFlatNumber(),
-						companyModel.getNipNumber(),
-						companyModel.getPhoneNumber(),
-						companyModel.getWebsite(), companyModel.getEmail(),
-						companyModel.getDescription(), companyID);
+		if (companyModel.getFlatNumber().equals(""))
+			jdbcTemplate
+					.update("UPDATE  companies SET company_name=?, country=?, postcode=?, city=?, street=?,flat_number=?, nip_number=?, phone_number=?, website=?, email=?, description=? WHERE id = ?",
+							companyModel.getCompanyName(),
+							companyModel.getCountry(),
+							companyModel.getPostcode(), companyModel.getCity(),
+							companyModel.getStreet(), null,
+							companyModel.getNipNumber(),
+							companyModel.getPhoneNumber(),
+							companyModel.getWebsite(), companyModel.getEmail(),
+							companyModel.getDescription(), companyID);
+		else
+			jdbcTemplate
+					.update("UPDATE  companies SET company_name=?, country=?, postcode=?, city=?, street=?, flat_number=?, nip_number=?, phone_number=?, website=?, email=?, description=? WHERE id = ?",
+							companyModel.getCompanyName(),
+							companyModel.getCountry(),
+							companyModel.getPostcode(), companyModel.getCity(),
+							companyModel.getStreet(),
+							companyModel.getFlatNumber(),
+							companyModel.getNipNumber(),
+							companyModel.getPhoneNumber(),
+							companyModel.getWebsite(), companyModel.getEmail(),
+							companyModel.getDescription(), companyID);
 
 	}
 
@@ -362,24 +375,26 @@ public class WebappDAOImpl implements WebappDAOInterface {
 
 		if (goodModel.getContent().equals(""))
 			jdbcTemplate
-					.update("INSERT INTO goods (title,trailer,from_country,from_city,from_street,to_country,to_city,to_street,max_price,date_adding,date_of_delivery,weight,id_login) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",
+					.update("INSERT INTO goods (title,trailer,from_country,from_city,from_street,to_country,to_city,to_street,max_price,date_adding,date_of_delivery,weight,deadline_auction,id_login) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
 							goodModel.getTitle(), goodModel.getTrailer(),
 							goodModel.getFromCountry(),
 							goodModel.getFromCity(), goodModel.getFromStreet(),
 							goodModel.getToCountry(), goodModel.getToCity(),
 							goodModel.getToStreet(), goodModel.getMaxPrice(),
 							getCurrentDate(), goodModel.getDateOfDelivery(),
-							goodModel.getWeight(), loginID);
+							goodModel.getWeight(),
+							goodModel.getDeadlineAuction(), loginID);
 		else
 			jdbcTemplate
-					.update("INSERT INTO goods (title,content,trailer,from_country,from_city,from_street,to_country,to_city,to_street,max_price,date_adding,date_of_delivery,weight,id_login) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+					.update("INSERT INTO goods (title,content,trailer,from_country,from_city,from_street,to_country,to_city,to_street,max_price,date_adding,date_of_delivery,weight,deadline_auction,id_login) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
 							goodModel.getTitle(), goodModel.getContent(),
 							goodModel.getTrailer(), goodModel.getFromCountry(),
 							goodModel.getFromCity(), goodModel.getFromStreet(),
 							goodModel.getToCountry(), goodModel.getToCity(),
 							goodModel.getToStreet(), goodModel.getMaxPrice(),
 							getCurrentDate(), goodModel.getDateOfDelivery(),
-							goodModel.getWeight(), loginID);
+							goodModel.getWeight(),
+							goodModel.getDeadlineAuction(), loginID);
 
 	}
 
@@ -427,7 +442,7 @@ public class WebappDAOImpl implements WebappDAOInterface {
 	public DetailsGoodModel getDetailsGood(int id) throws DataAccessException {
 		return jdbcTemplate
 				.queryForObject(
-						"SELECT g.id, g.title, g.content, g.trailer, g.from_country, g.from_city, g.from_street, g.to_country, g.to_city, g.to_street, g.max_price, g.date_adding, g.date_of_delivery, g.actual_price, u.name, u.surname, c.company_name, c.id, g.weight FROM goods g INNER JOIN logins l ON g.id_login = l.id INNER JOIN users u ON l.id_user = u.id INNER JOIN companies c ON c.id = u.id_company WHERE g.id = ?",
+						"SELECT g.id, g.title, g.content, g.trailer, g.from_country, g.from_city, g.from_street, g.to_country, g.to_city, g.to_street, g.max_price, g.date_adding, g.date_of_delivery, g.actual_price, u.name, u.surname, c.company_name, c.id, g.weight, g.deadline_auction FROM goods g INNER JOIN logins l ON g.id_login = l.id INNER JOIN users u ON l.id_user = u.id INNER JOIN companies c ON c.id = u.id_company WHERE g.id = ?",
 						new RowMapper<DetailsGoodModel>() {
 							public DetailsGoodModel mapRow(ResultSet rs,
 									int rowNumber) throws SQLException {
@@ -440,7 +455,8 @@ public class WebappDAOImpl implements WebappDAOInterface {
 										.getString(12), rs.getString(13), rs
 										.getString(14), rs.getString(15), rs
 										.getString(16), rs.getString(17), rs
-										.getInt(18), rs.getDouble(19));
+										.getInt(18), rs.getDouble(19), rs
+										.getString(20));
 							}
 						}, new Object[] { id });
 	}
@@ -449,7 +465,7 @@ public class WebappDAOImpl implements WebappDAOInterface {
 			throws DataAccessException {
 		return jdbcTemplate
 				.queryForObject(
-						"SELECT g.id, g.title, g.content, g.trailer, g.from_country, g.from_city, g.from_street, g.to_country, g.to_city, g.to_street, g.max_price, g.date_of_delivery, g.status, g.weight FROM goods g WHERE g.id = ?",
+						"SELECT g.id, g.title, g.content, g.trailer, g.from_country, g.from_city, g.from_street, g.to_country, g.to_city, g.to_street, g.max_price, g.date_of_delivery, g.status, g.weight, g.deadline_auction FROM goods g WHERE g.id = ?",
 						new RowMapper<GoodModelForEdit>() {
 							public GoodModelForEdit mapRow(ResultSet rs,
 									int rowNumber) throws SQLException {
@@ -459,7 +475,8 @@ public class WebappDAOImpl implements WebappDAOInterface {
 										.getString(6), rs.getString(7), rs
 										.getString(8), rs.getString(9), rs
 										.getString(10), rs.getDouble(11), rs
-										.getString(12), rs.getString(13), rs.getDouble(14));
+										.getString(12), rs.getString(13), rs
+										.getDouble(14), rs.getString(15));
 							}
 						}, new Object[] { id });
 	}
@@ -472,7 +489,7 @@ public class WebappDAOImpl implements WebappDAOInterface {
 		else
 			status = "2";
 		jdbcTemplate
-				.update("UPDATE goods SET title=?, content=?, trailer=?, from_country=?, from_city=?, from_street=?, to_country=?, to_city=?, to_street=?, max_price=?, date_of_delivery=?, status=?, weight=? WHERE id = ?",
+				.update("UPDATE goods SET title=?, content=?, trailer=?, from_country=?, from_city=?, from_street=?, to_country=?, to_city=?, to_street=?, max_price=?, date_of_delivery=?, status=?, weight=?, deadline_auction=? WHERE id = ?",
 						goodModelForEdit.getTitle(),
 						goodModelForEdit.getContent(),
 						goodModelForEdit.getTrailer(),
@@ -484,7 +501,9 @@ public class WebappDAOImpl implements WebappDAOInterface {
 						goodModelForEdit.getToStreet(),
 						goodModelForEdit.getMaxPrice(),
 						goodModelForEdit.getDateOfDelivery(), status,
-						goodModelForEdit.getWeight(), goodModelForEdit.getId());
+						goodModelForEdit.getWeight(),
+						goodModelForEdit.getDeadlineAuction(),
+						goodModelForEdit.getId());
 
 	}
 

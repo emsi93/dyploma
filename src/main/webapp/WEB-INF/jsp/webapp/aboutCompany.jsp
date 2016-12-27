@@ -20,14 +20,20 @@
 <script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
 </head>
 
-<body>
+<body background="/auction-system/static/img/background.jpg">
 	<c:set var="role" value="${role}" />
 	<c:set var="typeOfCompany" value="${typeOfCompany }" />
 	<div class="container">
 		<%@include file="navbar.jsp" %>
 		<div class="row">
-			<div class="col-lg-4"></div>
-			<div class="col-lg-4">
+			<div class="col-lg-3"></div>
+			<div class="col-lg-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h1 class="panel-title">O firmie</h1>
+					
+				</div>
+			<div class="panel-body">
 				<table class="table table-striped">
 				<tbody>
 					<tr>
@@ -79,7 +85,9 @@
 				</tbody>
 			</table>
 			</div>
-			<div class="col-lg-4"></div>
+			</div>
+			<div class="col-lg-3"></div>
+		</div>
 		</div>
 	</div>
 

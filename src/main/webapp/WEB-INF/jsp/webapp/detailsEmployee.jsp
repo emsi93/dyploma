@@ -19,28 +19,63 @@
 
 <script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body background="/auction-system/static/img/background.jpg">
 	<div class="container">
 		<%@include file="navbar.jsp" %>
 		<div class="row">
-			<div class="col-lg-4"></div>
-			<div class="col-lg-4">
-				<h4>ID:${detailsEmployeeModel.id }</h4>
-				<h4>Imię:${detailsEmployeeModel.name }</h4>
-				<h4>Nazwisko:${detailsEmployeeModel.surname }</h4>
-				<h4>Telefon:${detailsEmployeeModel.phoneNumber }</h4>
-				<h4>Email:${detailsEmployeeModel.email }</h4>
-				<h4>Login:${detailsEmployeeModel.login }</h4>
-				<h4>Aktywność:${detailsEmployeeModel.activity }</h4>
-				<h4>Rola:${detailsEmployeeModel.role }</h4>
+			<div class="col-lg-3"></div>
+			<div class="col-lg-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h1 class="panel-title">Szczegóły pracownika: ${detailsEmployeeModel.name } ${detailsEmployeeModel.surname } </h1>
+				</div>
+				<div class="panel-body">
+				<table class="table table-striped">
+					<tbody>
+						<tr>
+							<td>ID:</td>
+							<td>${detailsEmployeeModel.id }</td>
+						</tr>
+						<tr>
+							<td>Imie:</td>
+							<td>${detailsEmployeeModel.name }</td>
+						</tr>
+						<tr>
+							<td>Nazwisko:</td>
+							<td>${detailsEmployeeModel.surname }</td>
+						</tr>
+						<tr>
+							<td>Telefon:</td>
+							<td>${detailsEmployeeModel.phoneNumber }</td>
+						</tr>
+						<tr>
+							<td>Email:</td>
+							<td>${detailsEmployeeModel.email }</td>
+						</tr>
+						<tr>
+							<td>Login:</td>
+							<td>${detailsEmployeeModel.login }</td>
+						</tr>
+						<tr>
+							<td>Aktywność:</td>
+							<td>${detailsEmployeeModel.activity }</td>
+						</tr>
+						<tr>
+							<td>Rola:</td>
+							<td>${detailsEmployeeModel.role }</td>
+						</tr>
+					</tbody>
+				</table>
 				<a class="btn btn-primary"
 					href="/auction-system/webapp/editEmployee/${ detailsEmployeeModel.id }">Edycja</a>
 				<a class="btn btn-primary"
 					href="/auction-system/webapp/employeesList">Lista pracowników</a>
 			</div>
-			<div class="col-lg-4"></div>
+			</div>
+			<div class="col-lg-3"></div>
 
 		</div>
+	</div>
 	</div>
 </body>
 </html>

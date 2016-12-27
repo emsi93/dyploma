@@ -697,7 +697,7 @@ public class WebappController {
 		ModelAndView modelAndView = new ModelAndView("newCargo");
 		if (goodModelOrNull == null) {
 			goodModelOrNull = new GoodModel(null, null, null, null, null, null,
-					null, null, null, null, null, null);
+					null, null, null, null, null, null, null);
 		}
 		if (messageOrNull != null) {
 			switch (messageOrNull) {

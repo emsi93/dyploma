@@ -20,7 +20,7 @@
 <script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
 </head>
 
-<body>
+<body background="/auction-system/static/img/background.jpg">
 	<c:set var="role" value="${role}" />
 	<c:set var="typeOfCompany" value="${typeOfCompany }" />
 	<div class="container">

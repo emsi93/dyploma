@@ -1,3 +1,5 @@
 .errors{
-	background-color: red
+	background-color: blue;
+	border-style: groove;
+	border-radius: 25px;
 }

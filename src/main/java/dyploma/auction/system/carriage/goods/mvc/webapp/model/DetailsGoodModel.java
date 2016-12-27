@@ -21,6 +21,7 @@ public class DetailsGoodModel {
 	private String company;
 	private int idCompany;
 	private Double weight;
+	private String deadlineAuction;
 
 	public String getTitle() {
 		return title;
@@ -171,7 +172,7 @@ public class DetailsGoodModel {
 			String fromStreet, String toCountry, String toCity,
 			String toStreet, Double maxPrice, String dateAdding,
 			String dateOfDelivery, String actualPrice, String name,
-			String surname, String company, int idCompany, Double weight) {
+			String surname, String company, int idCompany, Double weight, String deadlineAuction) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -192,6 +193,7 @@ public class DetailsGoodModel {
 		this.company = company;
 		this.idCompany = idCompany;
 		this.weight = weight;
+		this.deadlineAuction = deadlineAuction;
 	}
 
 	public Double getWeight() {
@@ -200,6 +202,14 @@ public class DetailsGoodModel {
 
 	public void setWeight(Double weight) {
 		this.weight = weight;
+	}
+
+	public String getDeadlineAuction() {
+		return deadlineAuction;
+	}
+
+	public void setDealineAuction(String deadlineAuction) {
+		this.deadlineAuction = deadlineAuction;
 	}
 	
 	

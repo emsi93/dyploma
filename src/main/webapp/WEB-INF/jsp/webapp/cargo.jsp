@@ -20,15 +20,22 @@
 <script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
 </head>
 
-<body>
+<body background="/auction-system/static/img/background.jpg">
 	<c:set var="role" value="${role}" />
 	<c:set var="typeOfCompany" value="${typeOfCompany }" />
 	<div class="container">
 		<%@include file="navbar.jsp" %>
 		<div class="row">
-
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h1 class="panel-title">Szczegóły towaru: ${detailsCargoModel.title }</h1>
+				</div>
+				<div class="panel-body">
+				<c:if test="${not empty wiadomosc}">
+									<div class="alert alert-info"><center>${wiadomosc}</center></div>
+								</c:if>
 			<div class="col-lg-4">
-				<div class="errors">${wiadomosc }</div>
+				
 				<table class="table table-striped">
 					<tbody>
 						<tr>
@@ -64,6 +71,10 @@
 						<tr>
 							<td>Termin dostarczenia:</td>
 							<td>${detailsCargoModel.dateOfDelivery }</td>
+						</tr>
+						<tr>
+							<td>Termin dostarczenia:</td>
+							<td>${detailsCargoModel.deadlineAuction }</td>
 						</tr>
 						<tr>
 							<td>Kwota początkowa:</td>
@@ -123,6 +134,7 @@
 				</c:if>
 			</div>
 			<div class="col-lg-8" id="map"></div>
+			</div>
 		</div>
 	</div>
 
@@ -179,7 +191,7 @@
 </script>
 <style>
 #map {
-	height: 550px;
+	height: 575px;
 	width: 65%;
 }
 </style>
