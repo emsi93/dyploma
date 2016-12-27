@@ -19,20 +19,27 @@
 <script src="/auction-system/static/menu/js/jquery.js"></script>
 <script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body background="/auction-system/static/img/background.jpg">
 	<c:set var="role" value="${role}" />
 	<c:set var="typeOfCompany" value="${typeOfCompany }" />
 	<div class="container">
 		<%@include file="navbar.jsp" %>
 		<div class="row">
-			<div class="col-lg-4"></div>
-			<div class="col-lg-4">
-				${wiadomosc}
-				<h2>Edycja firmy</h2>
+				<div class="panel panel-default">
+				<div class="panel-heading">
+					<h1 class="panel-title">Edycja firmy</h1>
+					
+				</div>
+			<div class="panel-body">
+			<c:if test="${not empty wiadomosc}">
+									<div class="alert alert-info"><center>${wiadomosc}</center></div>
+								</c:if>
 				<form:form method="post" modelAttribute="companyForm"
 					action="/auction-system/webapp/editCompany" role="form">
+					<div class="col-lg-2"></div>
+				<div class="col-lg-4">
 					<div class="form-group">
-						<label class="sr-only">Nazwa firmy</label>
+						<label>Nazwa firmy</label>
 						<form:input path="companyName" type="text" class="form-control"
 							placeholder="*Nazwa firmy..." value="${companyForm.companyName }" />
 						<div class="errors">
@@ -48,7 +55,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="sr-only">Kod pocztowy</label>
+						<label>Kod pocztowy</label>
 						<form:input path="postcode" type="text" class="form-control"
 							placeholder="*Kod pocztowy..." value="${companyForm.postcode }" />
 						<div class="errors">
@@ -56,7 +63,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="sr-only">Miasto</label>
+						<label>Miasto</label>
 						<form:input path="city" type="text" class="form-control"
 							placeholder="*Miasto..." value="${companyForm.city }" />
 						<div class="errors">
@@ -64,7 +71,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="sr-only">Ulica</label>
+						<label>Ulica</label>
 						<form:input path="street" type="text" class="form-control"
 							placeholder="*Ulica..." value="${companyForm.street }" />
 						<div class="errors">
@@ -72,15 +79,17 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="sr-only">Numer domu</label>
+						<label>Numer domu</label>
 						<form:input path="flatNumber" type="text" class="form-control"
 							placeholder="Numer domu..." value="${companyForm.flatNumber }" />
 						<div class="errors">
 							<form:errors path="flatNumber" element="div" />
 						</div>
 					</div>
+					</div>
+					<div class="col-lg-4">
 					<div class="form-group">
-						<label class="sr-only">NIP</label>
+						<label>NIP</label>
 						<form:input path="nipNumber" type="text" class="form-control"
 							placeholder="*NIP..." value="${companyForm.nipNumber }" />
 						<div class="errors">
@@ -88,7 +97,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="sr-only">Numer telefonu</label>
+						<label>Numer telefonu</label>
 						<form:input path="phoneNumber" type="text" class="form-control"
 							placeholder="*Numer telefonu..."
 							value="${companyForm.phoneNumber }" />
@@ -97,7 +106,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="sr-only">Email</label>
+						<label>Email</label>
 						<form:input path="email" type="email" class="form-control"
 							placeholder="*Email..." value="${companyForm.email }" />
 						<div class="errors">
@@ -105,17 +114,17 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="sr-only">Opis firmy</label>
+						<label>Opis firmy</label>
 						<form:input path="description" type="text" class="form-control"
-							placeholder="*Opis firmy..." value="${companyForm.description }" />
+							placeholder="Opis firmy..." value="${companyForm.description }" />
 						<div class="errors">
 							<form:errors path="description" element="div" />
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="sr-only">Strona internetowa</label>
+						<label>Strona internetowa</label>
 						<form:input path="website" type="text" class="form-control"
-							placeholder="*Strona internetowa..."
+							placeholder="Strona internetowa..."
 							value="${companyForm.website }" />
 						<div class="errors">
 							<form:errors path="website" element="div" />
@@ -123,9 +132,11 @@
 					</div>
 					<form:input class="submit btn btn-primary" path="" type="submit"
 						value="Zakończ edycję"></form:input>
+						</div>
+					<div class="col-lg-2"></div>
 				</form:form>
+				</div>
 			</div>
-			<div class="col-lg-4"></div>
 		</div>
 	</div>
 </body>

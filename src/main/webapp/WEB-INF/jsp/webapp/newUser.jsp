@@ -19,15 +19,24 @@
 <script src="/auction-system/static/menu/js/jquery.js"></script>
 <script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body background="/auction-system/static/img/background.jpg">
 	<c:set var="role" value="${role}" />
 	<c:set var="typeOfCompany" value="${typeOfCompany }" />
 	<div class="container">
 	<%@include file="navbar.jsp" %>
 		<div class="row">
-			<div class="col-lg-4"></div>
-			<div class="col-lg-4">${wiadomosc}
-				<h2>Dodawanie nowego pracownika</h2>
+			<div class="col-lg-3"></div>
+			<div class="col-lg-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h1 class="panel-title">Dodawanie nowego pracownika</h1>
+					<h6>*Pola wymagane</h6>
+				</div>
+			<div class="panel-body">
+			<c:if test="${not empty wiadomosc}">
+									<div class="alert alert-info"><center>${wiadomosc}</center></div>
+								</c:if>
+				
 				<form:form method="post" modelAttribute="userForm"
 					action="/auction-system/webapp/newUser" role="form">
 					<div class="form-group">
@@ -89,9 +98,10 @@
 					<form:input class="submit btn btn-primary" path="" type="submit"
 						value="Dodaj pracownika" id="register"></form:input>
 				</form:form>
+				</div>
 			</div>
-			<div class="col-lg-4"></div>
-
+			<div class="col-lg-3"></div>
+		</div>
 		</div>
 	</div>
 </body>

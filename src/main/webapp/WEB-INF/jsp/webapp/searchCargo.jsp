@@ -21,7 +21,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 <script src="/auction-system/static/angular/filterModule.js"></script>
 </head>
-<body ng-app="myModule">
+<body ng-app="myModule" background="/auction-system/static/img/background.jpg">
 	<c:set var="role" value="${role}" />
 	<c:set var="typeOfCompany" value="${typeOfCompany }" />
 	<div class="container">

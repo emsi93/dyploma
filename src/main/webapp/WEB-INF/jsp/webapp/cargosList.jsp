@@ -23,60 +23,72 @@
 <script src="/auction-system/static/angular/filterModule.js"></script>
 </head>
 
-<body ng-app="myModule">
+<body ng-app="myModule"
+	background="/auction-system/static/img/background.jpg">
 	<c:set var="role" value="${role}" />
 	<c:set var="typeOfCompany" value="${typeOfCompany }" />
 	<div class="container">
-		<%@include file="navbar.jsp" %>
+		<%@include file="navbar.jsp"%>
+
 		<div class="row" ng-controller="myController">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>LP.</th>
-						<th ng-click="sortData('title')">Nagłówek</th>
-						<th ng-click="sortData('from')">Miejsce załadunku</th>
-						<th ng-click="sortData('to')">Miejsce rozładunku</th>
-						<th ng-click="sortData('dateAdding')">Data dodania</th>
-						<th ng-click="sortData('dateDelivery')">Termin dostarczenia</th>
-						<th ng-click="sortData('prices')">Cena początkowa/Cena
-							aktualna</th>
-						<th>Szczegóły</th>
-						<th>Edycja</th>
-					</tr>
-					<tr>
-						<th></th>
-						<th><input type="text" ng-model="searchText.title" size="12" /></th>
-						<th><input type="text" ng-model="searchText.from" size="12" /></th>
-						<th><input type="text" ng-model="searchText.to" size="12" /></th>
-						<th><input type="text" ng-model="searchText.dateAdding"
-							size="12" /></th>
-						<th><input type="text" ng-model="searchText.dateDelivery"
-							size="12" /></th>
-						<th><input type="text" ng-model="searchText.prices" size="12" /></th>
-					</tr>
-				</thead>
-				<tbody>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h1 class="panel-title">Lista towarów</h1>
+				</div>
+				<div class="panel-body">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>LP.</th>
+								<th ng-click="sortData('title')">Nagłówek</th>
+								<th ng-click="sortData('from')">Miejsce załadunku</th>
+								<th ng-click="sortData('to')">Miejsce rozładunku</th>
+								<th ng-click="sortData('dateAdding')">Data dodania</th>
+								<th ng-click="sortData('dateDelivery')">Termin dostarczenia</th>
+								<th ng-click="sortData('prices')">Cena początkowa/Cena
+									aktualna</th>
+								<th>Szczegóły</th>
+								<th>Edycja</th>
+							</tr>
+							<tr>
+								<th></th>
+								<th><input type="text" ng-model="searchText.title"
+									size="12" /></th>
+								<th><input type="text" ng-model="searchText.from" size="12" /></th>
+								<th><input type="text" ng-model="searchText.to" size="12" /></th>
+								<th><input type="text" ng-model="searchText.dateAdding"
+									size="12" /></th>
+								<th><input type="text" ng-model="searchText.dateDelivery"
+									size="12" /></th>
+								<th><input type="text" ng-model="searchText.prices"
+									size="12" /></th>
+							</tr>
+						</thead>
+						<tbody>
 
-					<tr
-						ng-repeat="good in data | filter:searchText | orderBy:sortColumn:reverseSort">
-						<td>{{$index+1}}</td>
-						<td>{{good.title }}</td>
-						<td>{{good.from }}</td>
-						<td>{{good.to }}</td>
-						<td>{{good.dateAdding | date:"dd.MM.yyyy" }}</td>
-						<td>{{good.dateDelivery | date:"dd.MM.yyyy"}}</td>
-						<td>{{good.prices }}</td>
-						<td><a class="btn btn-primary"
-							href="/auction-system/webapp/detailsCargo/{{good.id }}">Szczegóły</a></td>
-						<td><a class="btn btn-primary"
-							href="/auction-system/webapp/editCargo/{{good.id }}">Edycja</a></td>
-					</tr>
+							<tr
+								ng-repeat="good in data | filter:searchText | orderBy:sortColumn:reverseSort">
+								<td>{{$index+1}}</td>
+								<td>{{good.title }}</td>
+								<td>{{good.from }}</td>
+								<td>{{good.to }}</td>
+								<td>{{good.dateAdding | date:"dd.MM.yyyy" }}</td>
+								<td>{{good.dateDelivery | date:"dd.MM.yyyy"}}</td>
+								<td>{{good.prices }}</td>
+								<td><a class="btn btn-primary"
+									href="/auction-system/webapp/detailsCargo/{{good.id }}">Szczegóły</a></td>
+								<td><a class="btn btn-primary"
+									href="/auction-system/webapp/editCargo/{{good.id }}">Edycja</a></td>
+							</tr>
 
-				</tbody>
-			</table>
-			<a class="btn btn-primary" href="newCargo">Dodaj towar</a>
+						</tbody>
+					</table>
+					<a class="btn btn-primary" href="newCargo">Dodaj towar</a>
+				</div>
+
+			</div>
 		</div>
-	</div>
+		</div>
 </body>
 <script>
 	var datas = ${jsonA};

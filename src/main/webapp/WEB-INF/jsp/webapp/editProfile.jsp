@@ -21,21 +21,28 @@
 <script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
 
 </head>
-<body>
+<body background="/auction-system/static/img/background.jpg">
 	<div class="container">
 		<c:set var="role" value="${role}" />
 		<c:set var="typeOfCompany" value="${typeOfCompany }" />
 		<%@include file="navbar.jsp" %>
 		<div class="row">
 
-			<div class="col-lg-4"></div>
-			<div class="col-lg-4">
-				${wiadomosc }
-				<h2>Edycja profilu</h2>
+			<div class="col-lg-3"></div>
+			<div class="col-lg-6">
+				<div class="panel panel-default">
+				<div class="panel-heading">
+					<h1 class="panel-title">Edycja profilu</h1>
+					
+				</div>
+			<div class="panel-body">
+			<c:if test="${not empty wiadomosc}">
+									<div class="alert alert-info"><center>${wiadomosc}</center></div>
+								</c:if>
 				<form:form method="post" modelAttribute="profileForm"
 				action="/auction-system/webapp/editProfile" role="form">
 				<div class="form-group">
-					<label class="sr-only">Imie</label>
+					<label>Imie</label>
 					<form:input path="name" type="text" class="form-control"
 						placeholder="*Imię..." value="${profileForm.name }" />
 					<div class="errors">
@@ -43,7 +50,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="sr-only">Nazwisko</label>
+					<label>Nazwisko</label>
 					<form:input path="surname" type="text" class="form-control"
 						placeholder="*Nazwisko..." value="${profileForm.surname }" />
 					<div class="errors">
@@ -51,7 +58,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="sr-only">Login</label>
+					<label>Login</label>
 					<form:input path="login" type="text" class="form-control"
 						placeholder="*Login..." value="${profileForm.login }" />
 					<div class="errors">
@@ -59,7 +66,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="sr-only">Hasło</label>
+					<label>Hasło</label>
 					<form:input path="password" type="password" class="form-control"
 						placeholder="*Hasło..." />
 					<div class="errors">
@@ -67,7 +74,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="sr-only">Powtórz hasło</label>
+					<label>Powtórz hasło</label>
 					<form:input path="password2" type="password" class="form-control"
 						placeholder="*Powtórz hasło..." value="${profileForm.password }" />
 					<div class="errors">
@@ -75,7 +82,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="sr-only">Numer telefonu</label>
+					<label>Numer telefonu</label>
 					<form:input path="phoneNumber" type="text" class="form-control"
 						placeholder="*Numer telefonu..."
 						value="${profileForm.phoneNumber }" />
@@ -84,7 +91,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="sr-only">Email</label>
+					<label>Email</label>
 					<form:input path="email" type="email" class="form-control"
 						placeholder="*Email..." value="${profileForm.email }" />
 					<div class="errors">
@@ -95,8 +102,10 @@
 					value="Edytuj profil"></form:input>
 			</form:form>
 			</div>
-			<div class="col-lg-4"></div>
+			</div>
+			<div class="col-lg-3"></div>
 		</div>
+	</div>
 	</div>
 </body>
 </html>

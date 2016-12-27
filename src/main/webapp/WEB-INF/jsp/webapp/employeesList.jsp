@@ -21,12 +21,17 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 <script src="/auction-system/static/angular/filterModule.js"></script>
 </head>
-<body ng-app="myModule">
+<body ng-app="myModule" background="/auction-system/static/img/background.jpg">
 	<c:set var="role" value="${role}" />
 	<c:set var="typeOfCompany" value="${typeOfCompany }" />
 	<div class="container">
 		<%@include file="navbar.jsp" %>
 		<div class="row" ng-controller="myController">
+		<div class="panel panel-default">
+				<div class="panel-heading">
+					<h1 class="panel-title">Lista pracowników</h1>
+				</div>
+				<div class="panel-body">
 			<table class="table table-striped">
 				<thead>
 					<tr>
@@ -62,6 +67,8 @@
 				</tbody>
 			</table>
 			<a class="btn btn-primary" href="newUser">Dodaj pracownika</a>
+			</div>
+		</div>
 		</div>
 	</div>
 </body>

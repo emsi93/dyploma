@@ -16,10 +16,11 @@ public class GoodModelForEdit {
 	private String dateOfDelivery;
 	private String status;
 	private Double weight;
+	private String deadlineAuction;
 	public GoodModelForEdit(int id, String title, String content, String trailer,
 			String fromCountry, String fromCity, String fromStreet,
 			String toCountry, String toCity, String toStreet, Double maxPrice,
-			String dateOfDelivery, String status, Double weight) {
+			String dateOfDelivery, String status, Double weight, String deadlineAuction) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -34,15 +35,14 @@ public class GoodModelForEdit {
 		this.maxPrice = maxPrice;
 		this.dateOfDelivery = dateOfDelivery;
 		this.weight = weight;
-		//if(status.equals("1"))
-			this.status = status;
-		//else
-			//this.status = "Nie";
+		this.status = status;
+		this.deadlineAuction = deadlineAuction;
+		
 	}
 	
 	public GoodModelForEdit()
 	{
-		this(0,null,null,null,null,null,null,null,null,null,null,null,null,null);
+		this(0,null,null,null,null,null,null,null,null,null,null,null,null,null, null);
 	}
 	
 	public String getTitle() {
@@ -131,6 +131,15 @@ public class GoodModelForEdit {
 	public void setWeight(Double weight) {
 		this.weight = weight;
 	}
+
+	public String getDeadlineAuction() {
+		return deadlineAuction;
+	}
+
+	public void setDeadlineAuction(String deadlineAuction) {
+		this.deadlineAuction = deadlineAuction;
+	}
+	
 	
 	
 }

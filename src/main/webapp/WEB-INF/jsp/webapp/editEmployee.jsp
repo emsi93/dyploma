@@ -12,41 +12,34 @@
 <title>Serwis aukcyjny - edycja pracownika</title>
 <link href="/auction-system/static/menu/css/bootstrap.min.css"
 	rel="stylesheet">
-
-
-
-<!-- Custom Fonts -->
 <link
 	href="/auction-system/static/menu/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
 <link href="/auction-system/static/css/errors.css" rel="stylesheet">
-
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-<!-- jQuery -->
 <script src="/auction-system/static/menu/js/jquery.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
 <script src="/auction-system/static/menu/js/bootstrap.min.js"></script>
 
 </head>
-<body>
+<body background="/auction-system/static/img/background.jpg">
 	<div class="container">
 		<%@include file="navbar.jsp" %>
 		<div class="row">
-			<div class="col-lg-4"></div>
-			<div class="col-lg-4">
-				${wiadomosc }
-				<h2>Edycja profilu</h2>
+		
+			<div class="col-lg-3"></div>
+			<div class="col-lg-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h1 class="panel-title">Edycja profilu</h1>
+				</div>
+				<div class="panel-body">
+				<c:if test="${not empty wiadomosc}">
+									<div class="alert alert-info"><center>${wiadomosc}</center></div>
+								</c:if>
 				<form:form method="post" modelAttribute="employeeForm"
 					action="/auction-system/webapp/editEmployee/${employeeForm.id }"
 					role="form">
 					<div class="form-group">
-						<label class="sr-only">Imie</label>
+						<label>Imie</label>
 						<form:input path="name" type="text" class="form-control"
 							placeholder="*Imię..." value="${employeeForm.name }" />
 						<div class="errors">
@@ -54,7 +47,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="sr-only">Nazwisko</label>
+						<label>Nazwisko</label>
 						<form:input path="surname" type="text" class="form-control"
 							placeholder="*Nazwisko..." value="${employeeForm.surname }" />
 						<div class="errors">
@@ -62,7 +55,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="sr-only">Login</label>
+						<label>Login</label>
 						<form:input path="login" type="text" class="form-control"
 							placeholder="*Login..." value="${employeeForm.login }" />
 						<div class="errors">
@@ -71,7 +64,7 @@
 					</div>
 
 					<div class="form-group">
-						<label class="sr-only">Aktywność</label>
+						<label>Aktywność</label>
 						<form:select items="${activityList }" path="activity" type="text"
 							class="form-control" placeholder="*Aktywność..."
 							value="${employeeForm.activity }" />
@@ -81,7 +74,7 @@
 					</div>
 
 					<div class="form-group">
-						<label class="sr-only">Rola</label>
+						<label>Rola</label>
 						<form:select path="role" type="text" class="form-control"
 							placeholder="*Role..." items="${rolesList }"
 							value="${employeeForm.role }" />
@@ -91,7 +84,7 @@
 					</div>
 
 					<div class="form-group">
-						<label class="sr-only">Numer telefonu</label>
+						<label>Numer telefonu</label>
 						<form:input path="phoneNumber" type="text" class="form-control"
 							placeholder="*Numer telefonu..."
 							value="${employeeForm.phoneNumber }" />
@@ -100,7 +93,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="sr-only">Email</label>
+						<label>Email</label>
 						<form:input path="email" type="email" class="form-control"
 							placeholder="*Email..." value="${employeeForm.email }" />
 						<div class="errors">
@@ -113,8 +106,9 @@
 						href="/auction-system/webapp/employeesList">Lista pracowników</a>
 				</form:form>
 			</div>
-			<div class="col-lg-4"></div>
-
+			<div class="col-lg-3"></div>
+			</div>
+			</div>
 
 		</div>
 	</div>
