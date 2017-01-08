@@ -71,7 +71,7 @@
 							<li><a href="/auction-system/webapp/editProfile">Twój
 									profil</a></li>
 							<li class="divider"></li>
-							<li><a href="#">Historia transakcji</a></li>
+							<li><a href="/auction-system/webapp/finishedTransaction">Zakończone transakcje</a></li>
 						</ul></li>
 				</ul>
 

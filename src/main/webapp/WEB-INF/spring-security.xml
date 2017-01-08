@@ -10,6 +10,8 @@
 	<security:http auto-config="true">
 		<security:intercept-url pattern="/webapp/menu"
 			access="ROLE_ADMIN_SHIPPER,ROLE_USER_SHIPPER,ROLE_ADMIN_CARRIER,ROLE_USER_CARRIER,ROLE_ADMIN" />
+		<security:intercept-url pattern="/webapp/aboutCompany"
+			access="ROLE_ADMIN_SHIPPER,ROLE_USER_SHIPPER,ROLE_ADMIN_CARRIER,ROLE_USER_CARRIER,ROLE_ADMIN" />
 		<security:intercept-url pattern="/webapp/newCargo"
 			access="ROLE_ADMIN_SHIPPER,ROLE_USER_SHIPPER" />
 		<security:intercept-url pattern="/webapp/editProfile"
@@ -18,6 +20,12 @@
 			access="ROLE_ADMIN_CARRIER,ROLE_USER_CARRIER,ROLE_ADMIN" />
 		<security:intercept-url pattern="/webapp/cargo"
 			access="ROLE_ADMIN_SHIPPER,ROLE_USER_SHIPPER,ROLE_ADMIN_CARRIER,ROLE_USER_CARRIER,ROLE_ADMIN" />
+		<security:intercept-url pattern="/webapp/finishedTransaction"
+			access="ROLE_ADMIN_SHIPPER,ROLE_USER_SHIPPER,ROLE_ADMIN_CARRIER,ROLE_USER_CARRIER,ROLE_ADMIN" />
+		<security:intercept-url pattern="/webapp/detailsTransaction"
+			access="ROLE_ADMIN_CARRIER,ROLE_USER_CARRIER,ROLE_ADMIN" />
+		<security:intercept-url pattern="/webapp/detailsTransaction2"
+			access="ROLE_ADMIN_SHIPPER,ROLE_USER_SHIPPER,ROLE_ADMIN" />
 		<security:intercept-url pattern="/webapp/employeeList"
 			access="ROLE_ADMIN,ROLE_ADMIN_SHIPPER,ROLE_ADMIN_CARRIER" />
 		<security:intercept-url pattern="/webapp/newUser"

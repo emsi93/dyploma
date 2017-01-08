@@ -32,6 +32,45 @@
 				</div>
 				<div class="panel-body">
 			<div class="col-lg-4">
+			<button class="btn btn-primary" data-toggle="modal"
+							data-target="#myModal">Oferty przewozu</button>
+						<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+							aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">
+											<span aria-hidden="true">&times;</span><span class="sr-only">Zamknij</span>
+										</button>
+										<h4 class="modal-title" id="myModalLabel">Oferty przewozu</h4>
+									</div>
+									<div class="modal-body">
+										<table class="table table-striped">
+											<thead>
+												<tr>
+													<th>Użytkownik</th>
+													<th>Kwota</th>
+													<th>Data</th>
+												</tr>
+											</thead>
+											<tbody>
+											<c:forEach items="${purchaseOffer}" var = "offer">
+												<tr>
+													<td>${offer.login }</td>
+													<td>${offer.price }</td>
+													<td>${offer.data }</td>
+												</tr>
+											</c:forEach>
+											</tbody>
+										</table>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default"
+											data-dismiss="modal">Zamknij</button>
+									</div>
+								</div>
+							</div>
+						</div>
 				<table class="table table-striped">
 					<tbody>
 						<tr>

@@ -79,4 +79,6 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="auctionSystemDataSourceGlobal" />
 	</bean>
+	
+	
 </beans>

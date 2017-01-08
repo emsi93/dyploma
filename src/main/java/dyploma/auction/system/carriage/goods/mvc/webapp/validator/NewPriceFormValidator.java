@@ -49,8 +49,9 @@ public class NewPriceFormValidator implements Validator {
 		}
 		int id = newPrice.getId();
 		PricesFromDB pricesFromDB = dao.getPricesFromDB(id);
-		
-		if (pricesFromDB.getActualPrice().equals("")) {
+		if(pricesFromDB.getActualPrice()==null)
+			pricesFromDB.setActualPrice("");
+		if (pricesFromDB.getActualPrice().equals("") || pricesFromDB.getActualPrice()==null) {
 			if (pricesFromDB.getMaxPrice() < newPrice.getPrice()) {
 				ValidationUtils.reject(errors, "actualPrice", PRICE_ERROR);
 			}

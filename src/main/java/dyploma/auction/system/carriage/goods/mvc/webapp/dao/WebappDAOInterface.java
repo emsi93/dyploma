@@ -1,5 +1,6 @@
 package dyploma.auction.system.carriage.goods.mvc.webapp.dao;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.dao.DataAccessException;
@@ -8,12 +9,14 @@ import dyploma.auction.system.carriage.goods.mvc.webapp.model.CompanyModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.DetailsEmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.DetailsGoodModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.EmployeeModel;
+import dyploma.auction.system.carriage.goods.mvc.webapp.model.FinishedTransaction;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodData;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForEdit;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForList;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.PricesFromDB;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.ProfileModel;
+import dyploma.auction.system.carriage.goods.mvc.webapp.model.PurchaseOffer;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.RegisterModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.UserModel;
 
@@ -76,10 +79,21 @@ public interface WebappDAOInterface {
 
 	public void editCargo(GoodModelForEdit goodModelForEdit)throws DataAccessException;
 
-	public void updatePrice(int id, Double price)throws DataAccessException;
+	public void updatePrice(int id, Double price, int userID)throws DataAccessException;
 
 	public PricesFromDB getPricesFromDB(int id)throws DataAccessException;
 
 	public List<GoodData> getGoodData(int companyID)throws DataAccessException;
 
+	public List<PurchaseOffer> getPurchaseOffer(int id)throws DataAccessException;
+	
+	public PurchaseOffer getPurchaseOffer(int id, int type)throws DataAccessException;
+	
+	public void checkDateOfGoods() throws DataAccessException, ParseException;
+
+	public List<FinishedTransaction> getFinishedTransaction(int companyID, int typeOfCompany) throws DataAccessException;
+	
+	public List<String> getTrailers() throws DataAccessException;
+
+	public List<String> getCountries() throws DataAccessException;
 }

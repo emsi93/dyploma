@@ -3,6 +3,7 @@ package dyploma.auction.system.carriage.goods.mvc.webapp.dao.impl;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -24,12 +25,15 @@ import dyploma.auction.system.carriage.goods.mvc.webapp.model.CompanyModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.DetailsEmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.DetailsGoodModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.EmployeeModel;
+import dyploma.auction.system.carriage.goods.mvc.webapp.model.FinishedTransaction;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodData;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForEdit;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForList;
+import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodWithDate;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.PricesFromDB;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.ProfileModel;
+import dyploma.auction.system.carriage.goods.mvc.webapp.model.PurchaseOffer;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.RegisterModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.UserModel;
 
@@ -507,10 +511,18 @@ public class WebappDAOImpl implements WebappDAOInterface {
 
 	}
 
-	public void updatePrice(int id, Double price) throws DataAccessException {
+	public void updatePrice(int id, Double price, int userID)
+			throws DataAccessException {
 		// TODO Auto-generated method stub
+
+		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = new Date();
+		String data = sdf.format(date).toString();
 		jdbcTemplate.update("UPDATE goods SET actual_price=? WHERE id = ?",
 				price, id);
+		jdbcTemplate
+				.update("INSERT INTO purchase_offers(id_login,id_good,price,data) VALUES (?,?,?,?)",
+						userID, id, price, data);
 	}
 
 	public CompanyModel getInfoCompany(int idCompany)
@@ -555,6 +567,126 @@ public class WebappDAOImpl implements WebappDAOInterface {
 										.getDouble(2));
 							}
 						}, new Object[] { companyID });
+	}
+
+	public List<PurchaseOffer> getPurchaseOffer(int id)
+			throws DataAccessException {
+		return jdbcTemplate
+				.query("SELECT l.login, p.price, p.data FROM purchase_offers p INNER JOIN logins l on l.id = p.id_login WHERE p.id_good = ? ORDER BY p.id desc",
+						new RowMapper<PurchaseOffer>() {
+
+							public PurchaseOffer mapRow(ResultSet rs,
+									int rowNumber) throws SQLException {
+								return new PurchaseOffer(rs.getString(1), rs
+										.getDouble(2), rs.getString(3));
+							}
+						}, new Object[] { id });
+	}
+
+	public void checkDateOfGoods() throws DataAccessException, ParseException {
+		// TODO Auto-generated method stub
+		List<GoodWithDate> listGoods = jdbcTemplate.query(
+				"SELECT id, deadline_auction FROM goods WHERE status = 1",
+				new RowMapper<GoodWithDate>() {
+
+					public GoodWithDate mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new GoodWithDate(rs.getInt(1), rs.getString(2));
+					}
+				}, new Object[] {});
+
+		for (int i = 0; i < listGoods.size(); i++) {
+			String currentDate = jdbcTemplate.queryForObject(
+					"SELECT CURDATE()", new RowMapper<String>() {
+						public String mapRow(ResultSet rs, int rowNumber)
+								throws SQLException {
+							return new String(rs.getString(1));
+						}
+					}, new Object[] {});
+
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date date1 = sdf.parse(listGoods.get(i).getData());
+			Date date2 = sdf.parse(currentDate);
+
+			if (date1.compareTo(date2) < 0 || date1.compareTo(date2) == 0) {
+				jdbcTemplate.update("UPDATE goods SET status = 0 WHERE id=?",
+						listGoods.get(i).getId());
+
+				Integer purchaseOfferId = jdbcTemplate.queryForObject(
+						"SELECT max(id) FROM purchase_offers WHERE id_good=?",
+						new RowMapper<Integer>() {
+							public Integer mapRow(ResultSet rs, int rowNumber)
+									throws SQLException {
+								return new Integer(rs.getInt(1));
+							}
+						}, new Object[] { listGoods.get(i).getId() });
+				jdbcTemplate
+						.update("INSERT INTO finished_transactions(id_purchase_offer) VALUES(?)",
+								purchaseOfferId);
+
+			}
+
+		}
+	}
+
+	public List<FinishedTransaction> getFinishedTransaction(int companyID, int typeCompany)
+			throws DataAccessException {
+		String sql = null;
+		if(typeCompany == 2)
+			sql = "SELECT ft.id, g.id , g.title, l.login, po.price, po.data, g.to_country, g.to_city FROM finished_transactions ft INNER JOIN purchase_offers po ON ft.id_purchase_offer = po.id INNER JOIN logins l ON l.id = po.id_login INNER JOIN users u ON u.id = l.id_user INNER JOIN companies c ON c.id = u.id_company INNER JOIN goods g ON g.id = po.id_good WHERE g.status = 1 AND u.id_company = ?";
+		else
+			sql = "SELECT ft.id, g.id , g.title, l.login, po.price, po.data, g.to_country, g.to_city FROM finished_transactions ft INNER JOIN purchase_offers po ON ft.id_purchase_offer = po.id INNER JOIN logins l ON l.id = po.id_login INNER JOIN users u ON u.id = l.id_user INNER JOIN goods g ON g.id = po.id_good INNER JOIN logins ll ON ll.id = g.id_login INNER JOIN users uu ON uu.id = g.id_login INNER JOIN companies c ON c.id = uu.id_company WHERE g.status = 1 AND uu.id_company = ?";
+		return jdbcTemplate
+				.query(sql,
+						new RowMapper<FinishedTransaction>() {
+
+							public FinishedTransaction mapRow(ResultSet rs,
+									int rowNumber) throws SQLException {
+								return new FinishedTransaction(rs.getInt(1), rs
+										.getInt(2), rs.getString(3), rs
+										.getString(4), rs.getDouble(5), rs
+										.getString(6), rs.getString(7), rs
+										.getString(8));
+							}
+						}, new Object[] { companyID });
+	}
+
+	public PurchaseOffer getPurchaseOffer(int id, int type)
+			throws DataAccessException {
+		return jdbcTemplate
+				.queryForObject("SELECT p.id, l.login, p.price, p.data FROM purchase_offers p INNER JOIN logins l on l.id = p.id_login WHERE p.id_good = ? AND p.id = (SELECT max(id) FROM purchase_offers)",
+						new RowMapper<PurchaseOffer>() {
+
+							public PurchaseOffer mapRow(ResultSet rs,
+									int rowNumber) throws SQLException {
+								return new PurchaseOffer(rs.getString(2), rs.getDouble(3), rs.getString(4));
+							}
+						}, new Object[] { id });
+	}
+
+	public List<String> getTrailers() throws DataAccessException {
+		// TODO Auto-generated method stub
+		return jdbcTemplate
+				.query("SELECT type_of_trailer FROM types_of_trailers",
+						new RowMapper<String>() {
+
+							public String mapRow(ResultSet rs,
+									int rowNumber) throws SQLException {
+								return new String(rs.getString(1));
+							}
+						}, new Object[] {});
+	}
+
+	public List<String> getCountries() throws DataAccessException {
+		return jdbcTemplate
+				.query("SELECT name FROM countries",
+						new RowMapper<String>() {
+
+							public String mapRow(ResultSet rs,
+									int rowNumber) throws SQLException {
+								return new String(rs.getString(1));
+							}
+						}, new Object[] {});
 	}
 
 }
