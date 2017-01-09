@@ -90,6 +90,10 @@
 							<td>${detailsCargoModel.typeGood }</td>
 						</tr>
 						<tr>
+							<td>Dostępność:</td>
+							<td>${detailsCargoModel.status }</td>
+						</tr>
+						<tr>
 							<td>Miejsce załadunku:</td>
 							<td>${detailsCargoModel.fromCountry },
 								${detailsCargoModel.fromCity }, ${detailsCargoModel.fromStreet }</td>
@@ -189,7 +193,7 @@
 </script>
 <style>
 #map {
-	height: 675px;
+	height: 700px;
 	width: 65%;
 }
 </style>

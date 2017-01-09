@@ -169,3 +169,4 @@ alter table notes_comments
 add constraint foreign key(id_good) references goods(id);
 alter table notes_comments
 add constraint foreign key(id_company) references companies(id);
+ALTER TABLE `carriage_of_goods`.`companies` CHANGE COLUMN `note` `note` DECIMAL(10,2) NULL DEFAULT NULL  ;

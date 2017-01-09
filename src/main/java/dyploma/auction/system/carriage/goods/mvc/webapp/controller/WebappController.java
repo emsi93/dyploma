@@ -585,6 +585,7 @@ public class WebappController {
 					.put("dateDelivery", goodsList.get(i).getDateOfDelivery());
 			jsonObject.put("prices", goodsList.get(i).getMaxPrice() + "z³/"
 					+ goodsList.get(i).getActualPrice() + "z³");
+			jsonObject.put("status", goodsList.get(i).getStatus());
 			jsonA.put(jsonObject);
 
 		}

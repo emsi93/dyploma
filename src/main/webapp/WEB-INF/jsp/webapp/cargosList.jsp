@@ -45,23 +45,26 @@
 								<th ng-click="sortData('to')">Miejsce rozładunku</th>
 								<th ng-click="sortData('dateAdding')">Data dodania</th>
 								<th ng-click="sortData('dateDelivery')">Termin dostarczenia</th>
-								<th ng-click="sortData('prices')">Cena początkowa/Cena
-									aktualna</th>
+								<th ng-click="sortData('prices')">Cena początkowa/Cena aktualna
+								<th ng-click="sortData('status')">Dostępność
+									</th>
 								<th>Szczegóły</th>
 								<th>Edycja</th>
 							</tr>
 							<tr>
 								<th></th>
 								<th><input type="text" ng-model="searchText.title"
-									size="12" /></th>
-								<th><input type="text" ng-model="searchText.from" size="12" /></th>
-								<th><input type="text" ng-model="searchText.to" size="12" /></th>
+									size="10" /></th>
+								<th><input type="text" ng-model="searchText.from" size="10" /></th>
+								<th><input type="text" ng-model="searchText.to" size="10" /></th>
 								<th><input type="text" ng-model="searchText.dateAdding"
-									size="12" /></th>
+									size="10" /></th>
 								<th><input type="text" ng-model="searchText.dateDelivery"
-									size="12" /></th>
+									size="10" /></th>
 								<th><input type="text" ng-model="searchText.prices"
-									size="12" /></th>
+									size="10" /></th>
+								<th><input type="text" ng-model="searchText.status"
+									size="10" /></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -75,6 +78,7 @@
 								<td>{{good.dateAdding | date:"dd.MM.yyyy" }}</td>
 								<td>{{good.dateDelivery | date:"dd.MM.yyyy"}}</td>
 								<td>{{good.prices }}</td>
+								<td>{{good.status }}</td>
 								<td><a class="btn btn-primary"
 									href="/auction-system/webapp/detailsCargo/{{good.id }}">Szczegóły</a></td>
 								<td><a class="btn btn-primary"

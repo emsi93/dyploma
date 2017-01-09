@@ -173,7 +173,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label>Wystawiony na aukcje:</label>
+						<label>Status:</label>
 						<form:select path="status" items="${activityList}"
 							class="form-control" value="${editGoodForm.status }" />
 						<div class="errors">

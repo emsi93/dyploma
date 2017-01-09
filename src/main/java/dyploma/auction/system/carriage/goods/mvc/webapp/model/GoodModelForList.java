@@ -12,11 +12,12 @@ public class GoodModelForList {
 	private String dateOfDelivery;
 	private Double maxPrice;
 	private Double actualPrice;
+	private String status;
 
 	public GoodModelForList(int id, String title, String fromCountry,
 			String fromCity, String toCountry, String toCity,
 			String dateAdding, String dateOfDelivery, Double maxPrice,
-			Double actualPrice) {
+			Double actualPrice, String status) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -28,6 +29,10 @@ public class GoodModelForList {
 		this.dateOfDelivery = dateOfDelivery;
 		this.maxPrice = maxPrice;
 		this.actualPrice = actualPrice;
+		if(status.equals("1"))
+			this.status = "Tak";
+		else
+			this.status = "Nie";
 	}
 
 	public int getId() {
@@ -108,6 +113,16 @@ public class GoodModelForList {
 
 	public void setActualPrice(Double actualPrice) {
 		this.actualPrice = actualPrice;
+	}
+
+	
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	@Override
