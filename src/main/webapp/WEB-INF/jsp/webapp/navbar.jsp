@@ -68,6 +68,8 @@
 										firma</a></li>
 								<li class="divider"></li>
 							</c:if>
+							<li><a href="/auction-system/webapp/commentList">Komentarze firmy</a></li>
+							<li class="divider"></li>
 							<li><a href="/auction-system/webapp/editProfile">Twój
 									profil</a></li>
 							<li class="divider"></li>

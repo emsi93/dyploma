@@ -43,6 +43,7 @@
 					<th ng-click="sortData('price')">Kwota</th>
 					<th ng-click="sortData('dateTransaction')">Data transakcji</th>
 					<th>Szczegóły</th>
+					<th>Wystaw ocenę</th>
 				</tr>
 				<tr>
 				
@@ -66,6 +67,10 @@
 							href="/auction-system/webapp/detailsTransaction/{{good.idGood }}">Szczegóły</a></c:if>
 							<c:if test="${typeOfCompany==1}"><a class="btn btn-primary"
 							href="/auction-system/webapp/detailsTransaction2/{{good.idGood }}">Szczegóły</a></c:if></td>
+						<td>
+						<a class="btn btn-primary"
+							href="/auction-system/webapp/newNote/{{good.idGood }}">Wystaw ocenę</a>
+						</td>
 					</tr>
 			</tbody>
 		</table>

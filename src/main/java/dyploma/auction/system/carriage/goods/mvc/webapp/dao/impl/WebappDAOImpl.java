@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 import dyploma.auction.system.carriage.goods.mvc.webapp.dao.WebappDAOInterface;
+import dyploma.auction.system.carriage.goods.mvc.webapp.model.CommentWithNote;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.CompanyModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.DetailsEmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.DetailsGoodModel;
@@ -31,6 +32,7 @@ import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForEdit;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForList;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodWithDate;
+import dyploma.auction.system.carriage.goods.mvc.webapp.model.NoteAndComment;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.PricesFromDB;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.ProfileModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.PurchaseOffer;
@@ -242,7 +244,7 @@ public class WebappDAOImpl implements WebappDAOInterface {
 	public CompanyModel getCompanyModel(int userID) throws DataAccessException {
 		return jdbcTemplate
 				.queryForObject(
-						"SELECT c.id, c.company_name, c.country, c.postcode, c.city, c.street, c.flat_number, c.nip_number, c.phone_number, c.website, c.email, c.description FROM companies c INNER JOIN users u on c.id = u.id_company WHERE u.id = ?",
+						"SELECT c.id, c.company_name, c.country, c.postcode, c.city, c.street, c.flat_number, c.nip_number, c.phone_number, c.website, c.email, c.description, c.note FROM companies c INNER JOIN users u on c.id = u.id_company WHERE u.id = ?",
 						new RowMapper<CompanyModel>() {
 							public CompanyModel mapRow(ResultSet rs,
 									int rowNumber) throws SQLException {
@@ -252,7 +254,7 @@ public class WebappDAOImpl implements WebappDAOInterface {
 										.getString(6), rs.getString(7), rs
 										.getString(8), rs.getString(9), rs
 										.getString(10), rs.getString(11), rs
-										.getString(12));
+										.getString(12), rs.getDouble(13));
 							}
 						}, new Object[] { userID });
 	}
@@ -379,7 +381,7 @@ public class WebappDAOImpl implements WebappDAOInterface {
 
 		if (goodModel.getContent().equals(""))
 			jdbcTemplate
-					.update("INSERT INTO goods (title,trailer,from_country,from_city,from_street,to_country,to_city,to_street,max_price,date_adding,date_of_delivery,weight,deadline_auction,id_login) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+					.update("INSERT INTO goods (title,trailer,from_country,from_city,from_street,to_country,to_city,to_street,max_price,date_adding,date_of_delivery,weight,deadline_auction,type_good,id_login) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
 							goodModel.getTitle(), goodModel.getTrailer(),
 							goodModel.getFromCountry(),
 							goodModel.getFromCity(), goodModel.getFromStreet(),
@@ -387,10 +389,11 @@ public class WebappDAOImpl implements WebappDAOInterface {
 							goodModel.getToStreet(), goodModel.getMaxPrice(),
 							getCurrentDate(), goodModel.getDateOfDelivery(),
 							goodModel.getWeight(),
-							goodModel.getDeadlineAuction(), loginID);
+							goodModel.getDeadlineAuction(),
+							goodModel.getTypeGood(), loginID);
 		else
 			jdbcTemplate
-					.update("INSERT INTO goods (title,content,trailer,from_country,from_city,from_street,to_country,to_city,to_street,max_price,date_adding,date_of_delivery,weight,deadline_auction,id_login) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+					.update("INSERT INTO goods (title,content,trailer,from_country,from_city,from_street,to_country,to_city,to_street,max_price,date_adding,date_of_delivery,weight,deadline_auction,type_good,id_login) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
 							goodModel.getTitle(), goodModel.getContent(),
 							goodModel.getTrailer(), goodModel.getFromCountry(),
 							goodModel.getFromCity(), goodModel.getFromStreet(),
@@ -398,7 +401,8 @@ public class WebappDAOImpl implements WebappDAOInterface {
 							goodModel.getToStreet(), goodModel.getMaxPrice(),
 							getCurrentDate(), goodModel.getDateOfDelivery(),
 							goodModel.getWeight(),
-							goodModel.getDeadlineAuction(), loginID);
+							goodModel.getDeadlineAuction(),
+							goodModel.getTypeGood(), loginID);
 
 	}
 
@@ -446,7 +450,7 @@ public class WebappDAOImpl implements WebappDAOInterface {
 	public DetailsGoodModel getDetailsGood(int id) throws DataAccessException {
 		return jdbcTemplate
 				.queryForObject(
-						"SELECT g.id, g.title, g.content, g.trailer, g.from_country, g.from_city, g.from_street, g.to_country, g.to_city, g.to_street, g.max_price, g.date_adding, g.date_of_delivery, g.actual_price, u.name, u.surname, c.company_name, c.id, g.weight, g.deadline_auction FROM goods g INNER JOIN logins l ON g.id_login = l.id INNER JOIN users u ON l.id_user = u.id INNER JOIN companies c ON c.id = u.id_company WHERE g.id = ?",
+						"SELECT g.id, g.title, g.content, g.trailer, g.from_country, g.from_city, g.from_street, g.to_country, g.to_city, g.to_street, g.max_price, g.date_adding, g.date_of_delivery, g.actual_price, u.name, u.surname, c.company_name, c.id, g.weight, g.deadline_auction, g.type_good FROM goods g INNER JOIN logins l ON g.id_login = l.id INNER JOIN users u ON l.id_user = u.id INNER JOIN companies c ON c.id = u.id_company WHERE g.id = ?",
 						new RowMapper<DetailsGoodModel>() {
 							public DetailsGoodModel mapRow(ResultSet rs,
 									int rowNumber) throws SQLException {
@@ -460,7 +464,7 @@ public class WebappDAOImpl implements WebappDAOInterface {
 										.getString(14), rs.getString(15), rs
 										.getString(16), rs.getString(17), rs
 										.getInt(18), rs.getDouble(19), rs
-										.getString(20));
+										.getString(20), rs.getString(21));
 							}
 						}, new Object[] { id });
 	}
@@ -469,7 +473,7 @@ public class WebappDAOImpl implements WebappDAOInterface {
 			throws DataAccessException {
 		return jdbcTemplate
 				.queryForObject(
-						"SELECT g.id, g.title, g.content, g.trailer, g.from_country, g.from_city, g.from_street, g.to_country, g.to_city, g.to_street, g.max_price, g.date_of_delivery, g.status, g.weight, g.deadline_auction FROM goods g WHERE g.id = ?",
+						"SELECT g.id, g.title, g.content, g.trailer, g.from_country, g.from_city, g.from_street, g.to_country, g.to_city, g.to_street, g.max_price, g.date_of_delivery, g.status, g.weight, g.deadline_auction, g.type_good FROM goods g WHERE g.id = ?",
 						new RowMapper<GoodModelForEdit>() {
 							public GoodModelForEdit mapRow(ResultSet rs,
 									int rowNumber) throws SQLException {
@@ -480,7 +484,8 @@ public class WebappDAOImpl implements WebappDAOInterface {
 										.getString(8), rs.getString(9), rs
 										.getString(10), rs.getDouble(11), rs
 										.getString(12), rs.getString(13), rs
-										.getDouble(14), rs.getString(15));
+										.getDouble(14), rs.getString(15), rs
+										.getString(16));
 							}
 						}, new Object[] { id });
 	}
@@ -493,7 +498,7 @@ public class WebappDAOImpl implements WebappDAOInterface {
 		else
 			status = "2";
 		jdbcTemplate
-				.update("UPDATE goods SET title=?, content=?, trailer=?, from_country=?, from_city=?, from_street=?, to_country=?, to_city=?, to_street=?, max_price=?, date_of_delivery=?, status=?, weight=?, deadline_auction=? WHERE id = ?",
+				.update("UPDATE goods SET title=?, content=?, trailer=?, from_country=?, from_city=?, from_street=?, to_country=?, to_city=?, to_street=?, max_price=?, date_of_delivery=?, status=?, weight=?, deadline_auction=?, type_good=? WHERE id = ?",
 						goodModelForEdit.getTitle(),
 						goodModelForEdit.getContent(),
 						goodModelForEdit.getTrailer(),
@@ -507,6 +512,7 @@ public class WebappDAOImpl implements WebappDAOInterface {
 						goodModelForEdit.getDateOfDelivery(), status,
 						goodModelForEdit.getWeight(),
 						goodModelForEdit.getDeadlineAuction(),
+						goodModelForEdit.getTypeGood(),
 						goodModelForEdit.getId());
 
 	}
@@ -529,7 +535,7 @@ public class WebappDAOImpl implements WebappDAOInterface {
 			throws DataAccessException {
 		return jdbcTemplate
 				.queryForObject(
-						"SELECT c.id, c.company_name, c.country, c.postcode, c.city, c.street, c.flat_number, c.nip_number, c.phone_number, c.website, c.email, c.description FROM companies c  WHERE c.id = ?",
+						"SELECT c.id, c.company_name, c.country, c.postcode, c.city, c.street, c.flat_number, c.nip_number, c.phone_number, c.website, c.email, c.description, c.note FROM companies c  WHERE c.id = ?",
 						new RowMapper<CompanyModel>() {
 							public CompanyModel mapRow(ResultSet rs,
 									int rowNumber) throws SQLException {
@@ -539,7 +545,7 @@ public class WebappDAOImpl implements WebappDAOInterface {
 										.getString(6), rs.getString(7), rs
 										.getString(8), rs.getString(9), rs
 										.getString(10), rs.getString(11), rs
-										.getString(12));
+										.getString(12), rs.getDouble(13));
 							}
 						}, new Object[] { idCompany });
 	}
@@ -629,64 +635,159 @@ public class WebappDAOImpl implements WebappDAOInterface {
 		}
 	}
 
-	public List<FinishedTransaction> getFinishedTransaction(int companyID, int typeCompany)
-			throws DataAccessException {
+	public List<FinishedTransaction> getFinishedTransaction(int companyID,
+			int typeCompany) throws DataAccessException {
 		String sql = null;
-		if(typeCompany == 2)
+		if (typeCompany == 2)
 			sql = "SELECT ft.id, g.id , g.title, l.login, po.price, po.data, g.to_country, g.to_city FROM finished_transactions ft INNER JOIN purchase_offers po ON ft.id_purchase_offer = po.id INNER JOIN logins l ON l.id = po.id_login INNER JOIN users u ON u.id = l.id_user INNER JOIN companies c ON c.id = u.id_company INNER JOIN goods g ON g.id = po.id_good WHERE g.status = 1 AND u.id_company = ?";
 		else
 			sql = "SELECT ft.id, g.id , g.title, l.login, po.price, po.data, g.to_country, g.to_city FROM finished_transactions ft INNER JOIN purchase_offers po ON ft.id_purchase_offer = po.id INNER JOIN logins l ON l.id = po.id_login INNER JOIN users u ON u.id = l.id_user INNER JOIN goods g ON g.id = po.id_good INNER JOIN logins ll ON ll.id = g.id_login INNER JOIN users uu ON uu.id = g.id_login INNER JOIN companies c ON c.id = uu.id_company WHERE g.status = 1 AND uu.id_company = ?";
-		return jdbcTemplate
-				.query(sql,
-						new RowMapper<FinishedTransaction>() {
+		return jdbcTemplate.query(sql, new RowMapper<FinishedTransaction>() {
 
-							public FinishedTransaction mapRow(ResultSet rs,
-									int rowNumber) throws SQLException {
-								return new FinishedTransaction(rs.getInt(1), rs
-										.getInt(2), rs.getString(3), rs
-										.getString(4), rs.getDouble(5), rs
-										.getString(6), rs.getString(7), rs
-										.getString(8));
-							}
-						}, new Object[] { companyID });
+			public FinishedTransaction mapRow(ResultSet rs, int rowNumber)
+					throws SQLException {
+				return new FinishedTransaction(rs.getInt(1), rs.getInt(2), rs
+						.getString(3), rs.getString(4), rs.getDouble(5), rs
+						.getString(6), rs.getString(7), rs.getString(8));
+			}
+		}, new Object[] { companyID });
 	}
 
 	public PurchaseOffer getPurchaseOffer(int id, int type)
 			throws DataAccessException {
 		return jdbcTemplate
-				.queryForObject("SELECT p.id, l.login, p.price, p.data FROM purchase_offers p INNER JOIN logins l on l.id = p.id_login WHERE p.id_good = ? AND p.id = (SELECT max(id) FROM purchase_offers)",
+				.queryForObject(
+						"SELECT p.id, l.login, p.price, p.data FROM purchase_offers p INNER JOIN logins l on l.id = p.id_login WHERE p.id_good = ? AND p.id = (SELECT max(id) FROM purchase_offers)",
 						new RowMapper<PurchaseOffer>() {
 
 							public PurchaseOffer mapRow(ResultSet rs,
 									int rowNumber) throws SQLException {
-								return new PurchaseOffer(rs.getString(2), rs.getDouble(3), rs.getString(4));
+								return new PurchaseOffer(rs.getString(2), rs
+										.getDouble(3), rs.getString(4));
 							}
 						}, new Object[] { id });
 	}
 
 	public List<String> getTrailers() throws DataAccessException {
 		// TODO Auto-generated method stub
-		return jdbcTemplate
-				.query("SELECT type_of_trailer FROM types_of_trailers",
-						new RowMapper<String>() {
+		return jdbcTemplate.query(
+				"SELECT type_of_trailer FROM types_of_trailers",
+				new RowMapper<String>() {
 
-							public String mapRow(ResultSet rs,
-									int rowNumber) throws SQLException {
-								return new String(rs.getString(1));
-							}
-						}, new Object[] {});
+					public String mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new String(rs.getString(1));
+					}
+				}, new Object[] {});
 	}
 
 	public List<String> getCountries() throws DataAccessException {
-		return jdbcTemplate
-				.query("SELECT name FROM countries",
-						new RowMapper<String>() {
+		return jdbcTemplate.query("SELECT name FROM countries",
+				new RowMapper<String>() {
 
-							public String mapRow(ResultSet rs,
-									int rowNumber) throws SQLException {
-								return new String(rs.getString(1));
-							}
-						}, new Object[] {});
+					public String mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new String(rs.getString(1));
+					}
+				}, new Object[] {});
+	}
+
+	public List<String> getTypesOfGoods() throws DataAccessException {
+		return jdbcTemplate.query("SELECT type_of_good FROM types_of_goods",
+				new RowMapper<String>() {
+
+					public String mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new String(rs.getString(1));
+					}
+				}, new Object[] {});
+	}
+
+	public int getCompanyID(int goodID, int typeOfCompany)
+			throws DataAccessException {
+		Object[] parameter = { goodID };
+		String sql = null;
+		if (typeOfCompany == 2) {
+			sql = "SELECT c.id FROM goods g INNER JOIN logins l ON l.id = g.id_login INNER JOIN users u ON u.id = l.id_user INNER JOIN companies c ON c.id = u.id_company WHERE g.id = ?";
+		} else {
+			sql = "SELECT z.companyid FROM (SELECT MAX(p.id), c.id companyid FROM purchase_offers p INNER JOIN logins l ON l.id = p.id_login INNER JOIN users u ON l.id_user = u.id  INNER JOIN companies c ON c.id = u.id_company WHERE p.id_good = ?) AS z;";
+		}
+		return jdbcTemplate.queryForObject(sql, parameter,
+				new RowMapper<Integer>() {
+
+					public Integer mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new Integer(rs.getInt(1));
+					}
+				});
+	}
+
+	public String getCompanyName(int companyID) throws DataAccessException {
+		Object[] parameter = { companyID };
+		return jdbcTemplate.queryForObject(
+				"SELECT  company_name FROM companies where id = ?", parameter,
+				new RowMapper<String>() {
+
+					public String mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new String(rs.getString(1));
+					}
+				});
+	}
+
+	public void insertNoteComment(int companyID2, int userID,
+			int goodID, NoteAndComment noteAndComment)
+			throws DataAccessException {
+		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = new Date();
+		String data = sdf.format(date).toString();
+		jdbcTemplate
+				.update("INSERT INTO notes_comments(id_login,id_good,id_company,comment,data,note) VALUES(?,?,?,?,?,?)",
+						userID, goodID, companyID2,
+						noteAndComment.getComment(), data,
+						noteAndComment.getNote());
+		
+		
+		Integer x = jdbcTemplate.queryForObject(
+				"SELECT COUNT(*) FROM notes_comments WHERE id_company = ?",
+				new RowMapper<Integer>() {
+					public Integer mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new Integer(rs.getInt(1));
+					}
+				}, new Object[] { companyID2});
+		
+		List<Integer> notes = jdbcTemplate.query("SELECT note FROM notes_comments WHERE id_company = ?",
+				new RowMapper<Integer>() {
+
+			public Integer mapRow(ResultSet rs, int rowNumber)
+					throws SQLException {
+				return new Integer(rs.getInt(1));
+			}
+		}, new Object[] { companyID2 });
+		
+		int suma = 0;
+		for (int i=0; i<notes.size();i++)
+			suma = suma + notes.get(i);
+		
+		float value = (float)suma/x;
+		jdbcTemplate.update("UPDATE companies SET note=? WHERE id = ?",value,companyID2);
+		
+
+	}
+
+	public List<CommentWithNote> getCommentsWithNotes(int companyID)
+			throws DataAccessException {
+		return jdbcTemplate.query("SELECT l.login, g.id, g.title, n.comment, n.data, n.note FROM notes_comments n INNER JOIN logins l ON l.id = n.id_login INNER JOIN goods g ON g.id = n.id_good WHERE n.id_company = ?",
+				new RowMapper<CommentWithNote>() {
+
+					public CommentWithNote mapRow(ResultSet rs, int rowNumber)
+							throws SQLException {
+						return new CommentWithNote(rs.getString(1), rs
+								.getInt(2), rs.getString(3), rs.getString(4),
+								rs.getString(5), rs.getInt(6));
+					}
+				}, new Object[] { companyID });
 	}
 
 }

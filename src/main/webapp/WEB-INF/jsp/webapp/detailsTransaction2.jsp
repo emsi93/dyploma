@@ -55,6 +55,10 @@
 									<td>${detailsCargoModel.trailer }</td>
 								</tr>
 								<tr>
+									<td>Typ ładunku:</td>
+									<td>${detailsCargoModel.typeGood }</td>
+								</tr>
+								<tr>
 									<td>Miejsce załadunku:</td>
 									<td>${detailsCargoModel.fromCountry },
 										${detailsCargoModel.fromCity }, ${detailsCargoModel.fromStreet }</td>
@@ -161,7 +165,7 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQAR809YkzO5lbIQ_dht4OlSF
 </script>
 <style>
 #map {
-height: 675px;
+height: 750px;
 width: 65%;
 }
 </style>

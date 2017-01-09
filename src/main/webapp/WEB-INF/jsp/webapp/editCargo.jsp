@@ -146,6 +146,14 @@
 							<form:errors path="trailer" element="div" />
 						</div>
 					</div>
+					<div class="form-group">
+						</br> <label>Typ ładunku</label>
+						<form:select path="typeGood" items="${typesGoods}"
+							class="form-control" value="${editGoodForm.typeGood }" />
+						<div class="errors">
+							<form:errors path="typeGood" element="div" />
+						</div>
+					</div>
 					<label>Termin dostarczenia</label></br>
 					<div class="form-group">
 						<form:input type='date' path="dateOfDelivery" class="form-control"

@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import dyploma.auction.system.carriage.goods.mvc.webapp.dao.WebappDAOInterface;
+import dyploma.auction.system.carriage.goods.mvc.webapp.model.CommentWithNote;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.CompanyModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.DetailsEmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.DetailsGoodModel;
@@ -42,6 +43,7 @@ import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForEdit;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForList;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.MailModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.NewPrice;
+import dyploma.auction.system.carriage.goods.mvc.webapp.model.NoteAndComment;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.ProfileModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.PurchaseOffer;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.RegisterModel;
@@ -53,6 +55,7 @@ import dyploma.auction.system.carriage.goods.mvc.webapp.validator.EditProfileFor
 import dyploma.auction.system.carriage.goods.mvc.webapp.validator.GoodFormValidator;
 import dyploma.auction.system.carriage.goods.mvc.webapp.validator.MailFormValidator;
 import dyploma.auction.system.carriage.goods.mvc.webapp.validator.NewPriceFormValidator;
+import dyploma.auction.system.carriage.goods.mvc.webapp.validator.NoteAndCommentFormValidator;
 import dyploma.auction.system.carriage.goods.mvc.webapp.validator.RegisterFormValidator;
 import dyploma.auction.system.carriage.goods.mvc.webapp.validator.UserFormValidator;
 
@@ -142,6 +145,14 @@ public class WebappController {
 	@InitBinder("mailForm")
 	protected void initMailFormValidator(WebDataBinder binder) {
 		binder.setValidator(mailFormValidator);
+	}
+	
+	@Autowired
+	private NoteAndCommentFormValidator noteAndCommentFormValidator;
+	
+	@InitBinder("noteCommentForm")
+	protected void initNoteAndCommentFormValidator(WebDataBinder binder) {
+		binder.setValidator(noteAndCommentFormValidator);
 	}
 
 	@RequestMapping("/detailsEmployee/{id}")
@@ -376,6 +387,24 @@ public class WebappController {
 		modelAndView.addObject("role", role[0].toString());
 		return modelAndView;
 	}
+	
+	@RequestMapping("/commentList")
+	public ModelAndView commentList() throws DataAccessException, ParseException {
+		dao.checkDateOfGoods();
+		ModelAndView modelAndView = new ModelAndView("commentList");
+		Authentication auth = SecurityContextHolder.getContext()
+				.getAuthentication();
+		modelAndView.addObject("username", auth.getName());
+		int userID = dao.getUserIDByLogin(auth.getName());
+		int companyID = dao.getCompanyID(userID);
+		int typeOfCompany = dao.getTypeOfCompany(companyID);
+		modelAndView.addObject("typeOfCompany", String.valueOf(typeOfCompany));
+		Object[] role = auth.getAuthorities().toArray();
+		modelAndView.addObject("role", role[0].toString());
+		List<CommentWithNote> commentsWithNotes = dao.getCommentsWithNotes(companyID);
+		modelAndView.addObject("commentsWithNotes", commentsWithNotes);
+		return modelAndView;
+	}
 
 	@RequestMapping("/finishedTransaction")
 	public ModelAndView finishedTransaction() throws DataAccessException,
@@ -407,7 +436,6 @@ public class WebappController {
 
 		}
 		modelAndView.addObject("jsonA", jsonA);
-
 		modelAndView.addObject("typeOfCompany", String.valueOf(typeOfCompany));
 		Object[] role = auth.getAuthorities().toArray();
 		modelAndView.addObject("role", role[0].toString());
@@ -430,6 +458,8 @@ public class WebappController {
 		modelAndView.addObject("role", role[0].toString());
 		CompanyModel companyModel = dao.getInfoCompany(id);
 		modelAndView.addObject("companyModel", companyModel);
+		List<CommentWithNote> commentsWithNotes = dao.getCommentsWithNotes(id);
+		modelAndView.addObject("commentsWithNotes", commentsWithNotes);
 		return modelAndView;
 	}
 
@@ -800,7 +830,7 @@ public class WebappController {
 		ModelAndView modelAndView = new ModelAndView("newCargo");
 		if (goodModelOrNull == null) {
 			goodModelOrNull = new GoodModel(null, null, null, null, null, null,
-					null, null, null, null, null, null, null);
+					null, null, null, null, null, null, null, null);
 		}
 		if (messageOrNull != null) {
 			switch (messageOrNull) {
@@ -824,12 +854,12 @@ public class WebappController {
 		modelAndView.addObject("typeOfCompany", String.valueOf(typeOfCompany));
 		Object[] role = auth.getAuthorities().toArray();
 		modelAndView.addObject("role", role[0].toString());
-		List<String> countryList = null;
-		countryList = dao.getCountries();
+		List<String> countryList = dao.getCountries();
 		modelAndView.addObject("countryList", countryList);
-		List<String> trailersList = null;
-		trailersList = dao.getTrailers();
+		List<String> trailersList = dao.getTrailers();
 		modelAndView.addObject("trailersList", trailersList);
+		List<String> typesGoods = dao.getTypesOfGoods();
+		modelAndView.addObject("typesGoods", typesGoods);
 		modelAndView.addObject("goodForm", goodModelOrNull);
 		return modelAndView;
 	}
@@ -883,12 +913,12 @@ public class WebappController {
 		List<String> activityList = new ArrayList<String>();
 		activityList.add("Tak");
 		activityList.add("Nie");
-		List<String> countryList = null;
-		countryList = dao.getCountries();
+		List<String> countryList = dao.getCountries();
 		modelAndView.addObject("countryList", countryList);
-		List<String> trailersList = null;
-		trailersList = dao.getTrailers();
+		List<String> trailersList = dao.getTrailers();
 		modelAndView.addObject("trailersList", trailersList);
+		List<String> typesGoods = dao.getTypesOfGoods();
+		modelAndView.addObject("typesGoods", typesGoods);
 		modelAndView.addObject("activityList", activityList);
 		modelAndView.addObject("editGoodForm", goodModelForEditOrNull);
 		return modelAndView;
@@ -1025,4 +1055,78 @@ public class WebappController {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	@RequestMapping(value = "/newNote/{id}", method = RequestMethod.GET)
+	public ModelAndView newNoteGet(@PathVariable int id,
+			NoteAndComment noteAndCommentOrNull, Integer messageCodeOrNull)
+			throws DataAccessException, ParseException {
+		dao.checkDateOfGoods();
+		ModelAndView modelAndView = new ModelAndView("newNote");
+
+		if (noteAndCommentOrNull == null) {
+			noteAndCommentOrNull = new NoteAndComment(0, null);
+		}
+
+		if (messageCodeOrNull != null) {
+			switch (messageCodeOrNull) {
+			case 1:
+				modelAndView.addObject("wiadomosc",
+						"Wystawienie komentarza nie powiod³o siê.");
+				break;
+			case 2:
+				modelAndView.addObject("wiadomosc",
+						"Komentarz zosta³ wystawiony pomyœlnie.");
+				break;
+			default:
+				break;
+			}
+		}
+		Authentication auth = SecurityContextHolder.getContext()
+				.getAuthentication();
+		modelAndView.addObject("username", auth.getName());
+		int userID = dao.getUserIDByLogin(auth.getName());
+		int companyId = dao.getCompanyID(userID);
+		int typeOfCompany = dao.getTypeOfCompany(companyId);
+		modelAndView.addObject("typeOfCompany", String.valueOf(typeOfCompany));
+		Object[] role = auth.getAuthorities().toArray();
+		modelAndView.addObject("role", role[0].toString());
+		modelAndView.addObject("noteCommentForm", noteAndCommentOrNull);
+		List<Integer> notes = new ArrayList<Integer>();
+		notes.add(1);
+		notes.add(2);
+		notes.add(3);
+		notes.add(4);
+		notes.add(5);
+		modelAndView.addObject("notes", notes);
+		modelAndView.addObject("goodID",id);
+		int companyIDByGoodID = dao.getCompanyID(id, typeOfCompany);
+		String	companyName = dao.getCompanyName(companyIDByGoodID);
+		modelAndView.addObject("companyName",companyName);
+		return modelAndView;
+	}
+	
+	
+	@RequestMapping(value = "/newNote/{id}", method = RequestMethod.POST)
+	public ModelAndView newNotePost(@PathVariable int id,
+			@ModelAttribute("noteCommentForm") @Validated NoteAndComment noteAndComment,
+			BindingResult result) throws DataAccessException, ParseException {
+		dao.checkDateOfGoods();
+		if (result.hasErrors()) {
+			return newNoteGet(id, noteAndComment, 1);
+		} else {
+			Authentication auth = SecurityContextHolder.getContext()
+					.getAuthentication();
+			int userID = dao.getUserIDByLogin(auth.getName());
+			int companyId = dao.getCompanyID(userID);
+			int typeOfCompany = dao.getTypeOfCompany(companyId);
+			int companyID2 = dao.getCompanyID(id,typeOfCompany);
+			dao.insertNoteComment(companyID2,userID,id,noteAndComment);
+			return newNoteGet(id, noteAndComment, 2);
+		}
+
+	}
+	
+	
+	
+	
 }

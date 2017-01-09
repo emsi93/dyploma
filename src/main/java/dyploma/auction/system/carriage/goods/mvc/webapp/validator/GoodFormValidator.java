@@ -52,6 +52,8 @@ public class GoodFormValidator implements Validator{
 				OBLIGATORY_FIELD_ERROR_MSG);
 		ValidationUtils.rejectIfEmpty(errors, "deadlineAuction",
 				OBLIGATORY_FIELD_ERROR_MSG);
+		ValidationUtils.rejectIfEmpty(errors, "typeGood",
+				OBLIGATORY_FIELD_ERROR_MSG);
 		
 		
 		ValidationUtils.rejectIfTooLong(errors, "title",
