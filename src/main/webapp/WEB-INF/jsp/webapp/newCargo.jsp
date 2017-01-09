@@ -87,6 +87,14 @@
 									<form:errors path="fromStreet" element="div" />
 								</div>
 							</div>
+							<div class="form-group">
+								<label>Typ ładunku</label>
+								<form:select path="typeGood" items="${typesGoods}"
+									class="form-control" />
+								<div class="errors">
+									<form:errors path="typeGood" element="div" />
+								</div>
+							</div>
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
@@ -103,7 +111,7 @@
 								<label class="sr-only">Waga towaru (t)</label>
 								<div class="row">
 									<form:input path="weight" min="0" type="number"
-										class="form-control" placeholder="*Waga towaru" />
+										class="form-control" placeholder="*Waga towaru (t)" />
 								</div>
 								<div class="errors">
 									<form:errors path="weight" element="div" />

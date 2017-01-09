@@ -12,6 +12,17 @@ INSERT INTO types_of_trailers(type_of_trailer) VALUES ('ponadgabarytowa');
 INSERT INTO types_of_trailers(type_of_trailer) VALUES ('nispokopodwoziowa z najazdami');
 INSERT INTO types_of_trailers(type_of_trailer) VALUES ('kurtynowa');
 INSERT INTO types_of_trailers(type_of_trailer) VALUES ('cysterna');
+create table types_of_goods(
+id int primary key auto_increment,
+type_of_good varchar(50) not null
+);
+INSERT INTO types_of_goods(type_of_good) VALUES('¿ywnoœæ');
+INSERT INTO types_of_goods(type_of_good) VALUES('elektronika');
+INSERT INTO types_of_goods(type_of_good) VALUES('³atwopalne');
+INSERT INTO types_of_goods(type_of_good) VALUES('mleko');
+INSERT INTO types_of_goods(type_of_good) VALUES('woda');
+INSERT INTO types_of_goods(type_of_good) VALUES('delikatnej konstrukcji');
+INSERT INTO types_of_goods(type_of_good) VALUES('mro¿onki');
 create table countries(
 id int primary key auto_increment,
 name varchar(50) not null
@@ -79,7 +90,8 @@ phone_number varchar(15) not null,
 website varchar(100),
 email varchar(100) not null,
 description varchar(1000),
-type_of_company int not null
+type_of_company int not null,
+note decimal
 );
 alter table companies
 add constraint foreign key (type_of_company) references types_of_companies(id);
@@ -120,7 +132,8 @@ id_login int not null,
 status TINYINT(4) default '1',
 actual_price decimal not,
 weight decimal not null,
-deadline_acution date not null
+deadline_acution date not null,
+type_good varchar(50) not null
 );
 alter table goods
 add constraint foreign key(id_login) references logins(id);
@@ -141,3 +154,18 @@ id_purchase_offer int not null
 );
 alter table finished_transactions
 add constraint foreign key(id_purchase_offer) references purchase_offers(id);
+CREATE TABLE notes_comments(
+id int primary key auto_increment,
+id_login int not null,
+id_good int not null,
+id_company int not null,
+comment varchar(150) not null,
+data VARCHAR(50) not null,
+note int not null
+);
+alter table notes_comments
+add constraint foreign key(id_login) references logins(id);
+alter table notes_comments
+add constraint foreign key(id_good) references goods(id);
+alter table notes_comments
+add constraint foreign key(id_company) references companies(id);

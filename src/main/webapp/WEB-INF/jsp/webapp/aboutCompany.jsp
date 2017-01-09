@@ -24,70 +24,122 @@
 	<c:set var="role" value="${role}" />
 	<c:set var="typeOfCompany" value="${typeOfCompany }" />
 	<div class="container">
-		<%@include file="navbar.jsp" %>
+		<%@include file="navbar.jsp"%>
 		<div class="row">
 			<div class="col-lg-3"></div>
 			<div class="col-lg-6">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h1 class="panel-title">O firmie</h1>
-					
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h1 class="panel-title">O firmie</h1>
+
+					</div>
+					<div class="panel-body">
+						<table class="table table-striped">
+							<tbody>
+								<tr>
+									<td>Nazwa firmy:</td>
+									<td>${companyModel.companyName }</td>
+								</tr>
+								<tr>
+									<td>Kraj:</td>
+									<td>${companyModel.country }</td>
+								</tr>
+								<tr>
+									<td>Kod pocztowy:</td>
+									<td>${companyModel.postcode }</td>
+								</tr>
+								<tr>
+									<td>Miasto:</td>
+									<td>${companyModel.city }</td>
+								</tr>
+								<tr>
+									<td>Ulica:</td>
+									<td>${companyModel.street }</td>
+								</tr>
+								<tr>
+									<td>Numer domu:</td>
+									<td>${companyModel.flatNumber }</td>
+								</tr>
+								<tr>
+									<td>Numer NIP:</td>
+									<td>${companyModel.nipNumber }</td>
+								</tr>
+								<tr>
+									<td>Numer telefonu:</td>
+									<td>${companyModel.phoneNumber }</td>
+								</tr>
+								<tr>
+									<td>Strona internetowa:</td>
+									<td>${companyModel.website }</td>
+								</tr>
+								<tr>
+									<td>E-mail:</td>
+									<td>${companyModel.email }</td>
+								</tr>
+								<tr>
+									<td>Opis firmy:</td>
+									<td>${companyModel.description }</td>
+								</tr>
+								<tr>
+									<td>Ocena firmy:</td>
+									<td>${companyModel.note }</td>
+								</tr>
+							</tbody>
+						</table>
+						<button class="btn btn-primary" data-toggle="modal"
+							data-target="#myModal">Komentarze</button>
+						<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+							aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">
+											<span aria-hidden="true">&times;</span><span class="sr-only">Zamknij</span>
+										</button>
+										<h4 class="modal-title" id="myModalLabel">Komentarze
+											firmy: ${companyModel.companyName }</h4>
+									</div>
+									<div class="modal-body">
+										<table class="table table-striped">
+											<thead>
+												<tr>
+													<th>Komentarz</th>
+													<th>Wystawiający</th>
+													<th>ID towaru</th>
+													<th>Nazwa towaru</th>
+													<th>Ocena</th>
+													<th>Data</th>
+												</tr>
+											</thead>
+											<tbody>
+												<c:forEach items="${commentsWithNotes }"
+													var="commentWithNote" varStatus="loop">
+													<tr>
+
+
+														<td>${commentWithNote.comment }</td>
+														<td>${commentWithNote.login }</td>
+														<td>${commentWithNote.idGood }</td>
+														<td>${commentWithNote.good }</td>
+														<td>${commentWithNote.note }</td>
+														<td>${commentWithNote.data }</td>
+
+													</tr>
+												</c:forEach>
+											</tbody>
+										</table>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default"
+											data-dismiss="modal">Zamknij</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
-			<div class="panel-body">
-				<table class="table table-striped">
-				<tbody>
-					<tr>
-						<td>Nazwa firmy:</td>
-						<td>${companyModel.companyName }</td>
-					</tr>
-					<tr>
-						<td>Kraj:</td>
-						<td>${companyModel.country }</td>
-					</tr>
-					<tr>
-						<td>Kod pocztowy:</td>
-						<td>${companyModel.postcode }</td>
-					</tr>
-					<tr>
-						<td>Miasto:</td>
-						<td>${companyModel.city }
-					</td>
-					</tr>
-					<tr>
-						<td>Ulica:</td>
-						<td>${companyModel.street }
-					</td>
-					</tr>
-					<tr>
-						<td>Numer domu:</td>
-						<td>${companyModel.flatNumber }</td>
-					</tr>
-					<tr>
-						<td>Numer NIP:</td>
-						<td>${companyModel.nipNumber }</td>
-					</tr>
-					<tr>
-						<td>Numer telefonu:</td>
-						<td>${companyModel.phoneNumber }</td>
-					</tr>
-					<tr>
-						<td>Strona internetowa:</td>
-						<td>${companyModel.website }</td>
-					</tr>
-					<tr>
-						<td>E-mail:</td>
-						<td>${companyModel.email }</td>
-					</tr>
-					<tr>
-						<td>Opis firmy:</td>
-						<td>${companyModel.description }</td>
-					</tr>
-				</tbody>
-			</table>
+				<div class="col-lg-3"></div>
 			</div>
-			</div>
-			<div class="col-lg-3"></div>
-		</div>
 		</div>
 	</div>
 

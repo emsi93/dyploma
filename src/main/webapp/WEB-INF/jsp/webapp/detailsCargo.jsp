@@ -86,6 +86,10 @@
 							<td>${detailsCargoModel.trailer }</td>
 						</tr>
 						<tr>
+							<td>Typ ładunku:</td>
+							<td>${detailsCargoModel.typeGood }</td>
+						</tr>
+						<tr>
 							<td>Miejsce załadunku:</td>
 							<td>${detailsCargoModel.fromCountry },
 								${detailsCargoModel.fromCity }, ${detailsCargoModel.fromStreet }</td>
@@ -122,10 +126,6 @@
 						<tr>
 							<td>Autor:</td>
 							<td>${detailsCargoModel.name } ${detailsCargoModel.surname}</td>
-						</tr>
-						<tr>
-							<td>Nazwa firmy:</td>
-							<td>${detailsCargoModel.company }</td>
 						</tr>
 					</tbody>
 				</table>
@@ -189,7 +189,7 @@
 </script>
 <style>
 #map {
-	height: 575px;
+	height: 675px;
 	width: 65%;
 }
 </style>

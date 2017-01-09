@@ -15,10 +15,11 @@ public class GoodModel {
 	private String dateOfDelivery;
 	private Double weight;
 	private String deadlineAuction;
+	private String typeGood;
 
 	public GoodModel(String title, String content, String trailer,
 			String fromCountry, String fromCity, String fromStreet,
-			String toCountry, String toCity, String toStreet, Double maxPrice, String dateOfDelivery, Double weight, String deadlineAuction) {
+			String toCountry, String toCity, String toStreet, Double maxPrice, String dateOfDelivery, Double weight, String deadlineAuction, String typeGood) {
 		super();
 		this.title = title;
 		this.content = content;
@@ -33,10 +34,11 @@ public class GoodModel {
 		this.dateOfDelivery = dateOfDelivery;
 		this.weight = weight;
 		this.deadlineAuction = deadlineAuction;
+		this.typeGood = typeGood;
 	}
 
 	public GoodModel() {
-		this(null, null, null, null, null, null, null, null, null, null, null, null, null);
+		this(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 	}
 
 	public String getTitle() {
@@ -141,6 +143,14 @@ public class GoodModel {
 
 	public void setDeadlineAuction(String deadlineAuction) {
 		this.deadlineAuction = deadlineAuction;
+	}
+
+	public String getTypeGood() {
+		return typeGood;
+	}
+
+	public void setTypeGood(String typeGood) {
+		this.typeGood = typeGood;
 	}
 	
 	

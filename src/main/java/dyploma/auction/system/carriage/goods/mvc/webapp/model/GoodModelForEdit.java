@@ -17,10 +17,11 @@ public class GoodModelForEdit {
 	private String status;
 	private Double weight;
 	private String deadlineAuction;
+	private String typeGood;
 	public GoodModelForEdit(int id, String title, String content, String trailer,
 			String fromCountry, String fromCity, String fromStreet,
 			String toCountry, String toCity, String toStreet, Double maxPrice,
-			String dateOfDelivery, String status, Double weight, String deadlineAuction) {
+			String dateOfDelivery, String status, Double weight, String deadlineAuction, String typeGood) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -37,12 +38,12 @@ public class GoodModelForEdit {
 		this.weight = weight;
 		this.status = status;
 		this.deadlineAuction = deadlineAuction;
-		
+		this.typeGood = typeGood;
 	}
 	
 	public GoodModelForEdit()
 	{
-		this(0,null,null,null,null,null,null,null,null,null,null,null,null,null, null);
+		this(0,null,null,null,null,null,null,null,null,null,null,null,null,null, null, null);
 	}
 	
 	public String getTitle() {
@@ -138,6 +139,14 @@ public class GoodModelForEdit {
 
 	public void setDeadlineAuction(String deadlineAuction) {
 		this.deadlineAuction = deadlineAuction;
+	}
+
+	public String getTypeGood() {
+		return typeGood;
+	}
+
+	public void setTypeGood(String typeGood) {
+		this.typeGood = typeGood;
 	}
 	
 	

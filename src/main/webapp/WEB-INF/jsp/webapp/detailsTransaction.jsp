@@ -55,6 +55,10 @@
 									<td>${detailsCargoModel.trailer }</td>
 								</tr>
 								<tr>
+									<td>Typ ładunku:</td>
+									<td>${detailsCargoModel.typeGood }</td>
+								</tr>
+								<tr>
 									<td>Miejsce załadunku:</td>
 									<td>${detailsCargoModel.fromCountry },
 										${detailsCargoModel.fromCity }, ${detailsCargoModel.fromStreet }</td>
@@ -94,7 +98,9 @@
 								</tr>
 								<tr>
 									<td>Nazwa firmy wystawiającej:</td>
-									<td>${detailsCargoModel.company }</td>
+									<td>${detailsCargoModel.company }<a class="btn btn-primary"
+								href="/auction-system/webapp/aboutCompany/${detailsCargoModel.idCompany }">O
+								firmie</a></td>
 								</tr>
 								<tr>
 									<td>Wylicytował: </td>
@@ -130,9 +136,7 @@
 
 						</div>
 							<button class="btn btn-primary" id="wyslijMail">Wyślij trasę</button>
-							<a class="btn btn-primary"
-								href="/auction-system/webapp/aboutCompany/${detailsCargoModel.idCompany }">O
-								firmie</a>
+							
 							<a class="btn btn-primary"
 								href="/auction-system/webapp/finishedTransaction">Wstecz</a>
 					</div>
@@ -192,7 +196,7 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQAR809YkzO5lbIQ_dht4OlSF
 </script>
 <style>
 #map {
-height: 675px;
+height: 725px;
 width: 65%;
 }
 </style>

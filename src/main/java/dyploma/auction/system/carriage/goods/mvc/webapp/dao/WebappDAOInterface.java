@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 
+import dyploma.auction.system.carriage.goods.mvc.webapp.model.CommentWithNote;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.CompanyModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.DetailsEmployeeModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.DetailsGoodModel;
@@ -14,6 +15,7 @@ import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodData;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForEdit;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForList;
+import dyploma.auction.system.carriage.goods.mvc.webapp.model.NoteAndComment;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.PricesFromDB;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.ProfileModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.PurchaseOffer;
@@ -38,6 +40,8 @@ public interface WebappDAOInterface {
 	public int getCompanyID(String email) throws DataAccessException;
 
 	public int getCompanyID(int userID) throws DataAccessException;
+	
+	public int getCompanyID(int goodID, int typeOfCompany) throws DataAccessException;
 	
 	public int getUserID(String email) throws DataAccessException;
 	
@@ -96,4 +100,12 @@ public interface WebappDAOInterface {
 	public List<String> getTrailers() throws DataAccessException;
 
 	public List<String> getCountries() throws DataAccessException;
+	
+	public List<String> getTypesOfGoods() throws DataAccessException;
+	
+	public String getCompanyName(int companyID) throws DataAccessException;
+
+	public void insertNoteComment(int companyIDByGoodID, int userID, int goodID, NoteAndComment noteAndComment)throws DataAccessException;
+
+	public List<CommentWithNote> getCommentsWithNotes(int companyID)throws DataAccessException;
 }
