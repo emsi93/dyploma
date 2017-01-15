@@ -41,6 +41,7 @@ import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodData;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForEdit;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForList;
+import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForSearch;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.MailModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.NewPrice;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.NoteAndComment;
@@ -477,7 +478,7 @@ public class WebappController {
 		modelAndView.addObject("typeOfCompany", String.valueOf(typeOfCompany));
 		Object[] role = auth.getAuthorities().toArray();
 		modelAndView.addObject("role", role[0].toString());
-		List<GoodModelForList> goodsList = dao.getGoodsList();
+		List<GoodModelForSearch> goodsList = dao.getGoodsListForSearch();
 		JSONArray jsonA = new JSONArray();
 		for (int i = 0; i < goodsList.size(); i++) {
 			JSONObject jsonObject = new JSONObject();
@@ -487,9 +488,11 @@ public class WebappController {
 					+ goodsList.get(i).getFromCity());
 			jsonObject.put("to", goodsList.get(i).getToCountry() + ", "
 					+ goodsList.get(i).getToCity());
-			jsonObject.put("dateAdding", goodsList.get(i).getDateAdding());
+			jsonObject.put("weight", goodsList.get(i).getWeight());
 			jsonObject
-					.put("dateDelivery", goodsList.get(i).getDateOfDelivery());
+					.put("typeGood", goodsList.get(i).getTypeGood());
+			jsonObject.put("trailer", goodsList.get(i).getTypeTrailer());
+			jsonObject.put("deadlineAuction", goodsList.get(i).getDeadlineAuction());
 			jsonObject.put("prices", goodsList.get(i).getMaxPrice() + "z³/"
 					+ goodsList.get(i).getActualPrice() + "z³");
 			jsonA.put(jsonObject);

@@ -31,6 +31,7 @@ import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodData;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForEdit;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForList;
+import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForSearch;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodWithDate;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.NoteAndComment;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.PricesFromDB;
@@ -790,6 +791,22 @@ public class WebappDAOImpl implements WebappDAOInterface {
 										.getInt(6));
 							}
 						}, new Object[] { companyID });
+	}
+
+	public List<GoodModelForSearch> getGoodsListForSearch()
+			throws DataAccessException {
+		return jdbcTemplate
+				.query("SELECT g.id, g.title, g.from_country, g.from_city, g.to_country, g.to_city, g.weight, g.trailer, g.type_good, g.max_price, g.actual_price, g.deadline_auction FROM goods g INNER JOIN logins l ON g.id_login = l.id INNER JOIN users u ON l.id_user = u.id INNER JOIN companies c ON c.id = u.id_company WHERE g.status = 1",
+						new RowMapper<GoodModelForSearch>() {
+
+							public GoodModelForSearch mapRow(ResultSet rs,
+									int rowNumber) throws SQLException {
+								return new GoodModelForSearch(rs.getInt(1), rs
+										.getString(2), rs.getString(3), rs
+										.getString(4), rs.getString(5), rs
+										.getString(6),rs.getString(7), rs.getString(8), rs.getString(9) ,rs.getDouble(10), rs.getDouble(11), rs.getString("deadline_auction") );
+							}
+						}, new Object[] {});
 	}
 
 }

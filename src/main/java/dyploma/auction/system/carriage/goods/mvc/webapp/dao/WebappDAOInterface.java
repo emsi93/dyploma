@@ -15,6 +15,7 @@ import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodData;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModel;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForEdit;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForList;
+import dyploma.auction.system.carriage.goods.mvc.webapp.model.GoodModelForSearch;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.NoteAndComment;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.PricesFromDB;
 import dyploma.auction.system.carriage.goods.mvc.webapp.model.ProfileModel;
@@ -108,4 +109,6 @@ public interface WebappDAOInterface {
 	public void insertNoteComment(int companyIDByGoodID, int userID, int goodID, NoteAndComment noteAndComment)throws DataAccessException;
 
 	public List<CommentWithNote> getCommentsWithNotes(int companyID)throws DataAccessException;
+
+	public List<GoodModelForSearch> getGoodsListForSearch()throws DataAccessException;
 }

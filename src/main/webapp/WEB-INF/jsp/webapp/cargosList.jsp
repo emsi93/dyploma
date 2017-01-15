@@ -81,7 +81,8 @@
 								<td>{{good.status }}</td>
 								<td><a class="btn btn-primary"
 									href="/auction-system/webapp/detailsCargo/{{good.id }}">Szczegóły</a></td>
-								<td><a class="btn btn-primary"
+								<td ng-if="good.status == 'Tak'">
+								<a class="btn btn-primary"
 									href="/auction-system/webapp/editCargo/{{good.id }}">Edycja</a></td>
 							</tr>
 
