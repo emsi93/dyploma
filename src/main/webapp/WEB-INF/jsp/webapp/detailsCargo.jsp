@@ -138,8 +138,8 @@
 						towar</a>
 					<a class="btn btn-primary"
 						href="/auction-system/webapp/cargosList">Lista towarów</a>
-					<a class="btn btn-primary"
-						href="/auction-system/webapp/editCargo/${detailsCargoModel.id }">Edycja</a>
+					<c:if test ="${detailsCargoModel.status == 'Tak' }"><a class="btn btn-primary"
+						href="/auction-system/webapp/editCargo/${detailsCargoModel.id }">Edycja</a></c:if>
 				</c:if>
 				<c:if test="${typeOfCompany=='2' }">
 					<a class="btn btn-primary"

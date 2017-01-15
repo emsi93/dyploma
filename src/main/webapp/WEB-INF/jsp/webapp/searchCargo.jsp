@@ -39,21 +39,25 @@
 					<th ng-click="sortData('title')">Nagłówek</th>
 					<th ng-click="sortData('from')">Miejsce załadunku</th>
 					<th ng-click="sortData('to')">Miejsce rozładunku</th>
-					<th ng-click="sortData('dateAdding')">Data dodania</th>
-					<th ng-click="sortData('dateDelivery')">Termin dostarczenia</th>
+					<th ng-click="sortData('weight')">Masa ładunku (t)</th>
+					<th ng-click="sortData('typeGood')">Rodzaj towaru</th>
+					<th ng-click="sortData('trailer')">Rodzaj naczepy</th>
 					<th ng-click="sortData('prices')">Cena początkowa/Cena aktualna</th>
+					<th ng-click="sortData('deadlineAuction')">Koniec licytacji</th>
 					<th>Szczegóły</th>
 				</tr>
 				<tr>
 				
 					<th></th>
-					<th><input type="text" ng-model="searchText.title" size="12"/></th>
-					<th><input type="text" ng-model="searchText.from" size="12"/></th>
-					<th><input type="text" ng-model="searchText.to" size="12"/></th>
-					<th><input type="text" ng-model="searchText.dateAdding" size="12"/></th>
-					<th><input type="text" ng-model="searchText.dateDelivery" size="12"/></th>
-					<th><input type="text" ng-model="searchText.prices" size="12"/></th>
-				
+					<th><input type="text" ng-model="searchText.title" size="8"/></th>
+					<th><input type="text" ng-model="searchText.from" size="8"/></th>
+					<th><input type="text" ng-model="searchText.to" size="8"/></th>
+					<th><input type="text" ng-model="searchText.weight" size="8"/></th>
+					<th><input type="text" ng-model="searchText.typeGood" size="8"/></th>
+					<th><input type="text" ng-model="searchText.trailer" size="8"/></th>
+					<th><input type="text" ng-model="searchText.prices" size="8"/></th>
+					<th><input type="text" ng-model="searchText.deadlineAuction" size="8"/></th>
+					
 				</tr>
 			</thead>
 			<tbody>
@@ -62,9 +66,11 @@
 						<td>{{good.title }}</td>
 						<td>{{good.from }}</td>
 						<td>{{good.to }}</td>
-						<td>{{good.dateAdding | date:"dd.MM.yyyy" }}</td>
-						<td>{{good.dateDelivery | date:"dd.MM.yyyy"}}</td>
+						<td>{{good.weight}}</td>
+						<td>{{good.typeGood}}</td>
+						<td>{{good.trailer }}</td>
 						<td>{{good.prices }}</td>
+						<td>{{good.deadlineAuction | date:"dd.MM.yyyy"  }}</td>
 						<td><a class="btn btn-primary"
 							href="/auction-system/webapp/cargo/{{good.id }}">Szczegóły</a></td>
 					</tr>
@@ -80,5 +86,6 @@
 </body>
 <script >
 	var datas = ${jsonA};
+	console.log(datas);
 </script>
 </html>
