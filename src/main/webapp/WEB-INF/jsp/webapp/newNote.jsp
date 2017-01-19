@@ -39,17 +39,18 @@
 								<center>${wiadomosc}</center>
 							</div>
 						</c:if>
+						<label>Skala ocen: 1 - najgorsza ocena, 5 - najlepsza ocena</label>
 						<form:form method="post" modelAttribute="noteCommentForm"
 							action="/auction-system/webapp/newNote/${goodID }" role="form">
 							<div class="form-group">
-								<label>Oceny</label>
+								<label>*Oceny</label>
 								<form:select path="note" items="${notes}" class="form-control" />
 								<div class="errors">
 									<form:errors path="note" element="div" />
 								</div>
 							</div>
 							<div class="form-group">
-								<label>Treść komentarza</label>
+								<label>*Treść komentarza:</label>
 								<form:textarea path="comment" type="text" class="form-control"
 									placeholder="Treść komentarza..."  rows="5" cols="50" />
 								<div class="errors">

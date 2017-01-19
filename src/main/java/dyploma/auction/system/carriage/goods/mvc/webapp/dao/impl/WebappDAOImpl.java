@@ -641,9 +641,9 @@ public class WebappDAOImpl implements WebappDAOInterface {
 			int typeCompany) throws DataAccessException {
 		String sql = null;
 		if (typeCompany == 2)
-			sql = "SELECT ft.id, g.id , g.title, l.login, po.price, po.data, g.to_country, g.to_city FROM finished_transactions ft INNER JOIN purchase_offers po ON ft.id_purchase_offer = po.id INNER JOIN logins l ON l.id = po.id_login INNER JOIN users u ON u.id = l.id_user INNER JOIN companies c ON c.id = u.id_company INNER JOIN goods g ON g.id = po.id_good WHERE g.status = 1 AND u.id_company = ?";
+			sql = "SELECT ft.id, g.id , g.title, l.login, po.price, po.data, g.to_country, g.to_city FROM finished_transactions ft INNER JOIN purchase_offers po ON ft.id_purchase_offer = po.id INNER JOIN logins l ON l.id = po.id_login INNER JOIN users u ON u.id = l.id_user INNER JOIN companies c ON c.id = u.id_company INNER JOIN goods g ON g.id = po.id_good WHERE g.status = 0 AND u.id_company = ?";
 		else
-			sql = "SELECT ft.id, g.id , g.title, l.login, po.price, po.data, g.to_country, g.to_city FROM finished_transactions ft INNER JOIN purchase_offers po ON ft.id_purchase_offer = po.id INNER JOIN logins l ON l.id = po.id_login INNER JOIN users u ON u.id = l.id_user INNER JOIN goods g ON g.id = po.id_good INNER JOIN logins ll ON ll.id = g.id_login INNER JOIN users uu ON uu.id = g.id_login INNER JOIN companies c ON c.id = uu.id_company WHERE g.status = 1 AND uu.id_company = ?";
+			sql = "SELECT ft.id, g.id , g.title, l.login, po.price, po.data, g.to_country, g.to_city FROM finished_transactions ft INNER JOIN purchase_offers po ON ft.id_purchase_offer = po.id INNER JOIN logins l ON l.id = po.id_login INNER JOIN users u ON u.id = l.id_user INNER JOIN goods g ON g.id = po.id_good INNER JOIN logins ll ON ll.id = g.id_login INNER JOIN users uu ON uu.id = g.id_login INNER JOIN companies c ON c.id = uu.id_company WHERE g.status = 0 AND uu.id_company = ?";
 		return jdbcTemplate.query(sql, new RowMapper<FinishedTransaction>() {
 
 			public FinishedTransaction mapRow(ResultSet rs, int rowNumber)
@@ -807,6 +807,42 @@ public class WebappDAOImpl implements WebappDAOInterface {
 										.getString(6),rs.getString(7), rs.getString(8), rs.getString(9) ,rs.getDouble(10), rs.getDouble(11), rs.getString("deadline_auction") );
 							}
 						}, new Object[] {});
+	}
+
+	public List<GoodModelForList> getGoodsListForUser(int userID)
+			throws DataAccessException {
+		return jdbcTemplate
+				.query("SELECT g.id, g.title, g.from_country, g.from_city, g.to_country, g.to_city, g.date_adding, g.date_of_delivery, g.max_price, g.actual_price, g.status FROM goods g INNER JOIN logins l ON g.id_login = l.id INNER JOIN users u ON l.id_user = u.id INNER JOIN companies c ON c.id = u.id_company WHERE g.id_login = ?",
+						new RowMapper<GoodModelForList>() {
+
+							public GoodModelForList mapRow(ResultSet rs,
+									int rowNumber) throws SQLException {
+								return new GoodModelForList(rs.getInt(1), rs
+										.getString(2), rs.getString(3), rs
+										.getString(4), rs.getString(5), rs
+										.getString(6), rs.getString(7), rs
+										.getString(8), rs.getDouble(9), rs
+										.getDouble(10), rs.getString(11));
+							}
+						}, new Object[] { userID });
+	}
+
+	public List<FinishedTransaction> getFinishedTransactionForUser(int userID,
+			int typeOfCompany) throws DataAccessException {
+		String sql = null;
+		if (typeOfCompany == 2)
+			sql = "SELECT ft.id, g.id , g.title, l.login, po.price, po.data, g.to_country, g.to_city FROM finished_transactions ft INNER JOIN purchase_offers po ON ft.id_purchase_offer = po.id INNER JOIN logins l ON l.id = po.id_login INNER JOIN users u ON u.id = l.id_user INNER JOIN companies c ON c.id = u.id_company INNER JOIN goods g ON g.id = po.id_good WHERE g.status = 0 AND g.id_login = ?";
+		else
+			sql = "SELECT ft.id, g.id , g.title, l.login, po.price, po.data, g.to_country, g.to_city FROM finished_transactions ft INNER JOIN purchase_offers po ON ft.id_purchase_offer = po.id INNER JOIN logins l ON l.id = po.id_login INNER JOIN users u ON u.id = l.id_user INNER JOIN goods g ON g.id = po.id_good INNER JOIN logins ll ON ll.id = g.id_login INNER JOIN users uu ON uu.id = g.id_login INNER JOIN companies c ON c.id = uu.id_company WHERE g.status = 0 AND g.id_login = ?";
+		return jdbcTemplate.query(sql, new RowMapper<FinishedTransaction>() {
+
+			public FinishedTransaction mapRow(ResultSet rs, int rowNumber)
+					throws SQLException {
+				return new FinishedTransaction(rs.getInt(1), rs.getInt(2), rs
+						.getString(3), rs.getString(4), rs.getDouble(5), rs
+						.getString(6), rs.getString(7), rs.getString(8));
+			}
+		}, new Object[] { userID });
 	}
 
 }

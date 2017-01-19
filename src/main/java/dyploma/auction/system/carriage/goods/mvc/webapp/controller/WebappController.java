@@ -398,12 +398,14 @@ public class WebappController {
 		modelAndView.addObject("username", auth.getName());
 		int userID = dao.getUserIDByLogin(auth.getName());
 		int companyID = dao.getCompanyID(userID);
+		Double note = dao.getCompanyModel(userID).getNote();
 		int typeOfCompany = dao.getTypeOfCompany(companyID);
 		modelAndView.addObject("typeOfCompany", String.valueOf(typeOfCompany));
 		Object[] role = auth.getAuthorities().toArray();
 		modelAndView.addObject("role", role[0].toString());
 		List<CommentWithNote> commentsWithNotes = dao.getCommentsWithNotes(companyID);
 		modelAndView.addObject("commentsWithNotes", commentsWithNotes);
+		modelAndView.addObject("note", note);
 		return modelAndView;
 	}
 
@@ -418,9 +420,18 @@ public class WebappController {
 		int userID = dao.getUserIDByLogin(auth.getName());
 		int companyID = dao.getCompanyID(userID);
 		int typeOfCompany = dao.getTypeOfCompany(companyID);
-		List<FinishedTransaction> finishedTransactions = dao
-				.getFinishedTransaction(companyID, typeOfCompany);
-
+		Object[] role = auth.getAuthorities().toArray();
+		modelAndView.addObject("role", role[0].toString());
+		List<FinishedTransaction> finishedTransactions = null;
+		String permission = role[0].toString();
+		if(permission.equals("ROLE_ADMIN_SHIPPER") || permission.equals("ROLE_ADMIN_CARRIER"))
+		{
+			finishedTransactions = dao
+					.getFinishedTransaction(companyID, typeOfCompany);
+		}else
+		{
+			finishedTransactions = dao.getFinishedTransactionForUser(userID, typeOfCompany);
+		}
 		JSONArray jsonA = new JSONArray();
 		for (int i = 0; i < finishedTransactions.size(); i++) {
 			JSONObject jsonObject = new JSONObject();
@@ -438,8 +449,6 @@ public class WebappController {
 		}
 		modelAndView.addObject("jsonA", jsonA);
 		modelAndView.addObject("typeOfCompany", String.valueOf(typeOfCompany));
-		Object[] role = auth.getAuthorities().toArray();
-		modelAndView.addObject("role", role[0].toString());
 		return modelAndView;
 	}
 
@@ -573,7 +582,14 @@ public class WebappController {
 		modelAndView.addObject("typeOfCompany", String.valueOf(typeOfCompany));
 		Object[] role = auth.getAuthorities().toArray();
 		modelAndView.addObject("role", role[0].toString());
-		List<GoodModelForList> goodsList = dao.getGoodsList(companyID);
+		List<GoodModelForList> goodsList = null;
+		if(role[0].toString().equals("ROLE_ADMIN_SHIPPER")){
+			goodsList = dao.getGoodsList(companyID);
+		}else
+		{
+			goodsList = dao.getGoodsListForUser(userID);
+		}
+			
 		JSONArray jsonA = new JSONArray();
 		for (int i = 0; i < goodsList.size(); i++) {
 			JSONObject jsonObject = new JSONObject();

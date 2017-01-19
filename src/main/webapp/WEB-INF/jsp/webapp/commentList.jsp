@@ -31,6 +31,7 @@
 					<h1 class="panel-title">Komentarze</h1>
 				</div>
 				<div class="panel-body">
+					<label>Skala ocen: 1 - najgorsza ocena, 5 - najlepsza ocena</label>
 					<table class="table table-striped">
 						<thead>
 							<tr>
@@ -58,6 +59,7 @@
 							</c:forEach>
 						</tbody>
 					</table>
+					Średnia ocen firmy: <label>${note }</label>
 				</div>
 			</div>
 		</div>
