@@ -60,7 +60,7 @@
 									href="register">Rejestracja</a>
 									<a
 									class="btn btn-lg btn-primary btn-block" type="submit"
-									href="about">O nas</a>
+									href="about">O systemie</a>
 					</div>
 
 				</div>

@@ -41,7 +41,9 @@
 					<h3 class="panel-title">Rejestracja</h3>
 				</div>
 				<div class="panel-body">
-					<div>${wiadomosc }</div>
+					<c:if test="${not empty wiadomosc }">
+						<div class="alert alert-info">${wiadomosc }</div>
+					</c:if>
 					<form:form method="post" modelAttribute="registerForm"
 						action="/auction-system/webapp/register" role="form">
 						<div class="col-lg-6">

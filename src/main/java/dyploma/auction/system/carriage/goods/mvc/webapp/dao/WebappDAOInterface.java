@@ -111,4 +111,9 @@ public interface WebappDAOInterface {
 	public List<CommentWithNote> getCommentsWithNotes(int companyID)throws DataAccessException;
 
 	public List<GoodModelForSearch> getGoodsListForSearch()throws DataAccessException;
+
+	public List<GoodModelForList> getGoodsListForUser(int userID)throws DataAccessException;
+
+	public List<FinishedTransaction> getFinishedTransactionForUser(int userID,
+			int typeOfCompany)throws DataAccessException;
 }

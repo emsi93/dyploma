@@ -34,6 +34,7 @@
 
 					</div>
 					<div class="panel-body">
+						<label>Skala ocen: 1 - najgorsza ocena, 5 - najlepsza ocena</label>
 						<table class="table table-striped">
 							<tbody>
 								<tr>
@@ -100,6 +101,7 @@
 											firmy: ${companyModel.companyName }</h4>
 									</div>
 									<div class="modal-body">
+										<label>Skala ocen: 1 - najgorsza ocena, 5 - najlepsza ocena</label>
 										<table class="table table-striped">
 											<thead>
 												<tr>
@@ -128,6 +130,7 @@
 												</c:forEach>
 											</tbody>
 										</table>
+										Średnia ocen firmy: <label>${companyModel.note }</label>
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default"
