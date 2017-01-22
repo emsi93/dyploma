@@ -15,8 +15,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="/auction-system/webapp/menu">System
-					aukcyjny towarów</a>
+				<a class="navbar-brand" href="/auction-system/webapp/menu">System obsługi przewozu towaru</a>
 			</div>
 
 			<!-- Grupowanie elementów menu w celu lepszego wyświetlania na urządzeniach moblinych -->
@@ -44,11 +43,11 @@
 										towarów</a></li>
 								<li class="divider"></li>
 							</c:if>
-							<c:if
+							<!--<c:if
 								test="${ role=='ROLE_ADMIN_SHIPPER'}">
 								<li><a href="/auction-system/webapp/charts">Raport</a></li>
 								<li class="divider"></li>
-							</c:if>
+							</c:if>-->
 							<c:if
 								test="${ role=='ROLE_ADMIN_SHIPPER' || role=='ROLE_ADMIN_CARRIER'}">
 								<li><a href="/auction-system/webapp/employeesList">Lista

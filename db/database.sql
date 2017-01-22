@@ -130,9 +130,9 @@ date_adding date not null,
 date_of_delivery date not null,
 id_login int not null,
 status TINYINT(4) default '1',
-actual_price decimal not,
+actual_price decimal,
 weight decimal not null,
-deadline_acution date not null,
+deadline_auction date not null,
 type_good varchar(50) not null
 );
 alter table goods
@@ -170,3 +170,8 @@ add constraint foreign key(id_good) references goods(id);
 alter table notes_comments
 add constraint foreign key(id_company) references companies(id);
 ALTER TABLE `carriage_of_goods`.`companies` CHANGE COLUMN `note` `note` DECIMAL(10,2) NULL DEFAULT NULL  ;
+INSERT INTO types_of_companies(type_of_company) VALUES('producent');
+INSERT INTO types_of_companies(type_of_company) VALUES('przewoznik');
+ALTER TABLE `carriage_of_goods`.`logins` ADD COLUMN `role` VARCHAR(20) NULL  AFTER `activity` ;
+ALTER TABLE `carriage_of_goods`.`logins` CHANGE COLUMN `activity` `enabled` INT(11) NULL DEFAULT '1'  ;
+INSERT INTO types_of_goods(type_of_good) VALUES('mat.budowlane');

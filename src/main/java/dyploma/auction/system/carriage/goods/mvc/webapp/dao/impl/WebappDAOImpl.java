@@ -812,7 +812,7 @@ public class WebappDAOImpl implements WebappDAOInterface {
 	public List<GoodModelForList> getGoodsListForUser(int userID)
 			throws DataAccessException {
 		return jdbcTemplate
-				.query("SELECT g.id, g.title, g.from_country, g.from_city, g.to_country, g.to_city, g.date_adding, g.date_of_delivery, g.max_price, g.actual_price, g.status FROM goods g INNER JOIN logins l ON g.id_login = l.id INNER JOIN users u ON l.id_user = u.id INNER JOIN companies c ON c.id = u.id_company WHERE g.id_login = ?",
+				.query("SELECT g.id, g.title, g.from_country, g.from_city, g.to_country, g.to_city, g.date_adding, g.date_of_delivery, g.max_price, g.actual_price, g.status FROM goods g INNER JOIN logins l ON g.id_login = l.id INNER JOIN users u ON l.id_user = u.id INNER JOIN companies c ON c.id = u.id_company WHERE l.id_user = ?",
 						new RowMapper<GoodModelForList>() {
 
 							public GoodModelForList mapRow(ResultSet rs,
@@ -831,9 +831,9 @@ public class WebappDAOImpl implements WebappDAOInterface {
 			int typeOfCompany) throws DataAccessException {
 		String sql = null;
 		if (typeOfCompany == 2)
-			sql = "SELECT ft.id, g.id , g.title, l.login, po.price, po.data, g.to_country, g.to_city FROM finished_transactions ft INNER JOIN purchase_offers po ON ft.id_purchase_offer = po.id INNER JOIN logins l ON l.id = po.id_login INNER JOIN users u ON u.id = l.id_user INNER JOIN companies c ON c.id = u.id_company INNER JOIN goods g ON g.id = po.id_good WHERE g.status = 0 AND g.id_login = ?";
+			sql = "SELECT ft.id, g.id , g.title, l.login, po.price, po.data, g.to_country, g.to_city FROM finished_transactions ft INNER JOIN purchase_offers po ON ft.id_purchase_offer = po.id INNER JOIN logins l ON l.id = po.id_login INNER JOIN users u ON u.id = l.id_user INNER JOIN companies c ON c.id = u.id_company INNER JOIN goods g ON g.id = po.id_good WHERE g.status = 0 AND l.id_user = ?";
 		else
-			sql = "SELECT ft.id, g.id , g.title, l.login, po.price, po.data, g.to_country, g.to_city FROM finished_transactions ft INNER JOIN purchase_offers po ON ft.id_purchase_offer = po.id INNER JOIN logins l ON l.id = po.id_login INNER JOIN users u ON u.id = l.id_user INNER JOIN goods g ON g.id = po.id_good INNER JOIN logins ll ON ll.id = g.id_login INNER JOIN users uu ON uu.id = g.id_login INNER JOIN companies c ON c.id = uu.id_company WHERE g.status = 0 AND g.id_login = ?";
+			sql = "SELECT ft.id, g.id , g.title, l.login, po.price, po.data, g.to_country, g.to_city FROM finished_transactions ft INNER JOIN purchase_offers po ON ft.id_purchase_offer = po.id INNER JOIN logins l ON l.id = po.id_login INNER JOIN users u ON u.id = l.id_user INNER JOIN goods g ON g.id = po.id_good INNER JOIN logins ll ON ll.id = g.id_login INNER JOIN users uu ON uu.id = g.id_login INNER JOIN companies c ON c.id = uu.id_company WHERE g.status = 0 AND l.id_user = ?";
 		return jdbcTemplate.query(sql, new RowMapper<FinishedTransaction>() {
 
 			public FinishedTransaction mapRow(ResultSet rs, int rowNumber)
