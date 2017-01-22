@@ -28,8 +28,7 @@
 						<span class="sr-only">Toggle navigation</span> Menu <i
 							class="fa fa-bars"></i>
 					</button>
-					<a class="navbar-brand page-scroll" href="index">System
-						aukcyjny towarów</a>
+					<a class="navbar-brand page-scroll" href="index">System obsługi przewozu towaru</a>
 				</div>
 			</div>
 			</nav>
@@ -52,7 +51,7 @@
 					</div>
 					<div class="panel-body">
 						<h4>
-							System aukcyjny przewozu towarów
+							System obsługi przewozu towaru
 							<h4>
 								</br> <a class="btn btn-lg btn-primary btn-block" type="submit"
 									href="login">Zaloguj się</a> <a

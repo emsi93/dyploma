@@ -31,8 +31,7 @@
 						<span class="sr-only">Toggle navigation</span> Menu <i
 							class="fa fa-bars"></i>
 					</button>
-					<a class="navbar-brand page-scroll" href="index">System
-						aukcyjny towarów</a>
+					<a class="navbar-brand page-scroll" href="index">System obsługi przewozu towaru</a>
 				</div>
 			</div>
 			</nav>
@@ -51,7 +50,7 @@
 							<div class="form-group">
 								<label>*Rodzaj firmy</label></br>
 								<form:radiobutton path="typeOfCompany" value="1" />
-								Załadowca
+								Producent
 								<form:radiobutton path="typeOfCompany" value="2" />
 								Przewoźnik
 								<div class="errors">

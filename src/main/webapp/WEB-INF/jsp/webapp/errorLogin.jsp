@@ -36,8 +36,7 @@
 							<span class="sr-only">Toggle navigation</span> Menu <i
 								class="fa fa-bars"></i>
 						</button>
-						<a class="navbar-brand page-scroll" href="index">System
-							aukcyjny towarów</a>
+						<a class="navbar-brand page-scroll" href="index">System obsługi przewozu towaru</a>
 					</div>
 				</div>
 			</nav>
@@ -48,7 +47,7 @@
 					</div>
 					<div class="panel-body">
 						<h4>
-							Podałeś niepoprawny login lub hasło.
+							<div class="alert alert-danger">Podałeś niepoprawny login lub hasło.</div>
 							<h4>
 								</br> <a class="btn btn-lg btn-primary btn-block" type="submit"
 									href="login">Zaloguj jeszcze raz</a>
