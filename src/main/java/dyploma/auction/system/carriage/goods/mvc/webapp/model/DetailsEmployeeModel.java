@@ -96,7 +96,5 @@ public class DetailsEmployeeModel {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	
-	
-	
+
 }

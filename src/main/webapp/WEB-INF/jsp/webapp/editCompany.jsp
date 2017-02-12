@@ -115,8 +115,8 @@
 					</div>
 					<div class="form-group">
 						<label>Opis firmy</label>
-						<form:input path="description" type="text" class="form-control"
-							placeholder="Opis firmy..." value="${companyForm.description }" />
+						<form:textarea path="description" type="text" class="form-control"
+							placeholder="Opis firmy..." value="${companyForm.description }" rows="5" cols="50"/>
 						<div class="errors">
 							<form:errors path="description" element="div" />
 						</div>
