@@ -40,7 +40,7 @@
 					<th ng-click="sortData('title')">Nagłówek</th>
 					<th ng-click="sortData('login')">Login</th>
 					<th ng-click="sortData('to')">Miejsce rozładunku</th>
-					<th ng-click="sortData('price')">Kwota</th>
+					<th ng-click="sortData('price')">Kwota(zł)</th>
 					<th ng-click="sortData('dateTransaction')">Data transakcji</th>
 					<th>Szczegóły</th>
 					<th>Wystaw ocenę</th>

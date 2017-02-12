@@ -51,7 +51,7 @@
 							<c:if
 								test="${ role=='ROLE_ADMIN_SHIPPER' || role=='ROLE_ADMIN_CARRIER'}">
 								<li><a href="/auction-system/webapp/employeesList">Lista
-										użytkowników</a></li>
+										pracowników</a></li>
 								<li class="divider"></li>
 							</c:if>
 

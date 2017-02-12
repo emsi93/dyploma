@@ -1069,8 +1069,6 @@ public class WebappController {
 			message.setText("Trasa towaru o numerze: " + idGood + "," + "\n\n "
 					+ link + "\n\n " + userName + ".");
 			Transport.send(message);
-			System.out.println("Done");
-
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}

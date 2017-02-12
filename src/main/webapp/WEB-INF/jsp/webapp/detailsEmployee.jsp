@@ -33,10 +33,6 @@
 				<table class="table table-striped">
 					<tbody>
 						<tr>
-							<td>ID:</td>
-							<td>${detailsEmployeeModel.id }</td>
-						</tr>
-						<tr>
 							<td>Imie:</td>
 							<td>${detailsEmployeeModel.name }</td>
 						</tr>
